@@ -1,0 +1,7 @@
+server:
+  port: 8080
+
+supos:
+  supos-address: http://192.168.31.223:8080
+  app-id: 59aab7fc24880926b50f511c1a0e255c
+  app-secret: 11787776abc81a1b781fab9de41d92d2
