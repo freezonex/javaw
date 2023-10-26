@@ -6,8 +6,6 @@ import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import org.apache.commons.codec.binary.Base64;
 
-import javax.activation.DataHandler;
-import javax.activation.FileDataSource;
 import javax.imageio.ImageIO;
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
@@ -45,10 +43,6 @@ public class SampleMail {
         return messageId.toString();
     }
 
-    public static void main(String[] args) throws IOException {
-        sendMail("yuwenhao@freezonex.io");
-    }
-
     public static String getPath() throws IOException {
 
         //获取当前文件所在的路径
@@ -58,7 +52,7 @@ public class SampleMail {
         //localPath = /C:/work/idea-WorkSpace/my-demo/demo-file/target/classes/com/zgd/demo/file/path/
     }
 
-    public static void sendMail(String sendTo) throws IOException {
+    public static void sendMail(String sendTo,Object screenshot,String code) throws IOException {
         // 配置发送邮件的环境属性
         final Properties props = new Properties();
 
@@ -149,7 +143,7 @@ public class SampleMail {
 //            image.setDataHandler(dataHandler1);
 //            image.setContentID("image");
             MimeBodyPart text = new MimeBodyPart();
-            String qrText = "1234"; // 要编码为二维码的文本
+            String qrText = code; // 要编码为二维码的文本
             String base64Image =null;
             try {
                 int width = 300; // 二维码图片的宽度
@@ -177,42 +171,7 @@ public class SampleMail {
             }
 //            text.setContent("这是一封带有Base64格式图片的邮件。<br/><img src='data:image/png;base64,"+base64Image+"' />","text/html;charset=UTF-8");
 
-            text.setContent("<p><img src='data:image/png;base64,"+base64Image+"' /></p>\n" +
-                    "<table style=\"border-collapse: collapse; width: 100%; height: 156.75px;\" border=\"1\">\n" +
-                    "<tbody>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 100%; height: 19.5938px;\" colspan=\"2\">我测试一下</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">1</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">2</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">3</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">4</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">5</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">6</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">7</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">8</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "</tr>\n" +
-                    "<tr style=\"height: 19.5938px;\">\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "<td style=\"width: 50%; height: 19.5938px;\">&nbsp;</td>\n" +
-                    "</tr>\n" +
-                    "</tbody>\n" +
-                    "</table>", "text/html;charset=UTF-8");//html超文本；// "text/plain;charset=UTF-8" //纯文本。
+            text.setContent("<img src='"+screenshot+"'/>\n" + "<img src='data:image/png;base64,"+base64Image+"' />\n", "text/html;charset=UTF-8");//html超文本；// "text/plain;charset=UTF-8" //纯文本。
 
 //            multipart.addBodyPart(image);
             multipart.addBodyPart(text);
