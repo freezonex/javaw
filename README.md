@@ -12,6 +12,15 @@ Springboot、Maven
 * 本项目需要使用maven进行外部库引用管理
 * 由于防火墙问题，请将 src/main/resources/settings.xml 作为maven setting文件
 
+## 暴力指引（其他懒得看就只看这个）
+* 下载 idea 社区版
+* 在github中 复制本仓库 https 链接
+* new project from version control， 贴入https 链接
+* 由于防火墙问题，请将 src/main/resources/settings.xml 作为maven setting文件（位置在 setting-build-build tool-maven）
+* 此时 应该会自动下载 pom文件中的外部库，等一会还是下载不下来重启 idea
+* 没有报错了 就可以找main方法执行，开启 java 编程之旅
+* 搞不定 喊 于文浩
+
 ## 目录说明
 ```
 app-jar-demo-tower
