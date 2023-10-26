@@ -7,6 +7,11 @@ Springboot、Maven
 ## 版本支持
 * 支持supOS版本：V3.0.0
 
+## 本地开发细节
+* 建议使用idea进行开发，使用git进行项目代码管理，在初始化项目代码时注意提示
+* 本项目需要使用maven进行外部库引用管理
+* 由于防火墙问题，请将 src/main/resources/settings.xml 作为maven setting文件
+
 ## 目录说明
 ```
 app-jar-demo-tower
@@ -21,6 +26,7 @@ app-jar-demo-tower
 |    |       ├─pojo                         pojo
 |    |       ├─supopenapi                   OpenAPI调用接口实现
 |    |       ├─util                         工具类
+|    |       ├─impl                         implement
 |    |       └─AppJarDemoTowerApplication   启动类
 │    │ 
 │─src/main/resources 
