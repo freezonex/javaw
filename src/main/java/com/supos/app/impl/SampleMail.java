@@ -1,4 +1,5 @@
 package com.supos.app.impl;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
@@ -52,7 +53,7 @@ public class SampleMail {
         //localPath = /C:/work/idea-WorkSpace/my-demo/demo-file/target/classes/com/zgd/demo/file/path/
     }
 
-    public static void sendMail(String sendTo,Object screenshot,String code) throws IOException {
+    public static void sendMail(String sendTo, Object screenshot, String code) throws IOException {
         // 配置发送邮件的环境属性
         final Properties props = new Properties();
 
@@ -144,7 +145,7 @@ public class SampleMail {
 //            image.setContentID("image");
             MimeBodyPart text = new MimeBodyPart();
             String qrText = code; // 要编码为二维码的文本
-            String base64Image =null;
+            String base64Image = null;
             try {
                 int width = 300; // 二维码图片的宽度
                 int height = 300; // 二维码图片的高度
@@ -171,11 +172,11 @@ public class SampleMail {
             }
 //            text.setContent("这是一封带有Base64格式图片的邮件。<br/><img src='data:image/png;base64,"+base64Image+"' />","text/html;charset=UTF-8");
 
-            text.setContent("<img src='"+screenshot+"'/>\n" + "<img src='data:image/png;base64,"+base64Image+"' />\n", "text/html;charset=UTF-8");//html超文本；// "text/plain;charset=UTF-8" //纯文本。
+            text.setContent("<img src='" + screenshot + "'/>\n" + "<img src='data:image/png;base64," + base64Image + "' />\n", "text/html;charset=UTF-8");//html超文本；// "text/plain;charset=UTF-8" //纯文本。
 
 //            multipart.addBodyPart(image);
             multipart.addBodyPart(text);
-message.setContent(multipart);
+            message.setContent(multipart);
 //            //若需要开启邮件跟踪服务，请使用以下代码设置跟踪链接头。前置条件和约束见文档"如何开启数据跟踪功能？"
 //            String tagName = "Test";
 //            HashMap<String, String> trace = new HashMap<>();
