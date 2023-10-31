@@ -12,6 +12,7 @@ import java.util.Map;
 
 public class workFlow {
 
+    //这是一个工作流发起用例
     public static void main(String[] args) {
         SimpleDateFormat sf = new SimpleDateFormat("yyyyMMdd'T'HHmmss'Z'");
         String baseDomain = "http://192.168.31.223:8080";
@@ -28,14 +29,14 @@ public class workFlow {
         SignUtils signUtil = new SignUtils(appId, appSecret, ak, sk);
         headerMap.put("X-MC-AppId", "App_d0f7d746b28aeb634ed82e23f213bdb7");
         signUtil.signHeaderUseAkSk(uri, "POST", headerMap, queryMap);
-        JSONObject entries = new JSONObject();
-        entries.set("processKey","K3851202564029313");
-        entries.set("username","admin");
+        JSONObject body = new JSONObject();
+        body.set("processKey","K3851202564029313");
+        body.set("username","admin");
         JSONObject entrie = new JSONObject();
         entrie.set("name_0","测试");
-        entries.set("formData",entrie.toString());
-        System.out.println(entries);
-        HttpResponse response = HttpRequest.post(baseDomain + "" + uri).body(entries.toStringPretty()).formStr(queryMap).headerMap(headerMap, true).execute();
+        body.set("formData",entrie.toString());
+        System.out.println(body);
+        HttpResponse response = HttpRequest.post(baseDomain + "" + uri).body(body.toStringPretty()).formStr(queryMap).headerMap(headerMap, true).execute();
         System.out.println(response);
     }
 
