@@ -42,3 +42,7 @@ app-jar-demo-tower
 │    ├─application.yml        配置文件
 │ 
 ```
+
+## 额外说明
+我没有使用Spring Boot configuration files 的原因不是因为我low，只是因为我想避免 代码转移 时候对方没有 IntelliJ IDEA Ultimate ‘换行’
+微笑脸
