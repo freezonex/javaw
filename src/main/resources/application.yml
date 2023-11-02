@@ -3,5 +3,83 @@ server:
 
 supos:
   supos-address: http://192.168.31.223:8080
-  app-id: 59aab7fc24880926b50f511c1a0e255c
-  app-secret: 11787776abc81a1b781fab9de41d92d2
+  app-id: 415ed3fc72b533713244dcd553159642
+  app-secret: 10999785ab1c5f475c6d9c8b728e28a3
+
+spring:
+  devtools:
+    restart:
+      enabled: true
+      exclude: static
+  #数据库连接
+  datasource:
+    # 数据库用户名
+    username: ${SUPOS_HOSTED_USERNAME:root}
+    # 数据库密码
+    password: ${SUPOS_HOSTED_PASSWORD:123456}
+    # 数据库URL
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.223}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:host_demo}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+
+    # 数据库驱动
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    # 使用Hikari连接池
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      # 最大连接池连接数50
+      maximum-pool-size: 50
+      # 最小连接池连接空闲数 5
+      minimum-idle: 5
+      idle-timeout: 30000
+      max-lifetime: 1800000
+      connection-timeout: 30000
+  flyway:
+    # 是否启用flyway
+    enabled: true
+    # 编码格式，默认UTF-8
+    encoding: UTF-8
+    # 迁移sql脚本文件存放路径，默认db/migration
+    locations: classpath:db/migration
+    # 迁移sql脚本文件名称的前缀，默认V
+    sql-migration-prefix: V
+    # 迁移sql脚本文件名称的分隔符，默认2个下划线__
+    sql-migration-separator: __
+    # 迁移sql脚本文件名称的后缀
+    sql-migration-suffixes: .sql
+    # 迁移时是否进行校验，默认true
+    validate-on-migrate: true
+    # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
+    baseline-on-migrate: true
+  redis:
+    host: ${SUPOS_REDIS_HOST:100.88.3.205}
+    port: 6379
+    password:
+mybatis-plus:
+  #mapper-locations: classpath*:mapping/*Mapper.xml
+  mapper-locations: classpath*:/mapper/**/*.xml
+  #实体扫描，多个package用逗号或者分号分隔
+  #type-aliases-package: com.supcon.supos.demo.entity;com.supcon.supos.sync.entity
+  global-config:
+    #数据库相关配置
+    db-config:
+      #主键类型  AUTO:"数据库ID自增", INPUT:"用户输入ID", ID_WORKER:"全局唯一ID (数字类型唯一ID)", UUID:"全局唯一ID UUID";
+      id-type: AUTO
+      #字段策略 IGNORED:"忽略判断",NOT_NULL:"非 NULL 判断"),NOT_EMPTY:"非空判断"
+      field-strategy: NOT_NULL
+      #驼峰下划线转换
+      column-underline: true
+      logic-delete-value: -1
+      logic-not-delete-value: 0
+  #原生配置
+  configuration:
+    map-underscore-to-camel-case: true
+    cache-enabled: false
+    call-setters-on-nulls: true
+    jdbc-type-for-null: 'null'
+app:
+  id: ${APP_ID:415ed3fc72b533713244dcd553159642}
+  prefix: ${APP_PREFIX:}
+  supos-host: ${SDK_ADDRESS:http://192.168.31.223:8080}
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test"
+  tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
+  # webhook回调地址
+  webhook-callback: ${APP_WEBHOOK_CALLBACK:http://192.168.31.223:8080/sync/callback}

@@ -7,13 +7,16 @@ Springboot、Maven
 ## 版本支持
 * 支持supOS版本：V3.0.0
 
-## 本地开发细节
+## 一定要看！！！！
 * 建议使用idea进行开发，使用git进行项目代码管理，在初始化项目代码时注意提示
 * 本项目需要使用maven进行外部库引用管理
 * 由于防火墙问题，请将 src/main/resources/settings.xml 作为maven setting文件
+* 按照步骤安装本地sdk 最新的jar src/main/resources里 请下载好后进行本地替换  在 https://devc-cloud.supos.com/document?groupId=doc_group_id_007&devcContentId=DOC_CONTENT_1642640641949&version=no_version&id=808
+* 要下载IntelliJ IDEA Ultimate
+* 开发过程中与supos关联的接口 全部使用sdk中的方法，不需要自己重复劳动
 
 ## 暴力指引（其他懒得看就只看这个）
-* 下载 idea 社区版
+* 要下载IntelliJ IDEA Ultimate 激活码在key中
 * 在github中 复制本仓库 https 链接
 * new project from version control， 贴入https 链接
 * 由于防火墙问题，请将 src/main/resources/settings.xml 作为maven setting文件（位置在 setting-build-build tool-maven）
