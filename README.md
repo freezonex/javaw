@@ -14,6 +14,7 @@ Springboot、Maven
 * 按照步骤安装本地sdk 最新的jar src/main/resources里 请下载好后进行本地替换  在 https://devc-cloud.supos.com/document?groupId=doc_group_id_007&devcContentId=DOC_CONTENT_1642640641949&version=no_version&id=808
 * 要下载IntelliJ IDEA Ultimate
 * 开发过程中与supos关联的接口 全部使用sdk中的方法，不需要自己重复劳动
+* 环境变量一定要使用配置项! https://devc-cloud.supos.com/document?groupId=doc_group_id_007&devcContentId=DOC_CONTENT_1643093045458&version=no_version&id=838
 
 ## 暴力指引（其他懒得看就只看这个）
 * 要下载IntelliJ IDEA Ultimate 激活码在key中
@@ -45,7 +46,3 @@ app-jar-demo-tower
 │    ├─application.yml        配置文件
 │ 
 ```
-
-## 额外说明
-我没有使用Spring Boot configuration files 的原因不是因为我low，只是因为我想避免 代码转移 时候对方没有 IntelliJ IDEA Ultimate ‘换行’
-微笑脸
