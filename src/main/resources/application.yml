@@ -2,7 +2,7 @@ server:
   port: 8080
 
 supos:
-  supos-address: http://192.168.31.223:8080
+  supos-address: http://47.236.10.165:8080
   app-id: 415ed3fc72b533713244dcd553159642
   app-secret: 10999785ab1c5f475c6d9c8b728e28a3
 
@@ -18,7 +18,7 @@ spring:
     # 数据库密码
     password: ${SUPOS_HOSTED_PASSWORD:123456}
     # 数据库URL
-    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.223}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:host_demo}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:47.236.10.165}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:host_demo}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
 
     # 数据库驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -50,7 +50,7 @@ spring:
     # 当迁移发现数据库非空且存在没有元数据的表时，自动执行基准迁移，新建schema_version表
     baseline-on-migrate: true
   redis:
-    host: ${SUPOS_REDIS_HOST:100.88.3.205}
+    host: ${SUPOS_REDIS_HOST:100.64.87.206}
     port: 6379
     password:
 mybatis-plus:
@@ -78,8 +78,8 @@ mybatis-plus:
 app:
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
-  supos-host: ${SDK_ADDRESS:http://192.168.31.223:8080}
-  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test"
+  supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60"
   tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
   # webhook回调地址
-  webhook-callback: ${APP_WEBHOOK_CALLBACK:http://192.168.31.223:8080/sync/callback}
+  webhook-callback: ${APP_WEBHOOK_CALLBACK:http://47.236.10.165:8080/sync/callback}
