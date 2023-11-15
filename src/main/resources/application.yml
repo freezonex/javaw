@@ -11,6 +11,14 @@ spring:
     restart:
       enabled: true
       exclude: static
+  thymeleaf:
+    enabled: true  #开启thymeleaf视图解析
+    # 模板文件路径这里要注意一点templates后面一定要加上/
+    prefix: classpath:/templates/
+    suffix: .html
+    mode: HTML5
+    encoding: utf-8
+    cache: false
   #数据库连接
   datasource:
     # 数据库用户名
@@ -79,7 +87,8 @@ app:
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
   supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
-  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60"
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png"
   tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
   # webhook回调地址
   webhook-callback: ${APP_WEBHOOK_CALLBACK:http://47.236.10.165:8080/sync/callback}
+  path:

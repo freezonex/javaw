@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>测试</title>
+</head><body>
+<div id="default-editor-page__placeholder" class="panel">
+    <link rel="stylesheet" th:href="${pathNew}">
+    <section class="wrapper bg-gradient-primary">
+        <div class="container py-18 pt-md-18 pb-md-18">
+            <div class="row text-center">
+                <div class="col-lg-9 col-xxl-7 mx-auto">
+                    <h2 class="display-1 mb-4">这是于文浩随手写的
+                    </h2>
+                    <p class="lead fs-24 lh-sm px-md-5 px-xl-15 px-xxl-10 mb-7">主要目的是证明spring框架直接前后端代码集成hostApp部署可行性
+                    </p>
+                </div>
+                <!-- /column -->
+            </div>
+            <!-- /.row -->
+            <div class="d-flex justify-content-center">
+                <span><a  class="btn btn-lg btn-primary rounded-pill mx-1">马上使用</a></span>
+                <span><a class="btn btn-lg btn-outline-primary rounded-pill mx-1">联系我吧</a></span>
+            </div>
+            <!-- /div -->
+            <div class="row mt-12">
+                <div class="col-lg-8 mx-auto">
+                    <figure>
+                        <img th:src="${pathNewPNG}" alt="" class="img-fluid"/>
+                    </figure>
+                </div>
+                <!-- /column -->
+            </div>
+            <!-- /.row -->
+        </div>
+        <!-- /.container -->
+    </section>
+    <section class="wrapper bg-gradient-primary">
+    </section>
+    <div class="wechat-group pb-12">
+    </div>
+    <div class="description">© 2023 版权没有
+    </div>
+</div>
+</body>
+</html>

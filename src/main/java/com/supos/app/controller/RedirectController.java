@@ -74,7 +74,7 @@ public class RedirectController {
             accessToken=authAccessToken.getAccessToken();
             //TODO 将accessToken存在redis缓存中
             ValueOperations<Serializable, Object> operations = redisTemplate.opsForValue();
-            operations.set(token, accessToken, 1700, TimeUnit.SECONDS);
+            operations.set(token, accessToken, 43200, TimeUnit.SECONDS);
         }
         return new RestResult(0L,token,token);
     }
