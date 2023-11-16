@@ -16,8 +16,10 @@ public class frontEnd {
     public String view(Model model) {
         String pathNew = path + "apps/wenhao-javaw/css/example.css";
         String pathNewPNG = path + "apps/wenhao-javaw/i12.png";
+        String pathExample1 = path + "apps/wenhao-javaw/css/example1.css";
         model.addAttribute("pathNew", pathNew);
         model.addAttribute("pathNewPNG", pathNewPNG);
+        model.addAttribute("pathExample1", pathExample1);
         return "example.html";
     }
 
