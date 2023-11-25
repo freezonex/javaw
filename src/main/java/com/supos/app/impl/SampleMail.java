@@ -6,9 +6,12 @@ import com.google.zxing.MultiFormatWriter;
 import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
+import com.supos.app.controller.RedirectController;
 import com.supos.app.dto.sampleMailDto;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.ibatis.javassist.tools.reflect.Sample;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.imageio.ImageIO;
 import javax.mail.*;
@@ -35,6 +38,8 @@ import java.util.UUID;
 //import javax.activation.URLDataSource;
 
 public class SampleMail {
+    private final static Logger log = LoggerFactory.getLogger(SampleMail.class);
+
     protected static String genMessageID(String mailFrom) {
         // message-id 必须符合 first-part@last-part
         String[] mailInfo = mailFrom.split("@");
@@ -446,7 +451,7 @@ public class SampleMail {
         } catch (MessagingException e) {
             String err = e.getMessage();
             // 在这里处理message内容， 格式是固定的
-            System.out.println(err);
+            log.warn("sendMailErr {}",err);
         }  //catch (MalformedURLException e) {
         //    e.printStackTrace();
         //}

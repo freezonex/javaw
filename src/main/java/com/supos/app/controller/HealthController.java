@@ -58,7 +58,7 @@ public class HealthController {
     public ResponseEntity<String> handlePostRequest(@RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
         JSONObject jsonObject = JSON.parseObject(requestBody);
-        System.out.println(jsonObject);
+        log.info("handlePostRequest入参 {}",jsonObject);
 
                 String response = "Received POST request with body: " + requestBody;
 
@@ -67,7 +67,7 @@ public class HealthController {
             sampleMailDto mail = objectMapper.readValue(jsonObject.getString(String.valueOf(i)),sampleMailDto.class);
             sendMail(mail);
         }
-        System.out.println("触发");
+        log.info("触发");
         return ResponseEntity.ok(response);
     }
 
@@ -77,8 +77,8 @@ public class HealthController {
     @Async
     public ResponseEntity<String> handleInnerExamplePostRequest(@RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
-        System.out.println(requestBody);
         JSONArray jsonArray = JSON.parseArray(requestBody);
+        log.info("handleInnerExamplePostRequest入参 {}",jsonArray);
 
         String response = "Received POST request with body: " + requestBody;
 
@@ -87,7 +87,7 @@ public class HealthController {
             sampleMailDto mail = objectMapper.readValue(jsonArray.getJSONObject(i).toString(),sampleMailDto.class);
             sendMail(mail);
         }
-        System.out.println("触发");
+        log.info("触发");
         return ResponseEntity.ok(response);
     }
 }
