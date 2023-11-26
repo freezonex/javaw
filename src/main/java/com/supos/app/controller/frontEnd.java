@@ -7,13 +7,28 @@ import org.springframework.beans.factory.annotation.Value;
 
 
 @Controller
-@RequestMapping("/frontend")
 public class frontEnd {
 
     @Value("${app.path}")
     private String path;
-    @GetMapping
+    @RequestMapping("/multipleWindow3dScene")
     public String view(Model model) {
+//        String pathNew = path + "apps/wenhao-javaw/css/example.css";
+//        String pathNewPNG = path + "apps/wenhao-javaw/i12.png";
+//        String pathExample1 = path + "apps/wenhao-javaw/css/example1.css";
+//        model.addAttribute("pathNew", pathNew);
+//        model.addAttribute("pathNewPNG", pathNewPNG);
+//        model.addAttribute("pathExample1", pathExample1);
+//        return "example.html";
+        String pathNew = path + "apps/wenhao-javaw/js/three.r124.min.js";
+        model.addAttribute("pathNew", pathNew);
+        String pathNew1 = path + "apps/wenhao-javaw/js/main.js";
+        model.addAttribute("pathNew1", pathNew1);
+        return "index.html";
+    }
+
+    @RequestMapping("/frontend")
+    public String view1(Model model) {
         String pathNew = path + "apps/wenhao-javaw/css/example.css";
         String pathNewPNG = path + "apps/wenhao-javaw/i12.png";
         String pathExample1 = path + "apps/wenhao-javaw/css/example1.css";
@@ -22,6 +37,5 @@ public class frontEnd {
         model.addAttribute("pathExample1", pathExample1);
         return "example.html";
     }
-
 
 }
