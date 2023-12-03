@@ -33,10 +33,11 @@
 
 .portfolio-with-form .img {
     position: absolute;
-    width: 720px;
+    width: 450px;
     height: 629px;
     top: 0;
     left: 0;
+    margin-left: 30%;
 }
 
 .portfolio-with-form .header {
