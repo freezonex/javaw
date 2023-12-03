@@ -87,7 +87,7 @@ app:
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
   supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
-  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;"
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;/fun;"
   tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
   # webhook回调地址
   webhook-callback: ${APP_WEBHOOK_CALLBACK:http://47.236.10.165:8080/sync/callback}

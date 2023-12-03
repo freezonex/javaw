@@ -38,4 +38,9 @@ public class frontEnd {
         return "example.html";
     }
 
+    @RequestMapping("/fun")
+    public String view2(Model model) {
+        return "fun.html";
+    }
+
 }
