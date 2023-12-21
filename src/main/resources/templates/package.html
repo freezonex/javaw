@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快递包裹记录</title>
+    <style>
+        body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+        color: #333;
+    }
+
+    header {
+        background-color: #333;
+        color: #fff;
+        text-align: center;
+        padding: 1em;
+    }
+
+    nav {
+        background-color: #007bff;
+        padding: 1em;
+        text-align: center;
+    }
+
+    nav a {
+        color: #fff;
+        text-decoration: none;
+        margin: 0 1em;
+        font-size: 16px;
+        padding: 8px 16px;
+        border-radius: 4px;
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    nav a:hover {
+        background-color: #0056b3;
+        color: #fff;
+    }
+
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        background-color: #fff;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        border-radius: 8px;
+    }
+
+    .package-list {
+        list-style: none;
+        padding: 0;
+    }
+
+    .package-item {
+        border-bottom: 1px solid #ccc;
+        padding: 10px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .package-item:last-child {
+        border-bottom: none;
+    }
+
+    .package-info {
+        flex-grow: 1;
+    }
+
+    .package-status {
+        font-weight: bold;
+        color: #007bff;
+    }
+
+    /* 模态框样式 */
+    #myModal {
+        display: none;
+        position: fixed;
+        z-index: 1;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.4);
+    }
+
+    #modalContent {
+        background-color: #fff;
+        margin: 15% auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        width: 60%;
+        max-width: 400px;
+    }
+
+    #closeModal {
+        color: #333;
+        float: right;
+        font-size: 24px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    #closeModal:hover {
+        color: #000;
+    }
+
+    #addPackageForm {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    label {
+        font-weight: bold;
+    }
+
+    input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        font-size: 14px;
+        box-sizing: border-box;
+        margin-bottom: 20px;
+        width: 100%; /* 占据整个宽度 */
+        height: 30vh; /* 设置高度为屏幕高度的50% */
+    }
+
+    button {
+        background-color: #007bff;
+        color: #fff;
+        padding: 12px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>共享记录笔记本</h1>
+</header>
+<nav>
+    <a href="javascript:void(0);" onclick="deleteAll()">清空</a>
+    <a href="javascript:void(0);" onclick="packageHistory()">历史记录</a>
+<!--    <a href="#">联系我们</a>-->
+    <a href="javascript:void(0);" id="addPackageBtn">新增记录</a>
+
+</nav>
+<div class="container">
+    <ul class="package-list" id="packageList">
+        <!-- 这里根据后端数据动态生成列表项 -->
+        <li class="package-item">
+            <div class="package-info">
+                <p>等会，我加载的有点慢</p>
+                <p>等会，我加载的有点慢</p>
+                <p>等会，我加载的有点慢</p>
+            </div>
+            <button onclick="deletePackage(this)">删除包裹</button>
+        </li>
+
+        <li class="package-item">
+            <div class="package-info">
+                <p>包裹 ID: 987654321</p>
+                <p>发货时间: 2023-01-02 15:30</p>
+                <p>收货地址: 456 Oak St, Town</p>
+            </div>
+            <div class="package-status">派送中</div>
+        </li>
+
+        <!-- 可能有更多的列表项 -->
+
+    </ul>
+</div>
+<!-- 模态框 -->
+<div id="myModal">
+    <div id="modalContent">
+        <span id="closeModal">&times;</span>
+        <h2>新增记录</h2>
+        <form id="addPackageForm" autocomplete="off">
+            <label for="deliveryAddress">记录内容:</label>
+            <textarea type="text" id="deliveryAddress" name="deliveryAddress" required rows="10" cols="50"></textarea>
+            <br>
+            <button type="button" onclick="submitPackage()">发送</button>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    async function packageHistory() {
+        try {
+            const data = await fetchData('history');
+            const packageList = document.getElementById('packageList');
+            console.log(data)
+
+            // 清空现有列表项
+            packageList.innerHTML = '';
+
+            // 根据接口返回的数据动态生成新的列表项
+            data.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('package-item');
+                listItem.setAttribute('data-package-id', item.id);
+                listItem.innerHTML = `
+            <div class="package-info" style="width: 100%">
+              <p>记录 ID: ${item.id}</p>
+              <p>记录时间: ${formatDate(item.submissionDate)}</p>
+              <p>记录内容: ${item.desciption}</p>
+            </div>
+          `;
+                packageList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Error updating page:', error);
+        }
+    }
+
+    async function fetchData(API) {
+        try {
+            let response =''
+            if (API =='history'){
+                response= await fetch('http://192.168.31.250:8080/package/history');
+            }else if (API =='current'){
+                 response = await fetch('http://192.168.31.250:8080/package/current');
+            }
+            // 替换为实际的后端接口地址
+            // const response = await fetch('http://192.168.31.250:1880/packages');
+            console.log(response)
+            const data = await response.json();
+            return data;
+        } catch (error) {
+            console.error('Error fetching data:', error);
+            throw error;
+        }
+    }
+
+    async function updatePage() {
+        try {
+            const data = await fetchData('current');
+            const packageList = document.getElementById('packageList');
+            console.log(data)
+
+            // 清空现有列表项
+            packageList.innerHTML = '';
+
+            // 根据接口返回的数据动态生成新的列表项
+            data.forEach(item => {
+                const listItem = document.createElement('li');
+                listItem.classList.add('package-item');
+                listItem.setAttribute('data-package-id', item.id);
+                listItem.innerHTML = `
+            <div class="package-info" style="width: 80%">
+              <p>记录 ID: ${item.id}</p>
+              <p>记录时间: ${formatDate(item.submissionDate)}</p>
+              <p>记录内容: ${item.desciption}</p>
+            </div>
+            <button onclick="deletePackage(this)">删除记录</button>
+          `;
+                packageList.appendChild(listItem);
+            });
+        } catch (error) {
+            console.error('Error updating page:', error);
+        }
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const year = date.getFullYear();
+
+        // 月份和日期需要+1，因为getMonth返回的是0-11
+        const month = (date.getMonth() + 1).toString().padStart(2, '0');
+        const day = date.getDate().toString().padStart(2, '0');
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        const seconds = date.getSeconds().toString().padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+    // 初始化页面时调用
+    updatePage();
+
+    const addPackageBtn = document.getElementById('addPackageBtn');
+    const modal = document.getElementById('myModal');
+    const closeModal = document.getElementById('closeModal');
+
+    // 显示模态框
+    addPackageBtn.addEventListener('click', () => {
+        modal.style.display = 'block';
+        document.getElementById('deliveryAddress').value = '';
+    });
+
+    // 关闭模态框
+    closeModal.addEventListener('click', () => {
+        modal.style.display = 'none';
+    });
+
+    // 关闭模态框（如果用户点击模态框外部）
+    window.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
+
+    function submitPackage() {
+
+        const deliveryAddress = document.getElementById('deliveryAddress').value;
+
+        // 在这里你可以通过 AJAX 或其他方式将数据发送到后端
+        fetch('http://192.168.31.250:8080/package/insert', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ desciption: deliveryAddress,familyname:'有钱有闲'})
+        })
+            .then(response => {
+                if (response.ok) { // response.ok 是 true 当状态码是 200-299
+                    console.log("成功，状态码为 200");
+                    // 关闭模态框
+                    modal.style.display = 'none';
+
+                    // 刷新页面或执行其他操作
+                    updatePage();
+                } else {
+                    throw new Error('请求失败，状态码：' + response.status);
+                }
+            })
+            .catch(error => {
+                console.error("捕获到错误：", error);
+            });
+
+    }
+
+    function deletePackage(element) {
+        // 确认是否删除
+        // if (!confirm('确定要删除这个包裹吗？')) return;
+
+        // 获取包裹的元素
+        var packageItem = element.closest('.package-item');
+        var packageId = packageItem.getAttribute('data-package-id');
+
+        fetch('http://192.168.31.250:8080/package/delete?id='+packageId)
+             .then(response => {
+            if (response.ok) { // response.ok 是 true 当状态码是 200-299
+                console.log("成功删除，状态码为 200");
+                updatePage();
+            } else {
+                throw new Error('请求失败，状态码：' + response.status);
+            }
+        })
+
+        // 从 DOM 中移除元素
+        // packageItem.remove();
+    }
+
+    function deleteAll() {
+
+        fetch('http://192.168.31.250:8080/package/deleteAll')
+            .then(response => {
+                if (response.ok) { // response.ok 是 true 当状态码是 200-299
+                    console.log("成功删除，状态码为 200");
+                    updatePage();
+                } else {
+                    throw new Error('请求失败，状态码：' + response.status);
+                }
+            })
+
+        // 从 DOM 中移除元素
+        // packageItem.remove();
+    }
+</script>
+</body>
+</html>

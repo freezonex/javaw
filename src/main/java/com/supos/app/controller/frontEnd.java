@@ -49,6 +49,11 @@ public class frontEnd {
         return "fun.html";
     }
 
+    @RequestMapping("/package")
+    public String view3(Model model) {
+        return "package.html";
+    }
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         int maxLength = 9;
         int numThreads = Runtime.getRuntime().availableProcessors(); // 使用可用的处理器数量
