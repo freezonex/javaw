@@ -1,151 +1,151 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>快递包裹记录</title>
     <style>
         body {
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f4f4f4;
-        color: #333;
-    }
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
 
-    header {
-        background-color: #333;
-        color: #fff;
-        text-align: center;
-        padding: 1em;
-    }
+        header {
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            padding: 1em;
+        }
 
-    nav {
-        background-color: #007bff;
-        padding: 1em;
-        text-align: center;
-    }
+        nav {
+            background-color: #007bff;
+            padding: 1em;
+            text-align: center;
+        }
 
-    nav a {
-        color: #fff;
-        text-decoration: none;
-        margin: 0 1em;
-        font-size: 16px;
-        padding: 8px 16px;
-        border-radius: 4px;
-        transition: background-color 0.3s, color 0.3s;
-    }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 1em;
+            font-size: 16px;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s, color 0.3s;
+        }
 
-    nav a:hover {
-        background-color: #0056b3;
-        color: #fff;
-    }
+        nav a:hover {
+            background-color: #0056b3;
+            color: #fff;
+        }
 
-    .container {
-        max-width: 800px;
-        margin: 20px auto;
-        background-color: #fff;
-        padding: 20px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-        border-radius: 8px;
-    }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background-color: #fff;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
 
-    .package-list {
-        list-style: none;
-        padding: 0;
-    }
+        .package-list {
+            list-style: none;
+            padding: 0;
+        }
 
-    .package-item {
-        border-bottom: 1px solid #ccc;
-        padding: 10px 0;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
+        .package-item {
+            border-bottom: 1px solid #ccc;
+            padding: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
 
-    .package-item:last-child {
-        border-bottom: none;
-    }
+        .package-item:last-child {
+            border-bottom: none;
+        }
 
-    .package-info {
-        flex-grow: 1;
-    }
+        .package-info {
+            flex-grow: 1;
+        }
 
-    .package-status {
-        font-weight: bold;
-        color: #007bff;
-    }
+        .package-status {
+            font-weight: bold;
+            color: #007bff;
+        }
 
-    /* 模态框样式 */
-    #myModal {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
+        /* 模态框样式 */
+        #myModal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
 
-    #modalContent {
-        background-color: #fff;
-        margin: 15% auto;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        width: 60%;
-        max-width: 400px;
-    }
+        #modalContent {
+            background-color: #fff;
+            margin: 15% auto;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            width: 60%;
+            max-width: 400px;
+        }
 
-    #closeModal {
-        color: #333;
-        float: right;
-        font-size: 24px;
-        font-weight: bold;
-        cursor: pointer;
-    }
+        #closeModal {
+            color: #333;
+            float: right;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+        }
 
-    #closeModal:hover {
-        color: #000;
-    }
+        #closeModal:hover {
+            color: #000;
+        }
 
-    #addPackageForm {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
+        #addPackageForm {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
 
-    label {
-        font-weight: bold;
-    }
+        label {
+            font-weight: bold;
+        }
 
-    input {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 14px;
-        box-sizing: border-box;
-        margin-bottom: 20px;
-        width: 100%; /* 占据整个宽度 */
-        height: 30vh; /* 设置高度为屏幕高度的50% */
-    }
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            width: 100%; /* 占据整个宽度 */
+            height: 30vh; /* 设置高度为屏幕高度的50% */
+        }
 
-    button {
-        background-color: #007bff;
-        color: #fff;
-        padding: 12px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
-    }
+        button {
+            background-color: #007bff;
+            color: #fff;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
 
-    button:hover {
-        background-color: #0056b3;
-    }
+        button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
@@ -153,13 +153,15 @@
 <header>
     <h1>共享记录笔记本</h1>
 </header>
+
 <nav>
     <a href="javascript:void(0);" onclick="deleteAll()">清空</a>
     <a href="javascript:void(0);" onclick="packageHistory()">历史记录</a>
-<!--    <a href="#">联系我们</a>-->
+    <!--    <a href="#">联系我们</a>-->
     <a href="javascript:void(0);" id="addPackageBtn">新增记录</a>
 
 </nav>
+
 <div class="container">
     <ul class="package-list" id="packageList">
         <!-- 这里根据后端数据动态生成列表项 -->
@@ -185,6 +187,7 @@
 
     </ul>
 </div>
+
 <!-- 模态框 -->
 <div id="myModal">
     <div id="modalContent">
@@ -235,7 +238,7 @@
             if (API =='history'){
                 response= await fetch('http://192.168.31.250:8080/package/history');
             }else if (API =='current'){
-                 response = await fetch('http://192.168.31.250:8080/package/current');
+                response = await fetch('http://192.168.31.250:8080/package/current');
             }
             // 替换为实际的后端接口地址
             // const response = await fetch('http://192.168.31.250:1880/packages');
@@ -354,14 +357,14 @@
         var packageId = packageItem.getAttribute('data-package-id');
 
         fetch('http://192.168.31.250:8080/package/delete?id='+packageId)
-             .then(response => {
-            if (response.ok) { // response.ok 是 true 当状态码是 200-299
-                console.log("成功删除，状态码为 200");
-                updatePage();
-            } else {
-                throw new Error('请求失败，状态码：' + response.status);
-            }
-        })
+            .then(response => {
+                if (response.ok) { // response.ok 是 true 当状态码是 200-299
+                    console.log("成功删除，状态码为 200");
+                    updatePage();
+                } else {
+                    throw new Error('请求失败，状态码：' + response.status);
+                }
+            })
 
         // 从 DOM 中移除元素
         // packageItem.remove();

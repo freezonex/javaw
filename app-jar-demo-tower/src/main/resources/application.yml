@@ -1,7 +1,0 @@
-server:
-  port: 8080
-
-supos:
-  supos-address: http://ess-ngd2.devcloud.supos.net
-  app-id: 34de744888acf48eee21a9e187926623
-  app-secret: 29cf7de7a5efb6039e4554655b7da053

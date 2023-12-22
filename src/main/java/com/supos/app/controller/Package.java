@@ -13,44 +13,42 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
+@RestController
+@CrossOrigin
+@RequestMapping("/package")
 public class Package {
-    @Slf4j
-    @RestController
-    @CrossOrigin
-    @RequestMapping("/package")
-    public static class PackageController {
 
-        @Autowired
-        PackinfoServiceImpl packinfoServiceImpl;
+    @Autowired
+    PackinfoServiceImpl packinfoServiceImpl;
 
-        @RequestMapping("/history")
-        public List<Packinfo> history() {
-            return packinfoServiceImpl.selectAll();
-        }
-
-        @RequestMapping("/current")
-        public List<Packinfo> current() {
-            return packinfoServiceImpl.selectAllWithDel();
-        }
-
-        @RequestMapping("/delete")
-        public Integer delete(@RequestParam int id) {
-            return packinfoServiceImpl.updateById(id);
-        }
-
-        @RequestMapping("/deleteAll")
-        public String deleteAll() {
-             packinfoServiceImpl.updateAll();
-             return "good";
-        }
-
-        @PostMapping("/insert")
-        public String insert(@RequestBody String requestBody) throws JsonProcessingException {
-            Packinfo packinfo = new ObjectMapper().readValue(requestBody,Packinfo.class);
-            System.out.println(packinfo);
-            packinfoServiceImpl.insert(packinfo);
-            return "good";
-        }
-
+    @RequestMapping("/history")
+    public List<Packinfo> history() {
+        return packinfoServiceImpl.selectAll();
     }
+
+    @RequestMapping("/current")
+    public List<Packinfo> current() {
+        return packinfoServiceImpl.selectAllWithDel();
+    }
+
+    @RequestMapping("/delete")
+    public Integer delete(@RequestParam int id) {
+        return packinfoServiceImpl.updateById(id);
+    }
+
+    @RequestMapping("/deleteAll")
+    public String deleteAll() {
+        packinfoServiceImpl.updateAll();
+        return "good";
+    }
+
+    @PostMapping("/insert")
+    public String insert(@RequestBody String requestBody) throws JsonProcessingException {
+        Packinfo packinfo = new ObjectMapper().readValue(requestBody,Packinfo.class);
+        System.out.println(packinfo);
+        packinfoServiceImpl.insert(packinfo);
+        return "good";
+    }
+
 }

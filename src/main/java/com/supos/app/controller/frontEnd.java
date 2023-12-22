@@ -51,7 +51,7 @@ public class frontEnd {
 
     @RequestMapping("/package")
     public String view3(Model model) {
-        return "package.html";
+        return "note.html";
     }
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {

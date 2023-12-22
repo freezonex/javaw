@@ -15,6 +15,7 @@ Springboot、Maven
 * 要下载IntelliJ IDEA Ultimate
 * 开发过程中与supos关联的接口 全部使用sdk中的方法，不需要自己重复劳动
 * 环境变量一定要使用配置项! https://devc-cloud.supos.com/document?groupId=doc_group_id_007&devcContentId=DOC_CONTENT_1643093045458&version=no_version&id=838
+* resources.templates 目录下package为关键字，不可用来命名
 
 ## 暴力指引（其他懒得看就只看这个）
 * 要下载IntelliJ IDEA Ultimate 激活码在key中
