@@ -236,12 +236,12 @@
         try {
             let response =''
             if (API =='history'){
-                response= await fetch('http://192.168.31.250:8080/package/history');
+                response= await fetch('http://192.168.31.223:8080/apps/wenhao-javaw/package/history');
             }else if (API =='current'){
-                response = await fetch('http://192.168.31.250:8080/package/current');
+                response = await fetch('http://192.168.31.223:8080/apps/wenhao-javaw/package/current');
             }
             // 替换为实际的后端接口地址
-            // const response = await fetch('http://192.168.31.250:1880/packages');
+            // const response = await fetch('http://192.168.31.250:1880/apps/wenhao-javaw/packages');
             console.log(response)
             const data = await response.json();
             return data;
@@ -323,7 +323,7 @@
         const deliveryAddress = document.getElementById('deliveryAddress').value;
 
         // 在这里你可以通过 AJAX 或其他方式将数据发送到后端
-        fetch('http://192.168.31.250:8080/package/insert', {
+        fetch('http://192.168.31.223:8080/apps/wenhao-javaw/package/insert', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -356,7 +356,7 @@
         var packageItem = element.closest('.package-item');
         var packageId = packageItem.getAttribute('data-package-id');
 
-        fetch('http://192.168.31.250:8080/package/delete?id='+packageId)
+        fetch('http://192.168.31.223:8080/apps/wenhao-javaw/package/delete?id='+packageId)
             .then(response => {
                 if (response.ok) { // response.ok 是 true 当状态码是 200-299
                     console.log("成功删除，状态码为 200");
@@ -372,7 +372,7 @@
 
     function deleteAll() {
 
-        fetch('http://192.168.31.250:8080/package/deleteAll')
+        fetch('http://192.168.31.223:8080/apps/wenhao-javaw/package/deleteAll')
             .then(response => {
                 if (response.ok) { // response.ok 是 true 当状态码是 200-299
                     console.log("成功删除，状态码为 200");
