@@ -1,6 +1,10 @@
 server:
   port: 8080
-
+#  ssl:
+#    key-alias: alias-key    #证书别名
+#    key-store-password: ddpeqs3p   #填写jks-password.txt文件内的密码。
+#    key-store-type: JKS #JKS格式证书密钥库类型。PFX格式的证书密钥库类型为PKCS12。
+#    key-store: classpath:wenhaoworld.online.jks   #您需要使用实际的证书名称替换domain_name.jks。
 supos:
   supos-address: http://47.236.10.165:8080
   app-id: 415ed3fc72b533713244dcd553159642
@@ -87,8 +91,11 @@ app:
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
   supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
-  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;/fun;/package/*;"
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;/fun;/package/*;/suposapi;/crypto;"
   tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
   # webhook回调地址
   webhook-callback: ${APP_WEBHOOK_CALLBACK:http://47.236.10.165:8080/sync/callback}
   path:
+  ak: ${ak:415ed3fc72b533713244dcd553159642}
+  sk: ${sk:10999785ab1c5f475c6d9c8b728e28a3}
+

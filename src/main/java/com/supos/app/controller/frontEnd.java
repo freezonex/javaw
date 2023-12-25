@@ -17,6 +17,10 @@ public class frontEnd {
 
     @Value("${app.path}")
     private String path;
+    @Value("${app.ak}")
+    private String ak;
+    @Value("${app.sk}")
+    private String sk;
     @RequestMapping("/multipleWindow3dScene")
     public String view(Model model) {
 //        String pathNew = path + "apps/wenhao-javaw/css/example.css";
@@ -52,6 +56,13 @@ public class frontEnd {
     @RequestMapping("/package")
     public String view3(Model model) {
         return "note.html";
+    }
+
+    @RequestMapping("/suposapi")
+    public String view4(Model model) {
+        model.addAttribute("ak", ak);
+        model.addAttribute("sk", sk);
+        return "suposOpenApiCall.html";
     }
 
     public static void main(String[] args) throws InterruptedException, ExecutionException {

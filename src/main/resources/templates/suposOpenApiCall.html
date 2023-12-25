@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API 请求页面</title>
+    <style>/* styles.
+    css */
+
+    /* 可以添加媒体查询以改进响应式设计 */
+    @media (max-width: 768px) {
+        .container {
+            padding: 10px;
+        }
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .container {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .input-section {
+        margin-top: 20px;
+    }
+
+    .input-field {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: Arial, sans-serif; /* 统一字体 */
+    }
+
+    #json-body {
+        height: 100px;
+    }
+
+    button {
+        display: block;
+        margin-top: 10px;
+        padding: 10px 20px;
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    .response-section {
+        margin-top: 20px;
+    }
+
+    pre {
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        padding: 10px;
+        white-space: pre-wrap;
+    }
+    /* CSS 样式 */
+    .json-input {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        color: lightgreen; /* 文字颜色为浅绿色 */
+        background-color: black; /* 背景颜色为黑色 */
+        font-family: 'Courier New', monospace;
+    }
+
+    .json-input.error {
+        border-color: red;
+        background-color: #fff0f0;
+    }
+
+    .error-message {
+        color: red;
+        font-weight: bold;
+    }
+
+    .response-result {
+        width: 95%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        background-color: lightgray; /* 将响应格子的背景颜色设置为灰色 */
+        color: gray; /* 将文字颜色设置为灰色 */
+    }
+
+    .http-method {
+        width: 98%;
+        padding: 10px;
+        margin-bottom: 10px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        font-family: Arial, sans-serif; /* 统一字体 */
+    }
+
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>API 请求页面</h1>
+    <div class="input-section">
+        <label for="http-method">HTTP Method:</label>
+        <select id="http-method" class="http-method">
+            <option value="post">POST</option>
+            <option value="get">GET</option>
+        </select>
+        <label for="api-url">API URL:</label>
+        <input type="text" id="api-url" class="input-field" placeholder="Enter API URL">
+        <label for="ak">AK:</label>
+        <input type="text" id="ak" class="input-field" placeholder="Enter AK" th:value="${ak}">
+        <label for="sk">SK:</label>
+        <input type="text" id="sk" class="input-field" placeholder="Enter SK" th:value="${sk}">
+        <label for="json-body">JSON Body:</label>
+        <textarea id="json-body" class="json-input" placeholder='Enter JSON Body (e.g., {"key": "value"})'></textarea>
+        <div id="json-error" class="error-message"></div> <!-- 错误消息元素 -->
+        <button id="send-button">发送</button>
+    </div>
+    <div class="response-section">
+        <h2>Auth:</h2>
+        <pre id="auth" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
+        <h2>响应头:</h2>
+        <pre id="response-headers" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
+        <h2>响应体:</h2>
+        <pre id="response-body" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
+    </div>
+</div>
+<script>// JavaScript 部分
+
+document.addEventListener("DOMContentLoaded", function () {
+    const apiUrlInput = document.getElementById("api-url");
+    const akInput = document.getElementById("ak");
+    const skInput = document.getElementById("sk");
+    const jsonBodyInput = document.getElementById("json-body");
+    const sendButton = document.getElementById("send-button");
+    const responseHeaders = document.getElementById("response-headers");
+    const responseBody = document.getElementById("response-body");
+    const jsonError = document.getElementById("json-error");
+    const httpMethodSelect = document.getElementById("http-method");
+    const auth = document.getElementById("auth");
+
+
+    httpMethodSelect.addEventListener("change", function () {
+        const selectedMethod = httpMethodSelect.value;
+        if (selectedMethod === "get") {
+            jsonBodyInput.disabled = true;
+            jsonBodyInput.style.backgroundColor = "lightgray"; // 将背景颜色设置为灰色
+            jsonBodyInput.placeholder = "disabled"; // 将 placeholder 文本改为 "disabled"
+        } else {
+            jsonBodyInput.disabled = false;
+            jsonBodyInput.style.backgroundColor = "black"; // 恢复背景颜色为黑色
+            jsonBodyInput.placeholder = "Enter JSON Body (e.g., {\"key\": \"value\"})"; // 将 placeholder 文本改为 "disabled"
+        }
+    });
+
+    // JSON Body 输入框输入事件处理程序
+    jsonBodyInput.addEventListener("input", function () {
+        const jsonInput = jsonBodyInput.value;
+
+        // 尝试解析 JSON
+        try {
+            JSON.parse(jsonInput);
+            // 格式化 JSON，以可视化形式显示
+            jsonBodyInput.value = JSON.stringify(JSON.parse(jsonInput), null, 2);
+            jsonBodyInput.classList.remove("error");
+            jsonBodyInput.style.color = "lightgreen"; // 正确格式时文字颜色为浅绿色
+            jsonBodyInput.style.backgroundColor = "black"; // 恢复背景颜色为黑色
+            jsonError.textContent = ""; // 清空错误消息
+        } catch (error) {
+            console.error(error);
+            jsonBodyInput.classList.add("error");
+            jsonBodyInput.style.color = "red"; // 错误格式时文字颜色为红色
+            jsonError.textContent = "JSON 格式错误，请检查输入"; // 显示错误消息
+            jsonBodyInput.style.backgroundColor = "#fff0f0"; // 恢复背景颜色为黑色
+        }
+    });
+
+    // 在按钮点击事件中添加置灰样式并显示响应结果
+    sendButton.addEventListener("click", async function () {
+        const selectedMethod = httpMethodSelect.value;
+        const apiUrl = apiUrlInput.value;
+        const ak = akInput.value;
+        const sk = skInput.value;
+        const jsonBody = jsonBodyInput.value;
+
+        try {
+            if (selectedMethod === "get") {
+                const authorizationHeader  = await signHeader(extractURI(apiUrl),selectedMethod.toUpperCase(),extractQueryJson(apiUrl),null,ak,sk)
+                auth.textContent=authorizationHeader
+                // 发送 GET 请求
+                const response = await fetch(apiUrl, {
+                    method: "GET",
+                    headers: {
+                        "Authorization": authorizationHeader,
+                        "Content-Type": "application/json;charset=utf-8",
+                    },
+                });
+                // 处理响应
+                const headersText = `Status: ${response.status} ${response.statusText}\n`;
+                const headers = [...response.headers];
+                const formattedHeaders = headers.map(header => `${header[0]}: ${header[1]}`).join('\n');
+                responseHeaders.textContent = headersText + formattedHeaders;
+                responseHeaders.style.color = "Grey";
+                responseHeaders.classList.add("response-result");
+                const responseText = await response.text();
+                const bodyText = await JSON.parse(responseText);
+                const bodyTextHtml = JSON.stringify(bodyText, null, 2);
+                responseBody.textContent = bodyTextHtml;
+                responseBody.style.color = "lightgreen"; // 正确格式时文字颜色为浅绿色
+                responseBody.style.backgroundColor = "black"; // 恢复背景颜色为黑色
+                responseBody.classList.add("response-result");
+            } else if (selectedMethod === "post") {
+                const authorizationHeader  = await signHeader(extractURI(apiUrl),selectedMethod.toUpperCase(),extractQueryJson(apiUrl),null,ak,sk)
+                auth.textContent=authorizationHeader
+                // 发送 POST 请求
+                const requestBody = JSON.parse(jsonBody);
+                const response = await fetch(apiUrl, {
+                    method: "POST",
+                    headers: {
+                        "Authorization":authorizationHeader,
+                        "Content-Type": "application/json;charset=utf-8",
+                    },
+                    body: JSON.stringify(requestBody),
+                });
+                // 处理响应
+                const headersText = `Status: ${response.status} ${response.statusText}\n`;
+                const headers = [...response.headers];
+                const formattedHeaders = headers.map(header => `${header[0]}: ${header[1]}`).join('\n');
+                responseHeaders.textContent = headersText + formattedHeaders;
+                responseHeaders.style.color = "Grey";
+                responseHeaders.classList.add("response-result");
+                const responseText = await response.text();
+                const bodyText = await JSON.parse(responseText);
+                const bodyTextHtml = JSON.stringify(bodyText, null, 2);
+                responseBody.textContent = bodyTextHtml;
+                responseBody.style.color = "lightgreen"; // 正确格式时文字颜色为浅绿色
+                responseBody.style.backgroundColor = "black"; // 恢复背景颜色为黑色
+                responseBody.classList.add("response-result");
+            }
+        } catch (error) {
+            console.error(error);
+            responseHeaders.textContent = "请求失败";
+            responseHeaders.style.color = "Red";
+            responseBody.textContent = "";
+        }
+    });
+});
+
+
+//使用aksk方式签名,
+async function signHeader(uri, methodName, queryJson, headerJson,ak,sk) {
+    headerJson = {
+        'Content-Type': 'application/json;charset=utf-8'
+    };
+    requestBody={
+        uri:uri,
+        methodName:methodName,
+        queryJson:queryJson,
+        headerJson:headerJson,
+        ak:ak,
+        sk:sk
+    }
+    const response = await fetch('/apps/wenhao-javaw/crypto', {
+        method: "POST",
+        body: JSON.stringify(requestBody)
+    });
+    const responseBodyText = await response.text();
+    console.log(responseBodyText)
+    return responseBodyText;
+}
+
+
+function extractQueryJson(url) {
+    const urlObj = new URL(url);
+    const queryParams = new URLSearchParams(urlObj.search);
+
+    let queryJson = {};
+    queryParams.forEach((value, key) => {
+        queryJson[key] = value;
+    });
+
+    return queryJson;
+}
+
+function extractURI(url) {
+    const urlObject = new URL(url);
+    return urlObject.pathname;
+}
+
+</script>
+</body>
+</html>

@@ -3,10 +3,11 @@ package com.supos.app.controller;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
-import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supos.app.dto.sampleMailDto;
-import com.supos.app.impl.SampleMail;
+import com.supos.app.entity.SuposApi;
+import com.supos.app.aksk.SignUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -51,6 +52,12 @@ public class HealthController {
 //        return ResponseEntity.ok(response);
 //    }
 
+    @PostMapping("/crypto")
+    public ResponseEntity<String> crypto(@RequestBody String requestBody) throws JsonProcessingException {
+        SuposApi suposApi = new ObjectMapper().readValue(requestBody, SuposApi.class);
+        System.out.println(suposApi);
+        return ResponseEntity.ok(SignUtils.signHeaderUseAkSkWithInput(suposApi.getUri(),suposApi.getMethodName(),suposApi.getHeaderJson(),suposApi.getQueryJson(),suposApi.getAk(),suposApi.getSk()));
+    }
 
     @PostMapping("/example")
     @CrossOrigin

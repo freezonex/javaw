@@ -87,6 +87,16 @@ public class SignUtils {
         headerMap.put("Authorization", finalSignature);
     }
 
+    public static String signHeaderUseAkSkWithInput(String uri, String methodName, Map<String, String> headerMap, Map<String, String> queryMap, String ak, String sk) {
+        StringBuffer sb = buildSignSource(uri, methodName, headerMap, queryMap).append(CARRIAGE_RETURN);
+        System.out.println("签名源内容：\n" + sb);
+        HmacUtils hmacSha256 = new HmacUtils(HmacAlgorithms.HMAC_SHA_256, sk);
+        String signature = hmacSha256.hmacHex(sb.toString());
+        String finalSignature = "Sign " + ak + "-" + signature;
+        System.out.println("签名结果：\n" + finalSignature);
+        return finalSignature;
+    }
+
     /**
      * 拼接签名源
      *
@@ -96,7 +106,7 @@ public class SignUtils {
      * @param queryMap   请求参数（url ？后的参数）
      * @return 签名源串
      */
-    private StringBuffer buildSignSource(String uri, String methodName, Map<String, String> headerMap, Map<String, String> queryMap) {
+    private static StringBuffer buildSignSource(String uri, String methodName, Map<String, String> headerMap, Map<String, String> queryMap) {
         StringBuffer signStr = new StringBuffer();
         assert StringUtils.isNotBlank(methodName);
         //HTTP Schema
@@ -120,7 +130,7 @@ public class SignUtils {
      * @param queryMap 查询参数
      * @return 有序的查询参数串
      */
-    private String buildCanonicalQueryString(Map<String, String> queryMap) {
+    private static String buildCanonicalQueryString(Map<String, String> queryMap) {
         TreeMap<String, String> queryTreeMap = new TreeMap<>();
         if (queryMap != null && queryMap.size() > 0) {
             for (Map.Entry<String, String> m : queryMap.entrySet()) {
@@ -137,7 +147,7 @@ public class SignUtils {
      * @param headerMap 请求头参数
      * @return 有序的 HTTP协议头中所有“自定义”的Header
      */
-    private String buildCanonicalCustomHeaders(Map<String, String> headerMap) {
+    private static String buildCanonicalCustomHeaders(Map<String, String> headerMap) {
         if (headerMap != null && headerMap.size() > 0) {
             TreeMap<String, String> headerTreeMap = new TreeMap<>();
             for (Map.Entry<String, String> m : headerMap.entrySet()) {
