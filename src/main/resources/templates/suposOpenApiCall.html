@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>API 请求页面</title>
+    <title>API Request</title>
     <style>/* styles.
     css */
 
@@ -117,7 +117,7 @@
 </head>
 <body>
 <div class="container">
-    <h1>API 请求页面</h1>
+    <h1>API Request</h1>
     <div class="input-section">
         <label for="http-method">HTTP Method:</label>
         <select id="http-method" class="http-method">
@@ -133,14 +133,17 @@
         <label for="json-body">JSON Body:</label>
         <textarea id="json-body" class="json-input" placeholder='Enter JSON Body (e.g., {"key": "value"})'></textarea>
         <div id="json-error" class="error-message"></div> <!-- 错误消息元素 -->
-        <button id="send-button">发送</button>
+        <button id="send-button">send</button>
     </div>
     <div class="response-section">
-        <h2>Auth:</h2>
+        <h2>Headers:</h2>
+        <h4>Content-Type:</h4>
+        <pre id="Content-Type" class="response-result">application/json;charset=utf-8</pre> <!-- 使用 response-result 类来应用样式 -->
+        <h4>Authorization:</h4>
         <pre id="auth" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
-        <h2>响应头:</h2>
+        <h2>response-headers:</h2>
         <pre id="response-headers" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
-        <h2>响应体:</h2>
+        <h2>response-body:</h2>
         <pre id="response-body" class="response-result"></pre> <!-- 使用 response-result 类来应用样式 -->
     </div>
 </div>
