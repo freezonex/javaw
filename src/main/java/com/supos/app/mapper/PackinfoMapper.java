@@ -22,6 +22,8 @@ public interface PackinfoMapper extends BaseMapper<Packinfo> {
      int updateById(int id);
 
     void updateAll();
+
+    List<Packinfo> charts();
 }
 
 

@@ -4,24 +4,24 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
- * 
  * @TableName packinfo
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Packinfo implements Serializable {
     /**
-     * 
+     *
      */
     private Integer id;
 
     /**
-     * 
+     *
      */
     private String desciption;
 
@@ -31,16 +31,60 @@ public class Packinfo implements Serializable {
     private Date submissionDate;
 
     /**
-     * 
+     *
      */
     private Integer delFlag;
-
     /**
-     * 
+     *
      */
     private String familyname;
 
     private static final long serialVersionUID = 1L;
+
+    @TableField(exist = false)
+    private int year;
+
+    @TableField(exist = false)
+    private int month;
+
+    @TableField(exist = false)
+    private int increase;
+
+    @TableField(exist = false)
+    private int total;
+
+    public int getYear() {
+        return year;
+    }
+
+    public void setYear(int year) {
+        this.year = year;
+    }
+
+    public int getMonth() {
+        return month;
+    }
+
+    public void setMonth(int month) {
+        this.month = month;
+    }
+
+    public int getIncrease() {
+        return increase;
+    }
+
+    public void setIncrease(int increase) {
+        this.increase = increase;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
 
     @Override
     public boolean equals(Object that) {
@@ -54,11 +98,7 @@ public class Packinfo implements Serializable {
             return false;
         }
         Packinfo other = (Packinfo) that;
-        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId()))
-            && (this.getDesciption() == null ? other.getDesciption() == null : this.getDesciption().equals(other.getDesciption()))
-            && (this.getSubmissionDate() == null ? other.getSubmissionDate() == null : this.getSubmissionDate().equals(other.getSubmissionDate()))
-            && (this.getDelFlag() == null ? other.getDelFlag() == null : this.getDelFlag().equals(other.getDelFlag()))
-            && (this.getFamilyname() == null ? other.getFamilyname() == null : this.getFamilyname().equals(other.getFamilyname()));
+        return (this.getId() == null ? other.getId() == null : this.getId().equals(other.getId())) && (this.getDesciption() == null ? other.getDesciption() == null : this.getDesciption().equals(other.getDesciption())) && (this.getSubmissionDate() == null ? other.getSubmissionDate() == null : this.getSubmissionDate().equals(other.getSubmissionDate())) && (this.getDelFlag() == null ? other.getDelFlag() == null : this.getDelFlag().equals(other.getDelFlag())) && (this.getFamilyname() == null ? other.getFamilyname() == null : this.getFamilyname().equals(other.getFamilyname()));
     }
 
     @Override

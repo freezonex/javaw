@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Title</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #container {
+            display: flex;
+            flex-direction: column;
+            width: 60vw; /* 示例：电脑端默认宽度为60% */
+        }
+
+        #main, #chart {
+            width: 100%; /* 在容器内占满宽度 */
+            height: 400px; /* 固定高度 */
+        }
+
+        header {
+            display: flex;
+            align-items: center; /* 垂直居中 */
+            justify-content: center; /* 水平居中 */
+            text-align: center; /* 文本居中 */
+        }
+
+        h1 {
+            margin: 0; /* 移除标题的默认外边距 */
+            flex-grow: 1; /* 允许标题占据剩余空间 */
+            justify-content: center; /* 水平居中 */
+            margin-left: 5%; /* 左移40% */
+        }
+
+        #backButton {
+            background-color: #4CAF50; /* 绿色背景 */
+            border: none;
+            border-radius: 4px; /* 圆角边框 */
+            cursor: pointer;
+            padding: 8px 12px; /* 按钮内边距 */
+            display: flex;
+            align-items: center;
+            transition: background-color 1s; /* 过渡效果 */
+        }
+
+        #backButton svg {
+            fill: white; /* 白色图标 */
+            stroke: white; /* 白色线条 */
+        }
+
+        #backButton:hover {
+            background-color: #388E3C; /* 悬停时更深的绿色 */
+        }
+
+        @media screen and (max-width: 600px) {
+            #container {
+                width: 100vw; /* 在手机设备上，宽度为视口宽度的100% */
+            }
+
+            /*#chart {*/
+            /*    right: 150px;*/
+            /*}*/
+
+            #main {
+                left: 10%
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="container">
+    <header>
+        <h1>败家统计</h1>
+        <button id="backButton" onclick="location.href='/apps/wenhao-javaw/package'">
+            <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="19" y1="12" x2="5" y2="12"></line>
+                <polyline points="12 19 5 12 12 5"></polyline>
+            </svg>
+        </button>
+    </header>
+    <div id="main"></div>
+    <div id="chart"></div>
+</div>
+<script th:inline="none">
+
+    var myChart = echarts.init(document.getElementById('main'));
+    var option;
+
+    window.onresize = function() {
+        myChart.resize();
+    };
+
+    function run(_rawData) {
+        // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
+        const isMobile = window.innerWidth <= 600; // 假设屏幕宽度小于或等于 600px 为手机屏幕
+        const titlePosition = isMobile ? '25%' : 'center'; // 如果是手机屏幕，标题向左移动 40%，否则居中
+
+        const countries = [
+            'increase',
+            'total'
+        ];
+        const datasetWithFilters = [];
+        const seriesList = [];
+        echarts.util.each(countries, function (pack) {
+            var datasetId = 'dataset_' + pack;
+            datasetWithFilters.push({
+                id: datasetId,
+                fromDatasetId: 'dataset_raw',
+                transform: {
+                    type: 'filter',
+                    config: {
+                        and: [
+                            { dimension: 'month', gte: 1 },
+                            { dimension: 'pack', '=': pack }
+                        ]
+                    }
+                }
+            });
+            seriesList.push({
+                type: 'line',
+                datasetId: datasetId,
+                showSymbol: false,
+                name: pack,
+                endLabel: {
+                    show: true,
+                    formatter: function (params) {
+                        // return params.seriesName + ': ' + params.value[1];
+                        return params.value[1];
+                    }
+                },
+                labelLayout: {
+                    moveOverlap: 'shiftY'
+                },
+                emphasis: {
+                    focus: 'series'
+                },
+                encode: {
+                    x: 'month',
+                    y: 'no',
+                    label: ['pack', 'no'],
+                    itemName: 'month',
+                    tooltip: ['no']
+                }
+            });
+        });
+        option = {
+            animationDuration: 10000,
+            dataset: [
+                {
+                    id: 'dataset_raw',
+                    source: _rawData
+                },
+                ...datasetWithFilters
+            ],
+            title: {
+                text: 'History data',
+                left: titlePosition // 将标题居中
+            },
+            tooltip: {
+                order: 'valueDesc',
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                nameLocation: 'middle'
+            },
+            yAxis: {
+                name: 'no'
+                // ,
+                // min: 36000,  // Set the minimum value of y-axis to 30000
+                // max: 40000   // Set the maximum value of y-axis to 50000
+            },
+            grid: {
+                right: 140
+            },
+            series: seriesList
+        };
+        myChart.setOption(option);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/apps/wenhao-javaw//package/chart', {
+            method: "GET",
+        }) .then(response => response.text())
+            .then(responseBodyText => {
+                const jsonData = JSON.parse(responseBodyText);
+                run(jsonData);
+            })
+        fetch('/apps/wenhao-javaw//package/pieChart', {
+            method: "GET",
+        }) .then(response => response.text())
+            .then(responseBodyText => {
+                const jsonData = JSON.parse(responseBodyText);
+                run1(jsonData);
+            })
+    });
+
+    var chartDom1 = document.getElementById('chart');
+    var myChart1 = echarts.init(chartDom1);
+    var option1;
+
+  function run1 (response) {
+      option1 = {
+          title: {
+              text: 'History Chart',
+              subtext: 'Package Data',
+              left: 'center'
+          },
+          tooltip: {
+              trigger: 'item',
+              formatter: '{a} <br/>{b} : {c} ({d}%)'
+          },
+          legend: {
+              left: 'center',
+              top: 'bottom',
+              data: response.dataList
+          },
+          toolbox: {
+              show: true,
+              feature: {
+                  mark: { show: true },
+                  dataView: { show: true, readOnly: false },
+                  restore: { show: true },
+                  saveAsImage: { show: true }
+              }
+          },
+          series: [
+              {
+                  name: 'Area Mode',
+                  type: 'pie',
+                  radius: [20, 140],
+                  center: ['50%', '50%'],
+                  roseType: 'area',
+                  itemStyle: {
+                      borderRadius: 5
+                  },
+                  data: response.data
+              }
+          ]
+      };
+      option1 && myChart1.setOption(option1);
+  }
+
+</script>
+</body>
+</html>

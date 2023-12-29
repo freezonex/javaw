@@ -38,4 +38,16 @@
         where del_flag=0
         order by id desc
     </select>
+    <select id="charts" resultType="com.supos.app.entity.Packinfo" >
+        SELECT
+        YEAR(submission_date) AS year,
+        MONTH(submission_date) AS month,
+        COUNT(*) AS increase,
+        (SELECT COUNT(*) FROM packinfo WHERE YEAR(submission_date) &lt;= year AND MONTH(submission_date) &lt;= month) AS total
+        FROM
+        packinfo
+        GROUP BY
+        YEAR(submission_date),
+        MONTH(submission_date);
+    </select>
 </mapper>

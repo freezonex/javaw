@@ -65,6 +65,11 @@ public class frontEnd {
         return "suposOpenApiCall.html";
     }
 
+    @RequestMapping("/packageCharts")
+    public String view5() {
+        return "noteUsage.html";
+    }
+
     public static void main(String[] args) throws InterruptedException, ExecutionException {
         int maxLength = 9;
         int numThreads = Runtime.getRuntime().availableProcessors(); // 使用可用的处理器数量

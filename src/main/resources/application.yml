@@ -30,7 +30,7 @@ spring:
     # 数据库密码
     password: ${SUPOS_HOSTED_PASSWORD:1234567}
     # 数据库URL
-    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.250}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.254}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
 
     # 数据库驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -91,7 +91,7 @@ app:
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
   supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
-  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;/fun;/package/*;/suposapi;/crypto;"
+  white-list: "/sync/callback;/test/exec;/test/apiList;/auth/*;/test1/*;/health;/test;/innerExample/cbscK6BDA8HCNg2Cgf60;/frontend;/*.css;/*.png;/*.js;/multipleWindow3dScene;/fun;/package/*;/suposapi;/crypto;/packageCharts;"
   tenantId: ${SUPOS_SUPOS_APP_TENANT_ID:dt}
   # webhook回调地址
   webhook-callback: ${APP_WEBHOOK_CALLBACK:http://47.236.10.165:8080/sync/callback}
