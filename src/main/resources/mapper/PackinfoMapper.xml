@@ -40,14 +40,14 @@
     </select>
     <select id="charts" resultType="com.supos.app.entity.Packinfo" >
         SELECT
-        YEAR(submission_date) AS year,
-        MONTH(submission_date) AS month,
-        COUNT(*) AS increase,
-        (SELECT COUNT(*) FROM packinfo WHERE YEAR(submission_date) &lt;= year AND MONTH(submission_date) &lt;= month) AS total
+            YEAR(submission_date) AS year,
+            MONTH(submission_date) AS month,
+            COUNT(*) AS increase,
+            SUM(COUNT(*)) OVER (PARTITION BY YEAR(submission_date) ORDER BY MONTH(submission_date)) AS total
         FROM
-        packinfo
+            packinfo
         GROUP BY
-        YEAR(submission_date),
-        MONTH(submission_date);
+            YEAR(submission_date),
+            MONTH(submission_date)
     </select>
 </mapper>
