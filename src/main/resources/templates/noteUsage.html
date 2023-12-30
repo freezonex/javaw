@@ -186,14 +186,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('/apps/wenhao-javaw//package/chart', {
+        fetch('/apps/wenhao-javaw/package/chart', {
             method: "GET",
         }) .then(response => response.text())
             .then(responseBodyText => {
                 const jsonData = JSON.parse(responseBodyText);
                 run(jsonData);
             })
-        fetch('/apps/wenhao-javaw//package/pieChart', {
+        fetch('/apps/wenhao-javaw/package/pieChart', {
             method: "GET",
         }) .then(response => response.text())
             .then(responseBodyText => {
