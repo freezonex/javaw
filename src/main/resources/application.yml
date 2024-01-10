@@ -30,7 +30,7 @@ spring:
     # 数据库密码
     password: ${SUPOS_HOSTED_PASSWORD:1234567}
     # 数据库URL
-    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.254}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.220}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
 
     # 数据库驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
