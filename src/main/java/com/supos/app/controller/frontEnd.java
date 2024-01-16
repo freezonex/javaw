@@ -2,11 +2,26 @@ package com.supos.app.controller;
 
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.client.j2se.MatrixToImageConfig;
+import com.google.zxing.client.j2se.MatrixToImageWriter;
+import com.google.zxing.common.BitMatrix;
+import com.supos.app.dto.sampleMailDto;
+import org.apache.commons.codec.binary.Base64;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.ui.Model;
 import org.springframework.beans.factory.annotation.Value;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
@@ -21,6 +36,7 @@ public class frontEnd {
     private String ak;
     @Value("${app.sk}")
     private String sk;
+
     @RequestMapping("/multipleWindow3dScene")
     public String view(Model model) {
 //        String pathNew = path + "apps/wenhao-javaw/css/example.css";
@@ -51,6 +67,47 @@ public class frontEnd {
     @RequestMapping("/fun")
     public String view2(Model model) {
         return "fun.html";
+    }
+
+    @RequestMapping("/contactpage")
+    public String view6(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
+        String contactName = name;
+        String contactEmail = email;
+        model.addAttribute("contactName", contactName);
+        model.addAttribute("contactEmail", contactEmail);
+        return "contactPage.html";
+    }
+
+    @RequestMapping("/qrcodegenerate")
+    public ResponseEntity<byte[]> view7(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) throws IOException {
+        sampleMailDto mail = new sampleMailDto();
+        mail.setMail(email);
+        mail.setName(name);
+        String text="http://192.168.31.220:8080/contactpage?name="+name+"&email="+email;
+        byte[] imageBytes = null;
+        try {
+            int width = 300; // 二维码图片的宽度
+            int height = 300; // 二维码图片的高度
+
+            MultiFormatWriter multiFormatWriter = new MultiFormatWriter();
+            BitMatrix bitMatrix = multiFormatWriter.encode(text, BarcodeFormat.QR_CODE, width, height);
+
+            // 创建BufferedImage对象并设置二维码颜色
+            BufferedImage qrImage = MatrixToImageWriter.toBufferedImage(bitMatrix, new MatrixToImageConfig(0xFF000000, 0xFFFFFFFF));
+
+            // 将BufferedImage对象转换为字节数据
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            ImageIO.write(qrImage, "png", os);
+            imageBytes = os.toByteArray();
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.IMAGE_PNG);
+
+        return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
     @RequestMapping("/package")
