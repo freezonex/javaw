@@ -69,6 +69,11 @@ public class frontEnd {
         return "fun.html";
     }
 
+    @RequestMapping("/survey")
+    public String view8(Model model) {
+        return "survey.html";
+    }
+
     @RequestMapping("/contactpage")
     public String view6(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
         String contactName = name;
