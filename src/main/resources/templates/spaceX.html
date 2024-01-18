@@ -1,0 +1,2698 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        .crew-dragon-flight {
+            display: flex;
+            height: 100vh;
+            align-items: flex-start;
+            justify-content: center;
+            gap: 10px;
+            position: relative;
+            background-color: #1a1c48;
+            width: 100vw;
+        }
+
+        .crew-dragon-flight .background {
+            position: relative;
+            flex: 1;
+            align-self: stretch;
+            flex-grow: 1;
+            object-fit: cover;
+        }
+
+        .crew-dragon-flight .top-level-stats {
+            position: absolute;
+            width: calc( 752 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: calc( 122 / 940 * 100vh);
+            left: calc( 408 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .co {
+            position: absolute;
+            width: calc( 182 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: 0;
+            left: calc( 576 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap {
+            position: relative;
+            width: calc( 176 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .outer-ring {
+            position: absolute;
+            width: calc( 151 / 1568 * 100vw);
+            height: calc( 134 / 940 * 100vh);
+            top: calc( 24 / 940 * 100vh);
+            left: calc( 13 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-3.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle {
+            top: calc( 75 / 940 * 100vh);
+            left: calc( 146 / 1568 * 100vw);
+            background-color: #9499c3;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .div {
+            top: calc( 114 / 940 * 100vh);
+            left: calc( 135 / 1568 * 100vw);
+            background-color: #9499c3;
+            transform: rotate(-145deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .fill-ring {
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 70 / 940 * 100vh);
+            top: calc( 88 / 940 * 100vh);
+            left: calc( 11 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group {
+            position: relative;
+            height: calc( 70 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .fill-ring-stroke {
+            position: absolute;
+            width: calc( 31 / 1568 * 100vw);
+            height: calc( 70 / 940 * 100vh);
+            top: 0;
+            left: calc( 1 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .rectangle-2 {
+            top: calc( 49 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+            background-color: #1a1c48;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            transform: rotate(-35deg);
+        }
+
+        .crew-dragon-flight .rectangle-3 {
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 1 / 940 * 100vh);
+            left: calc( 4 / 1568 * 100vw);
+            background-color: #298bfd;
+            transform: rotate(7.81deg);
+        }
+
+        .crew-dragon-flight .rectangle-4 {
+            width: calc( 6 / 1568 * 100vw);
+            top: calc( 11 / 940 * 100vh);
+            background-color: #1a1c48;
+            position: absolute;
+            height: calc( 1 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .text-wrapper {
+            position: absolute;
+            top: calc( 60 / 940 * 100vh);
+            left: calc( 77 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-2 {
+            position: absolute;
+            top: calc( 80 / 940 * 100vh);
+            left: calc( 57 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 32px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 32 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-3 {
+            position: absolute;
+            top: calc( 124 / 940 * 100vh);
+            left: calc( 60 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .container {
+            position: absolute;
+            width: calc( 176 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: 0;
+            left: 0;
+            background-color: #ffffff05;
+            border-radius: 10px;
+            opacity: 0.7;
+        }
+
+        .crew-dragon-flight .cabin-pressure {
+            position: absolute;
+            width: calc( 182 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: 0;
+            left: calc( 384 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .outer-ring-2 {
+            position: absolute;
+            width: calc( 151 / 1568 * 100vw);
+            height: calc( 134 / 940 * 100vh);
+            top: calc( 24 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-8.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle-5 {
+            top: calc( 75 / 940 * 100vh);
+            left: 0;
+            background-color: #9499c3;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .fill-ring-2 {
+            position: absolute;
+            width: calc( 31 / 1568 * 100vw);
+            height: calc( 52 / 940 * 100vh);
+            top: calc( 106 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/fill-ring-stroke-3.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle-6 {
+            top: calc( 31 / 940 * 100vh);
+            left: calc( 11 / 1568 * 100vw);
+            background-color: #1a1c48;
+            transform: rotate(-35deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-7 {
+            top: 0;
+            left: calc( 3 / 1568 * 100vw);
+            background-color: #ffd52f;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .text-wrapper-4 {
+            position: absolute;
+            top: calc( 60 / 940 * 100vh);
+            left: calc( 39 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-5 {
+            position: absolute;
+            top: calc( 80 / 940 * 100vh);
+            left: calc( 47 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 32px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 32 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-6 {
+            position: absolute;
+            top: calc( 124 / 940 * 100vh);
+            left: calc( 71 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .cabin-temp {
+            position: absolute;
+            width: calc( 182 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: 0;
+            left: calc( 192 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .outer-ring-3 {
+            position: absolute;
+            width: calc( 151 / 1568 * 100vw);
+            height: calc( 134 / 940 * 100vh);
+            top: calc( 24 / 940 * 100vh);
+            left: calc( 13 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-7.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle-8 {
+            width: calc( 5 / 1568 * 100vw);
+            top: calc( 75 / 940 * 100vh);
+            background-color: #e72d2d;
+            position: absolute;
+            height: calc( 1 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .rectangle-9 {
+            top: calc( 75 / 940 * 100vh);
+            left: calc( 146 / 1568 * 100vw);
+            background-color: #e72d2d;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-10 {
+            top: calc( 114 / 940 * 100vh);
+            left: calc( 135 / 1568 * 100vw);
+            background-color: #e72d2d;
+            transform: rotate(-145deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .fill-ring-3 {
+            position: absolute;
+            width: calc( 20 / 1568 * 100vw);
+            height: calc( 22 / 940 * 100vh);
+            top: calc( 136 / 940 * 100vh);
+            left: calc( 24 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group-2 {
+            position: absolute;
+            width: calc( 17 / 1568 * 100vw);
+            height: calc( 19 / 940 * 100vh);
+            top: calc( 3 / 940 * 100vh);
+            left: calc( 3 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .img {
+            position: absolute;
+            width: calc( 17 / 1568 * 100vw);
+            height: calc( 17 / 940 * 100vh);
+            top: calc( 2 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .rectangle-11 {
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 1 / 940 * 100vh);
+            left: calc( 2 / 1568 * 100vw);
+            background-color: #e72d2d;
+            transform: rotate(-37.09deg);
+        }
+
+        .crew-dragon-flight .rectangle-12 {
+            top: calc( 1 / 940 * 100vh);
+            left: 0;
+            background-color: #e72d2d;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            transform: rotate(-35deg);
+        }
+
+        .crew-dragon-flight .text-wrapper-7 {
+            position: absolute;
+            top: calc( 60 / 940 * 100vh);
+            left: calc( 53 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-8 {
+            position: absolute;
+            top: calc( 124 / 940 * 100vh);
+            left: calc( 78 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .ppo {
+            position: absolute;
+            width: calc( 182 / 1568 * 100vw);
+            height: calc( 190 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .outer-ring-4 {
+            position: absolute;
+            width: calc( 151 / 1568 * 100vw);
+            height: calc( 134 / 940 * 100vh);
+            top: calc( 24 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/outer-ring-stroke.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .fill-ring-4 {
+            position: absolute;
+            width: calc( 31 / 1568 * 100vw);
+            height: calc( 52 / 940 * 100vh);
+            top: calc( 106 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/fill-ring-stroke-4.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .text-wrapper-9 {
+            position: absolute;
+            top: calc( 60 / 940 * 100vh);
+            left: calc( 73 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-10 {
+            top: calc( 80 / 940 * 100vh);
+            left: calc( 56 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            font-size: 32px;
+            text-align: center;
+            line-height: calc( 32 / 940 * 100vh);
+            position: absolute;
+            color: #ffffff;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .bottom-level-stats {
+            position: absolute;
+            width: calc( 815 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: calc( 328 / 940 * 100vh);
+            left: calc( 377 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .loop-a {
+            left: 0;
+            position: absolute;
+            width: calc( 148 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .overlap-2 {
+            position: relative;
+            width: calc( 142 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .container-2 {
+            position: absolute;
+            width: calc( 142 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: 0;
+            left: 0;
+            background-color: #ffffff05;
+            border-radius: 10px;
+            opacity: 0.7;
+        }
+
+        .crew-dragon-flight .overlap-group-wrapper {
+            position: absolute;
+            width: calc( 120 / 1568 * 100vw);
+            height: calc( 104 / 940 * 100vh);
+            top: calc( 18 / 940 * 100vh);
+            left: calc( 12 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group-3 {
+            position: relative;
+            height: calc( 104 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .outer-ring-stroke {
+            position: absolute;
+            width: calc( 119 / 1568 * 100vw);
+            height: calc( 104 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .rectangle-13 {
+            top: calc( 59 / 940 * 100vh);
+            left: calc( 114 / 1568 * 100vw);
+            background-color: #9499c3;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-14 {
+            top: calc( 86 / 940 * 100vh);
+            left: calc( 107 / 1568 * 100vw);
+            background-color: #9499c3;
+            transform: rotate(-150.79deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .fill-ring-5 {
+            position: absolute;
+            width: calc( 89 / 1568 * 100vw);
+            height: calc( 106 / 940 * 100vh);
+            top: calc( 17 / 940 * 100vh);
+            left: calc( 11 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/fill-ring-stroke-6.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle-15 {
+            position: absolute;
+            width: calc( 6 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 60 / 940 * 100vh);
+            left: 0;
+            background-color: #1a1c48;
+            transform: rotate(-180deg);
+        }
+
+        .crew-dragon-flight .rectangle-16 {
+            top: calc( 87 / 940 * 100vh);
+            left: calc( 7 / 1568 * 100vw);
+            background-color: #1a1c48;
+            transform: rotate(-29.21deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-17 {
+            position: absolute;
+            width: calc( 7 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 12 / 940 * 100vh);
+            left: calc( 82 / 1568 * 100vw);
+            background-color: #298bfd;
+            transform: rotate(-60.72deg);
+        }
+
+        .crew-dragon-flight .text-wrapper-11 {
+            position: absolute;
+            top: calc( 44 / 940 * 100vh);
+            left: calc( 50 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-12 {
+            top: calc( 64 / 940 * 100vh);
+            left: calc( 40 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+            line-height: calc( 24 / 940 * 100vh);
+            position: absolute;
+            color: #ffffff;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-13 {
+            position: absolute;
+            top: calc( 104 / 940 * 100vh);
+            left: calc( 62 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 16 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .loop-b {
+            left: calc( 158 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 148 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .fill-ring-6 {
+            position: absolute;
+            width: calc( 61 / 1568 * 100vw);
+            height: calc( 106 / 940 * 100vh);
+            top: calc( 17 / 940 * 100vh);
+            left: calc( 11 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/fill-ring-stroke.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .rectangle-18 {
+            position: absolute;
+            width: calc( 7 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 6 / 940 * 100vh);
+            left: calc( 57 / 1568 * 100vw);
+            background-color: #298bfd;
+            transform: rotate(-90deg);
+        }
+
+        .crew-dragon-flight .net-PWR {
+            left: calc( 515 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 148 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .div-wrapper {
+            position: absolute;
+            width: calc( 120 / 1568 * 100vw);
+            height: calc( 105 / 940 * 100vh);
+            top: calc( 17 / 940 * 100vh);
+            left: calc( 11 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group-4 {
+            position: relative;
+            height: calc( 105 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-19 {
+            top: calc( 59 / 940 * 100vh);
+            left: calc( 115 / 1568 * 100vw);
+            background-color: #9499c3;
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-20 {
+            top: calc( 86 / 940 * 100vh);
+            left: calc( 108 / 1568 * 100vw);
+            background-color: #9499c3;
+            transform: rotate(-150.79deg);
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .rectangle-21 {
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 86 / 940 * 100vh);
+            left: calc( 7 / 1568 * 100vw);
+            background-color: #9499c3;
+            transform: rotate(-29.21deg);
+        }
+
+        .crew-dragon-flight .rectangle-22 {
+            position: absolute;
+            width: calc( 10 / 1568 * 100vw);
+            height: calc( 2 / 940 * 100vh);
+            top: calc( 100 / 940 * 100vh);
+            left: calc( 19 / 1568 * 100vw);
+            background-color: #298bfd;
+            transform: rotate(-45deg);
+        }
+
+        .crew-dragon-flight .rectangle-23 {
+            position: absolute;
+            width: calc( 5 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 59 / 940 * 100vh);
+            left: 0;
+            background-color: #9499c3;
+            transform: rotate(-180deg);
+        }
+
+        .crew-dragon-flight .text-wrapper-14 {
+            position: absolute;
+            top: calc( 43 / 940 * 100vh);
+            left: calc( 39 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-15 {
+            top: calc( 63 / 940 * 100vh);
+            left: calc( 47 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            font-size: 24px;
+            text-align: center;
+            line-height: calc( 24 / 940 * 100vh);
+            position: absolute;
+            color: #ffffff;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-16 {
+            position: absolute;
+            top: calc( 103 / 940 * 100vh);
+            left: calc( 63 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 16 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .overlap-wrapper {
+            left: calc( 673 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 148 / 1568 * 100vw);
+            height: calc( 152 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .space-x-dragon {
+            position: absolute;
+            width: calc( 336 / 1568 * 100vw);
+            height: calc( 500 / 940 * 100vh);
+            top: calc( 307 / 940 * 100vh);
+            left: calc( 617 / 1568 * 100vw);
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .crew-dragon-flight .overlap-3 {
+            position: relative;
+            width: calc( 425 / 1568 * 100vw);
+            height: calc( 618 / 940 * 100vh);
+            top: -66px;
+            left: -45px;
+            display: flex;
+            justify-content: center; /* 水平居中 */
+            align-items: center; /* 垂直居中 */
+        }
+
+        .crew-dragon-flight .shadow {
+            position: absolute;
+            width: calc( 334 / 1568 * 100vw);
+            height: calc( 73 / 940 * 100vh);
+            top: calc( 493 / 940 * 100vh);
+            left: calc( 45 / 1568 * 100vw);
+            border-radius: 167px/36.5px;
+            filter: blur(25px);
+            mix-blend-mode: overlay;
+            background: radial-gradient(50% 50% at 50% 50%, rgb(0, 0, 0) 21.88%, rgba(0, 0, 0, 0) 100%);
+        }
+
+        .crew-dragon-flight .spacex-model {
+            width: 70%; /* 调整为原来的 70% */
+            position: relative;
+            /*width: calc( 425 / 1568 * 100vw);*/
+            /*height: calc( 618 / 940 * 100vh);*/
+            top: 0;
+            left: 13%;
+            object-fit: cover;
+        }
+
+        .crew-dragon-flight .CABIN-MICS-RECORDING {
+            position: absolute;
+            top: calc( 545 / 940 * 100vh);
+            left: calc( 140 / 1568 * 100vw);
+            font-family: "Lato-SemiBold", Helvetica;
+            font-weight: 600;
+            color: transparent;
+            font-size: 12px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .span {
+            color: #ffffff;
+        }
+
+        .crew-dragon-flight .text-wrapper-17 {
+            color: #e62d2d;
+        }
+
+        .crew-dragon-flight .connections {
+            position: absolute;
+            width: calc( 186 / 1568 * 100vw);
+            height: calc( 135 / 940 * 100vh);
+            top: calc( 512 / 940 * 100vh);
+            left: calc( 447 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-18 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-family: "Lato-SemiBold", Helvetica;
+            font-weight: 600;
+            color: #9499c3;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-19 {
+            position: absolute;
+            top: calc( 39 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-20 {
+            position: absolute;
+            top: calc( 39 / 940 * 100vh);
+            left: calc( 104 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-21 {
+            position: absolute;
+            top: calc( 67 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-22 {
+            top: calc( 67 / 940 * 100vh);
+            position: absolute;
+            left: calc( 104 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-23 {
+            position: absolute;
+            top: calc( 95 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-24 {
+            top: calc( 95 / 940 * 100vh);
+            position: absolute;
+            left: calc( 104 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-25 {
+            top: calc( 123 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c3;
+            font-size: 12px;
+            line-height: calc( 12 / 940 * 100vh);
+            position: absolute;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-26 {
+            top: calc( 123 / 940 * 100vh);
+            position: absolute;
+            left: calc( 104 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .divider {
+            position: absolute;
+            width: calc( 168 / 1568 * 100vw);
+            height: calc( 1 / 940 * 100vh);
+            top: calc( 30 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .text-wrapper-27 {
+            position: absolute;
+            top: calc( 47 / 940 * 100vh);
+            left: calc( 659 / 1568 * 100vw);
+            font-family: "Lato-SemiBold", Helvetica;
+            font-weight: 600;
+            color: #ffffff;
+            font-size: 26px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 26 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .LHS-pane {
+            display: flex;
+            flex-direction: column;
+            width: calc( 237 / 1568 * 100vw);
+            height: calc( 589 / 940 * 100vh);
+            align-items: flex-start;
+            gap: 48px;
+            top: calc( 96 / 940 * 100vh);
+            overflow: hidden;
+            position: absolute;
+            left: calc( 56 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .stat {
+            width: calc( 179 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .text-wrapper-28 {
+            position: absolute;
+            top: calc( 5 / 940 * 100vh);
+            left: calc( 36 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #9499c3;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-29 {
+            position: absolute;
+            top: calc( 29 / 940 * 100vh);
+            left: calc( 36 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c380;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .check-icon {
+            position: absolute;
+            width: calc( 24 / 1568 * 100vw);
+            height: calc( 24 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .stat-2 {
+            width: calc( 221 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .stat-3 {
+            width: calc( 241 / 1568 * 100vw);
+            margin-right: -4px;
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .stat-4 {
+            width: calc( 159 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .text-wrapper-30 {
+            position: absolute;
+            top: calc( 29 / 940 * 100vh);
+            left: calc( 36 / 1568 * 100vw);
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .stat-5 {
+            width: calc( 160 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .stat-6 {
+            width: calc( 188 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .stat-7 {
+            width: calc( 190 / 1568 * 100vw);
+            position: relative;
+            height: calc( 43 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .RHS-pane {
+            position: absolute;
+            width: calc( 256 / 1568 * 100vw);
+            height: calc( 595 / 940 * 100vh);
+            top: calc( 96 / 940 * 100vh);
+            left: calc( 1256 / 1568 * 100vw);
+            overflow: hidden;
+        }
+
+        .crew-dragon-flight .stat-8 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .text-wrapper-31 {
+            position: absolute;
+            top: 0;
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .fill-bar-wrapper {
+            position: absolute;
+            width: calc( 149 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            top: calc( 24 / 940 * 100vh);
+            left: 0;
+            background-color: #9499c333;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .fill-bar {
+            width: calc( 118 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            background-color: #298bfd;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .element-km-s {
+            position: absolute;
+            height: calc( 20 / 940 * 100vh);
+            top: calc( 12 / 940 * 100vh);
+            left: calc( 167 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: right;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .text-wrapper-32 {
+            font-weight: 700;
+        }
+
+        .crew-dragon-flight .text-wrapper-33 {
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+        }
+
+        .crew-dragon-flight .stat-9 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: calc( 72 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .fill-bar-2 {
+            width: calc( 38 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            background-color: #298bfd;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .element-km {
+            position: absolute;
+            height: calc( 20 / 940 * 100vh);
+            top: calc( 12 / 940 * 100vh);
+            left: calc( 173 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: right;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .stat-10 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: calc( 144 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .fill-bar-3 {
+            width: calc( 70 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            background-color: #298bfd;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .stat-11 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: calc( 216 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .fill-bar-4 {
+            width: calc( 102 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            background-color: #298bfd;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .stat-12 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: calc( 344 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .text-wrapper-34 {
+            height: calc( 20 / 940 * 100vh);
+            top: calc( 12 / 940 * 100vh);
+            left: calc( 196 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            font-size: 20px;
+            text-align: right;
+            line-height: calc( 20 / 940 * 100vh);
+            position: absolute;
+            color: #ffffff;
+            letter-spacing: 0;
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .stat-13 {
+            position: absolute;
+            width: calc( 260 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: calc( 416 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .fill-bar-5 {
+            width: calc( 142 / 1568 * 100vw);
+            height: calc( 6 / 940 * 100vh);
+            background-color: #298bfd;
+            border-radius: 10px;
+        }
+
+        .crew-dragon-flight .p {
+            position: absolute;
+            height: calc( 20 / 940 * 100vh);
+            top: calc( 12 / 940 * 100vh);
+            left: calc( 184 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 400;
+            color: #ffffff;
+            font-size: 20px;
+            text-align: right;
+            letter-spacing: 0;
+            line-height: calc( 20 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .LHS-switch {
+            width: calc( 247 / 1568 * 100vw);
+            height: calc( 72 / 940 * 100vh);
+            top: calc( 820 / 940 * 100vh);
+            position: absolute;
+            left: calc( 56 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-4 {
+            position: relative;
+            width: calc( 249 / 1568 * 100vw);
+            height: calc( 72 / 940 * 100vh);
+        }
+
+        .crew-dragon-flight .cabin {
+            position: absolute;
+            width: calc( 116 / 1568 * 100vw);
+            height: calc( 56 / 940 * 100vh);
+            top: calc( 8 / 940 * 100vh);
+            left: calc( 133 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group-5 {
+            position: relative;
+            width: calc( 228 / 1568 * 100vw);
+            height: calc( 167 / 940 * 100vh);
+            top: -55px;
+            left: -57px;
+            background-image: url(../apps/wenhao-javaw/spaceXImg/container.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .text-wrapper-35 {
+            position: absolute;
+            top: calc( 60 / 940 * 100vh);
+            left: calc( 89 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 16 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .systems {
+            position: absolute;
+            width: calc( 136 / 1568 * 100vw);
+            height: calc( 72 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .overlap-5 {
+            position: relative;
+            width: calc( 134 / 1568 * 100vw);
+            height: calc( 72 / 940 * 100vh);
+            background-color: #ffffff;
+            border-radius: 6px;
+            box-shadow: 0px 2px 56px #00000026;
+        }
+
+        .crew-dragon-flight .text-wrapper-36 {
+            position: absolute;
+            top: calc( 28 / 940 * 100vh);
+            left: calc( 32 / 1568 * 100vw);
+            font-family: "Lato-Bold", Helvetica;
+            font-weight: 700;
+            color: #1a1c48;
+            font-size: 16px;
+            text-align: center;
+            letter-spacing: 0;
+            line-height: calc( 16 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .RHS-switch {
+            position: absolute;
+            width: calc( 278 / 1568 * 100vw);
+            height: calc( 56 / 940 * 100vh);
+            top: calc( 828 / 940 * 100vh);
+            left: calc( 1228 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .more {
+            position: absolute;
+            width: calc( 114 / 1568 * 100vw);
+            height: calc( 56 / 940 * 100vh);
+            top: 0;
+            left: calc( 164 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overlap-group-6 {
+            position: relative;
+            width: calc( 226 / 1568 * 100vw);
+            height: calc( 167 / 940 * 100vh);
+            top: -55px;
+            left: -57px;
+            background-image: url(../apps/wenhao-javaw/spaceXImg/container-2.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .text-wrapper-37 {
+            position: absolute;
+            top: calc( 21 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Regular", Helvetica;
+            font-weight: 400;
+            color: #9499c3;
+            font-size: 14px;
+            letter-spacing: 0;
+            line-height: calc( 14 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .dock {
+            position: absolute;
+            width: calc( 1568 / 1568 * 100vw);
+            height: calc( 90 / 940 * 100vh);
+            top: calc( 850 / 940 * 100vh);
+            left: 0;
+        }
+
+        .crew-dragon-flight .overlap-6 {
+            position: relative;
+            height: calc( 140 / 940 * 100vh);
+            top: -50px;
+        }
+
+        .crew-dragon-flight .dock-background {
+            position: absolute;
+            width: calc( 1568 / 1568 * 100vw);
+            height: calc( 16 / 940 * 100vh);
+            top: calc( 124 / 940 * 100vh);
+            left: 0;
+            background-color: #1a1c48;
+        }
+
+        .crew-dragon-flight .dock-container {
+            position: absolute;
+            width: calc( 908 / 1568 * 100vw);
+            height: calc( 140 / 940 * 100vh);
+            top: 0;
+            left: calc( 330 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .icons {
+            position: absolute;
+            width: calc( 647 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: calc( 70 / 940 * 100vh);
+            left: calc( 460 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .overview {
+            position: absolute;
+            width: calc( 54 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .text-wrapper-38 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #ffffff;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .icon {
+            left: calc( 10 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .comms {
+            position: absolute;
+            width: calc( 42 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 160 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-39 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: 0;
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .icon-2 {
+            left: calc( 4 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .power {
+            position: absolute;
+            width: calc( 36 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 378 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .icon-3 {
+            left: calc( 1 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .avionics {
+            position: absolute;
+            width: calc( 47 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 450 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .icon-4 {
+            left: calc( 7 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .prop {
+            position: absolute;
+            width: calc( 34 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 238 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-40 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: calc( 4 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .icon-5 {
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+            left: 0;
+        }
+
+        .crew-dragon-flight .mech {
+            position: absolute;
+            width: calc( 34 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 308 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-41 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: calc( 1 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .ellipse-wrapper {
+            position: relative;
+            width: calc( 27 / 1568 * 100vw);
+            height: calc( 27 / 940 * 100vh);
+            top: calc( 2 / 940 * 100vh);
+            left: calc( 2 / 1568 * 100vw);
+            background-image: url(../apps/wenhao-javaw/spaceXImg/vector.svg);
+            background-size: 100% 100%;
+        }
+
+        .crew-dragon-flight .ellipse {
+            position: relative;
+            width: calc( 9 / 1568 * 100vw);
+            height: calc( 9 / 940 * 100vh);
+            top: calc( 9 / 940 * 100vh);
+            left: calc( 9 / 1568 * 100vw);
+            /*background-color: #ffffff;*/
+            border-radius: 4.5px;
+        }
+
+        .crew-dragon-flight .GNC {
+            position: absolute;
+            width: calc( 34 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 533 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-42 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: calc( 3 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .thermal {
+            position: absolute;
+            width: calc( 46 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 603 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .icon-6 {
+            left: calc( 6 / 1568 * 100vw);
+            position: absolute;
+            width: calc( 32 / 1568 * 100vw);
+            height: calc( 32 / 940 * 100vh);
+            top: 0;
+        }
+
+        .crew-dragon-flight .life {
+            position: absolute;
+            width: calc( 34 / 1568 * 100vw);
+            height: calc( 50 / 940 * 100vh);
+            top: 0;
+            left: calc( 90 / 1568 * 100vw);
+        }
+
+        .crew-dragon-flight .text-wrapper-43 {
+            position: absolute;
+            top: calc( 38 / 940 * 100vh);
+            left: calc( 6 / 1568 * 100vw);
+            font-family: "Lato-Medium", Helvetica;
+            font-weight: 500;
+            color: #9499c3;
+            font-size: 12px;
+            letter-spacing: 0;
+            line-height: calc( 12 / 940 * 100vh);
+            white-space: nowrap;
+        }
+
+        .crew-dragon-flight .active-selection-bar {
+            position: absolute;
+            width: calc( 68 / 1568 * 100vw);
+            height: calc( 4 / 940 * 100vh);
+            top: calc( 132 / 940 * 100vh);
+            left: calc( 452 / 1568 * 100vw);
+            background-color: #ffffff;
+            border-radius: 8px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="crew-dragon-flight">
+    <img class="background" src="../apps/wenhao-javaw/spaceXImg/background.png" />
+    <div class="top-level-stats">
+        <div id="co" class="co">
+            <div class="overlap">
+                <div class="outer-ring">
+                    <div class="rectangle"></div>
+                    <div class="div"></div>
+                </div>
+                <div class="fill-ring">
+                    <div class="overlap-group">
+                        <img class="fill-ring-stroke" src="../apps/wenhao-javaw/spaceXImg/fill-ring-stroke-2.svg" />
+                        <div class="rectangle-2"></div>
+                        <div class="rectangle-3"></div>
+                        <div class="rectangle-4"></div>
+                    </div>
+                </div>
+                <div class="text-wrapper">CO2</div>
+                <div class="text-wrapper-2">0.07</div>
+                <div class="text-wrapper-3">mmHg</div>
+                <div class="container"></div>
+            </div>
+        </div>
+        <div id="cabin-pressure" class="cabin-pressure">
+<!--            <div class="overlap">-->
+<!--                <div class="outer-ring-2">-->
+<!--                    <div class="rectangle-5"></div>-->
+<!--                    <div class="rectangle"></div>-->
+<!--                    <div class="div"></div>-->
+<!--                </div>-->
+<!--                <div class="fill-ring-2">-->
+<!--                    <div class="rectangle-6"></div>-->
+<!--                    <div class="rectangle-7"></div>-->
+<!--                </div>-->
+<!--                <div class="text-wrapper-4">CABIN PRESSURE</div>-->
+<!--                <div class="text-wrapper-5">14.00</div>-->
+<!--                <div class="text-wrapper-6">psia</div>-->
+<!--                <div class="container"></div>-->
+<!--            </div>-->
+        </div>
+        <div id='cabin-temp' class="cabin-temp">
+<!--            <div class="overlap">-->
+<!--                <div class="outer-ring-3">-->
+<!--                    <div class="rectangle-8"></div>-->
+<!--                    <div class="rectangle-9"></div>-->
+<!--                    <div class="rectangle-10"></div>-->
+<!--                </div>-->
+<!--                <div class="fill-ring-3">-->
+<!--                    <div class="overlap-group-2">-->
+<!--                        <img class="img" src="../img/fill-ring-stroke-5.svg" />-->
+<!--                        <div class="rectangle-11"></div>-->
+<!--                    </div>-->
+<!--                    <div class="rectangle-12"></div>-->
+<!--                </div>-->
+<!--                <div class="text-wrapper-7">CABIN TEMP</div>-->
+<!--                <div class="text-wrapper-2">2.41</div>-->
+<!--                <div class="text-wrapper-8">°C</div>-->
+<!--                <div class="container"></div>-->
+<!--            </div>-->
+        </div>
+        <div id='ppo' class="ppo">
+<!--            <div class="overlap">-->
+<!--                <div class="outer-ring-4">-->
+<!--                    <div class="rectangle-5"></div>-->
+<!--                    <div class="rectangle"></div>-->
+<!--                    <div class="div"></div>-->
+<!--                </div>-->
+<!--                <div class="fill-ring-4">-->
+<!--                    <div class="rectangle-6"></div>-->
+<!--                    <div class="rectangle-7"></div>-->
+<!--                </div>-->
+<!--                <div class="text-wrapper-9">PPO2</div>-->
+<!--                <div class="text-wrapper-10">2.69</div>-->
+<!--                <div class="text-wrapper-6">psia</div>-->
+<!--                <div class="container"></div>-->
+<!--            </div>-->
+        </div>
+    </div>
+    <div class="bottom-level-stats">
+        <div class="loop-a" id="loop-a">
+            <div class="overlap-2">
+                <div class="container-2"></div>
+                <div class="overlap-group-wrapper">
+                    <div class="overlap-group-3">
+                        <img class="outer-ring-stroke" src="../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-2.svg" />
+                        <div class="rectangle-13"></div>
+                        <div class="rectangle-14"></div>
+                    </div>
+                </div>
+                <div class="fill-ring-5">
+                    <div class="rectangle-15"></div>
+                    <div class="rectangle-16"></div>
+                    <div class="rectangle-17"></div>
+                </div>
+                <div class="text-wrapper-11">LOOP A</div>
+                <div class="text-wrapper-12">26.53</div>
+                <div class="text-wrapper-13">°C</div>
+            </div>
+        </div>
+        <div class="loop-b" id="loop-b">
+            <div class="overlap-2">
+                <div class="container-2"></div>
+                <div class="overlap-group-wrapper">
+                    <div class="overlap-group-3">
+                        <img class="outer-ring-stroke" src="../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-5.svg" />
+                        <div class="rectangle-13"></div>
+                        <div class="rectangle-14"></div>
+                    </div>
+                </div>
+                <div class="fill-ring-6">
+                    <div class="rectangle-15"></div>
+                    <div class="rectangle-16"></div>
+                    <div class="rectangle-18"></div>
+                </div>
+                <div class="text-wrapper-11">LOOP B</div>
+                <div class="text-wrapper-12">20.00</div>
+                <div class="text-wrapper-13">°C</div>
+            </div>
+        </div>
+        <div class="net-PWR" id="net-PWR">
+<!--            <div class="overlap-2">-->
+<!--                <div class="container-2"></div>-->
+<!--                <div class="div-wrapper">-->
+<!--                    <div class="overlap-group-4">-->
+<!--                        <img class="outer-ring-stroke" src="../img/outer-ring-stroke-6.svg" />-->
+<!--                        <div class="rectangle-19"></div>-->
+<!--                        <div class="rectangle-20"></div>-->
+<!--                        <div class="rectangle-21"></div>-->
+<!--                        <div class="rectangle-22"></div>-->
+<!--                        <div class="rectangle-23"></div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                <div class="text-wrapper-14">NET PWR 1</div>-->
+<!--                <div class="text-wrapper-15">0.00</div>-->
+<!--                <div class="text-wrapper-16">W</div>-->
+<!--            </div>-->
+        </div>
+        <div class="overlap-wrapper" id="overlap-wrapper">
+            <div class="overlap-2">
+                <div class="container-2"></div>
+                <div class="div-wrapper">
+                    <div class="overlap-group-4">
+                        <img class="outer-ring-stroke" src="../apps/wenhao-javaw/spaceXImg/outer-ring-stroke-4.svg" />
+                        <div class="rectangle-19"></div>
+                        <div class="rectangle-20"></div>
+                        <div class="rectangle-21"></div>
+                        <div class="rectangle-22"></div>
+                        <div class="rectangle-23"></div>
+                    </div>
+                </div>
+                <div class="text-wrapper-14">NET PWR 2</div>
+                <div class="text-wrapper-15">0.00</div>
+                <div class="text-wrapper-16">W</div>
+            </div>
+        </div>
+    </div>
+    <div class="space-x-dragon">
+        <div class="overlap-3">
+            <div class="shadow"></div>
+            <img class="spacex-model" src="../apps/wenhao-javaw/spaceXImg/spacex-3d-model-render.png" id="spacex-model" />
+            <p class="CABIN-MICS-RECORDING">
+                <span class="span">CABIN MICS: </span> <span class="text-wrapper-17">RECORDING</span>
+            </p>
+        </div>
+    </div>
+    <div class="connections">
+        <div class="text-wrapper-18">CONNECTIONS</div>
+        <div class="text-wrapper-19">Manual Rigs</div>
+        <div class="text-wrapper-20">Connected</div>
+        <div class="text-wrapper-21">Changelog</div>
+        <div class="text-wrapper-22">Connected</div>
+        <div class="text-wrapper-23">Airlock</div>
+        <div class="text-wrapper-24">Connected</div>
+        <div class="text-wrapper-25">Wing</div>
+        <div class="text-wrapper-26">Connected</div>
+        <img class="divider" src="../apps/wenhao-javaw/spaceXImg/divider.svg" />
+    </div>
+    <div class="text-wrapper-27">VEHICLE OVERVIEW</div>
+    <div class="LHS-pane">
+        <div class="stat">
+            <div class="text-wrapper-28">ALL SYSTEMS CHECK</div>
+            <div class="text-wrapper-29">Normal</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#9499C3"/>
+            </svg>
+        </div>
+        <div class="stat-2">
+            <div class="text-wrapper-28">RENDEZVOUS BURN SLOW</div>
+            <div class="text-wrapper-29">Normal</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#9499C3"/>
+            </svg>
+        </div>
+        <div class="stat-3">
+            <div class="text-wrapper-28">PREPARE RENDEZVOUS BURN</div>
+            <div class="text-wrapper-29">Normal</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#9499C3"/>
+            </svg>
+        </div>
+        <div class="stat-4">
+            <div class="text-wrapper-28">THERMAL SHIELD</div>
+            <div class="text-wrapper-30">Applied</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#40C110"/>
+            </svg>
+        </div>
+        <div class="stat-5">
+            <div class="text-wrapper-28">BURN GO/NO-GO</div>
+            <div class="text-wrapper-29">Normal</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#9499C3"/>
+            </svg>
+        </div>
+        <div class="stat-6">
+            <div class="text-wrapper-28">POWER COMPLETION</div>
+            <div class="text-wrapper-30">Awaiting</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9112 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.9873 13.287 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#EA7B15"/>
+            </svg>
+        </div>
+        <div class="stat-7">
+            <div class="text-wrapper-28">STATION DECK CHECK</div>
+            <div class="text-wrapper-29">Normal</div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd" d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24ZM17.6647 10.1879C18.0446 9.78705 18.0276 9.15411 17.6268 8.77419C17.2259 8.39428 16.593 8.41125 16.2131 8.8121L10.8574 14.463L8.81882 12.3121C8.43891 11.9113 7.80597 11.8943 7.40512 12.2742C7.00427 12.6541 6.98729 13.2871 7.36721 13.6879L10.1315 16.6046C10.3204 16.8038 10.5828 16.9167 10.8574 16.9167C11.1319 16.9167 11.3943 16.8038 11.5832 16.6046L17.6647 10.1879Z" fill="#9499C3"/>
+            </svg>
+        </div>
+    </div>
+    <div class="RHS-pane">
+        <div class="stat-8">
+            <div class="text-wrapper-31">Inertial Velocity</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar"></div></div>
+            <p class="element-km-s">
+                <span class="text-wrapper-32">7.68 </span> <span class="text-wrapper-33">km/s</span>
+            </p>
+        </div>
+        <div class="stat-9">
+            <div class="text-wrapper-31">Altitude</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar-2"></div></div>
+            <p class="element-km"><span class="text-wrapper-32">390.0 </span> <span class="text-wrapper-33">km</span></p>
+        </div>
+        <div class="stat-10">
+            <div class="text-wrapper-31">Apogee</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar-3"></div></div>
+            <p class="element-km"><span class="text-wrapper-32">404.4 </span> <span class="text-wrapper-33">km</span></p>
+        </div>
+        <div class="stat-11">
+            <div class="text-wrapper-31">Perigee</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar-4"></div></div>
+            <p class="element-km"><span class="text-wrapper-32">389.4 </span> <span class="text-wrapper-33">km</span></p>
+        </div>
+        <div class="stat-12">
+            <div class="text-wrapper-31">Inclination</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar-4"></div></div>
+            <div class="text-wrapper-34">51.67°</div>
+        </div>
+        <div class="stat-13">
+            <div class="text-wrapper-31">Range to ISS</div>
+            <div class="fill-bar-wrapper"><div class="fill-bar-5"></div></div>
+            <p class="p"><span class="text-wrapper-32">0.02 </span> <span class="text-wrapper-33">km</span></p>
+        </div>
+    </div>
+    <div class="LHS-switch">
+        <div class="overlap-4">
+            <div class="cabin">
+                <div class="overlap-group-5"><div class="text-wrapper-35">CABIN</div></div>
+            </div>
+            <div class="systems">
+                <div class="overlap-5"><div class="text-wrapper-36">SYSTEMS</div></div>
+            </div>
+        </div>
+    </div>
+    <div class="RHS-switch">
+        <div class="more">
+            <div class="overlap-group-6"><div class="text-wrapper-35">MORE</div></div>
+        </div>
+        <div class="text-wrapper-37">Power, Engine, Comms</div>
+    </div>
+    <div class="dock">
+        <div class="overlap-6">
+            <div class="dock-background"></div>
+            <img class="dock-container" src="../apps/wenhao-javaw/spaceXImg/dock-container.svg" />
+            <div class="icons">
+                <div class="overview">
+                    <div class="text-wrapper-38">Overview</div>
+                    <img class="icon" src="../apps/wenhao-javaw/spaceXImg/icon.svg" />
+                </div>
+                <div class="comms">
+                    <div class="text-wrapper-39">Comms</div>
+                    <img class="icon-2" src="../apps/wenhao-javaw/spaceXImg/icon-2.svg" />
+                </div>
+                <div class="power">
+                    <div class="text-wrapper-39">Power</div>
+                    <img class="icon-3" src="../apps/wenhao-javaw/spaceXImg/icon-7.svg" />
+                </div>
+                <div class="avionics">
+                    <div class="text-wrapper-39">Avionics</div>
+                    <img class="icon-4" src="../apps/wenhao-javaw/spaceXImg/icon-6.svg" />
+                </div>
+                <div class="prop">
+                    <div class="text-wrapper-40">Prop</div>
+                    <img class="icon-5" src="../apps/wenhao-javaw/spaceXImg/image.svg" />
+                </div>
+                <div class="mech">
+                    <div class="text-wrapper-41">Mech</div>
+                    <div class="icon-5">
+                        <div class="ellipse-wrapper"><div class="ellipse"></div></div>
+                    </div>
+                </div>
+                <div class="GNC">
+                    <div class="text-wrapper-42">GNC</div>
+                    <img class="icon-5" src="../apps/wenhao-javaw/spaceXImg/icon-4.svg" />
+                </div>
+                <div class="thermal">
+                    <div class="text-wrapper-39">Thermal</div>
+                    <img class="icon-6" src="../apps/wenhao-javaw/spaceXImg/icon-3.svg" />
+                </div>
+                <div class="life">
+                    <div class="text-wrapper-43">Life</div>
+                    <img class="icon-5" src="../apps/wenhao-javaw/spaceXImg/icon-5.svg" />
+                </div>
+            </div>
+            <div class="active-selection-bar"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+        var chartDom = document.getElementById('ppo');
+        var myChart1 = echarts.init(chartDom);
+        var option1;
+
+        option1 = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+            series: [
+                {
+                    name: 'Pressure',
+                    type: 'gauge',
+                    axisLabel: { // 添加这一部分来控制刻度标签
+                        show: false // 将刻度标签隐藏
+                    },
+                    axisTick: { // 控制轴刻度
+                        show: false // 隐藏轴刻度
+                    },
+                    splitLine: { // 控制分割线
+                        show: false // 隐藏分割线
+                    },
+                    axisLabel: { // 控制轴标签
+                        show: false // 隐藏轴标签
+                    },
+                    detail: {
+                        valueAnimation: false,
+                        formatter: '{value}'
+                    },
+                    progress: {
+                        show: true
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: '{value}',
+                        color: 'white' // 设置数字颜色为白色
+                    },
+                    data: [
+                        {
+                            value: 50,
+                        }
+                    ]
+                }
+            ]
+        };
+
+        option1 && myChart1.setOption(option1);
+
+
+    // 设置定时器定期更新数据
+    setInterval(function () {
+        // 生成新的随机数值，例如0到100之间
+        var newValue = Math.round(Math.random() * 100);
+
+        // 更新图表数据
+        option1.series[0].data[0].value = newValue;
+        myChart1.setOption(option1);
+    }, 1000); // 每2秒更新一次，您可以根据需要调整这个时间间隔
+
+    var chartDom = document.getElementById('cabin-pressure');
+    var myChart2 = echarts.init(chartDom);
+    var option2;
+
+    option2 = {
+        series: [
+            {
+                type: 'gauge',
+                progress: {
+                    show: true,
+                    width: 18
+                },
+                axisLine: {
+                    lineStyle: {
+                        width: 18
+                    }
+                },
+                axisTick: {
+                    show: false
+                },
+                splitLine: {
+                    show: false // 隐藏分割线
+                },
+
+                axisLabel: {
+                    show: false // 隐藏分割线
+
+                },
+                anchor: {
+                    show: false,
+                    showAbove: false,
+                    size: 25,
+                    itemStyle: {
+                        borderWidth: 10
+                    }
+                },
+                title: {
+                    show: false
+                },
+                detail: {
+                    valueAnimation: true,
+                    offsetCenter: [0, '70%'],
+                    color: 'white' // 设置数字颜色为白色
+                },
+                data: [
+                    {
+                        value: 70
+                    }
+                ]
+            }
+        ]
+    };
+
+    option2 && myChart2.setOption(option2);
+
+        // 为第二个图表设置定时器
+        setInterval(function () {
+            // 生成新的随机数值，例如0到100之间
+            var newValue2 = Math.round(Math.random() * 100);
+
+            // 更新第二个图表数据
+            option2.series[0].data[0].value = newValue2;
+            myChart2.setOption(option2);
+        }, 1000); // 每2秒更新一次
+
+    var chartDom = document.getElementById('cabin-temp');
+    var myChart3 = echarts.init(chartDom);
+    var option3;
+
+    option3 = {
+        series: [
+            {
+                type: 'gauge',
+                startAngle: 180,
+                endAngle: 0,
+                min: 0,
+                max: 240,
+                splitNumber: 12,
+                itemStyle: {
+                    show: false // 隐藏分割线
+                },
+                progress: {
+                    show: true,
+                    roundCap: true,
+                    width: 18
+                },
+                pointer: {
+                    icon: 'path://M2090.36389,615.30999 L2090.36389,615.30999 C2091.48372,615.30999 2092.40383,616.194028 2092.44859,617.312956 L2096.90698,728.755929 C2097.05155,732.369577 2094.2393,735.416212 2090.62566,735.56078 C2090.53845,735.564269 2090.45117,735.566014 2090.36389,735.566014 L2090.36389,735.566014 C2086.74736,735.566014 2083.81557,732.63423 2083.81557,729.017692 C2083.81557,728.930412 2083.81732,728.84314 2083.82081,728.755929 L2088.2792,617.312956 C2088.32396,616.194028 2089.24407,615.30999 2090.36389,615.30999 Z',
+                    length: '75%',
+                    width: 16,
+                    offsetCenter: [0, '5%']
+                },
+                axisLine: {
+                    roundCap: true,
+                    lineStyle: {
+                        width: 18
+                    }
+                },
+                axisTick: {
+                    show: false // 隐藏分割线
+                },
+                splitLine: {
+                    show: false // 隐藏分割线
+                },
+                axisLabel: {
+                    show: false // 隐藏分割线
+                },
+                title: {
+                    show: false
+                },
+                detail: {
+                    backgroundColor: '#fff',
+                    borderColor: '#999',
+                    borderWidth: 2,
+                    width: '30%',
+                    // lineHeight: 40,
+                    height: '30%',
+                    borderRadius: 8,
+                    // offsetCenter: [0, '35%'],
+                    valueAnimation: true,
+                    formatter: function (value) {
+                        return '{value|' + value.toFixed(0) + '}';
+                    },
+                    rich: {
+                        value: {
+                            // fontSize: 50,
+                            fontWeight: 'bolder',
+                            color: '#777'
+                        },
+                        unit: {
+                            // fontSize: 20,
+                            color: '#999',
+                            padding: [0, 0, -20, 10]
+                        }
+                    }
+                },
+                data: [
+                    {
+                        value: 100
+                    }
+                ]
+            }
+        ]
+    };
+
+        option3 && myChart3.setOption(option3);
+
+
+        // 设置定时器定期更新数据
+        setInterval(function () {
+            // 生成新的随机数值，例如0到100之间
+            var newValue = Math.round(Math.random() * 100);
+
+            // 更新图表数据
+            option3.series[0].data[0].value = newValue;
+            myChart3.setOption(option3);
+        }, 1000); // 每2秒更新一次，您可以根据需要调整这个时间间隔
+
+        var chartDom = document.getElementById('co');
+        var myChart4 = echarts.init(chartDom);
+        var option4;
+
+        option4 = {
+            series: [
+                {
+                    type: 'gauge',
+                    axisLine: {
+                        lineStyle: {
+                            width: 15,
+                            color: [
+                                [0.3, '#67e0e3'],
+                                [0.7, '#37a2da'],
+                                [1, '#fd666d']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        itemStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisTick: {
+                        show: false // 隐藏分割线
+                    },
+                    splitLine: {
+                        show: false // 隐藏分割线
+                    },
+                    axisLabel: {
+                        show: false // 隐藏分割线
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        formatter: '{value}',
+                        color: 'inherit'
+                    },
+                    data: [
+                        {
+                            value: 70
+                        }
+                    ]
+                }
+            ]
+        };
+        setInterval(function () {
+            myChart4.setOption({
+                series: [
+                    {
+                        data: [
+                            {
+                                value: +(Math.random() * 100).toFixed(2)
+                            }
+                        ]
+                    }
+                ]
+            });
+        }, 1000);
+
+        option4 && myChart4.setOption(option4);
+
+
+        var chartDom = document.getElementById('loop-a');
+        var myChart5 = echarts.init(chartDom);
+        var option5;
+
+        const gaugeData = [
+            {
+                value: 20,
+                title: {
+                    offsetCenter: ['-40%', '80%']
+                },
+                detail: {
+                    offsetCenter: ['-40%', '95%']
+                }
+            },
+            {
+                value: 40,
+                title: {
+                    offsetCenter: ['0%', '80%']
+                },
+                detail: {
+                    offsetCenter: ['0%', '95%']
+                }
+            },
+            {
+                value: 60,
+                title: {
+                    offsetCenter: ['40%', '80%']
+                },
+                detail: {
+                    offsetCenter: ['40%', '95%']
+                }
+            }
+        ];
+        option5 = {
+            series: [
+                {
+                    type: 'gauge',
+                    anchor: {
+                        show: true,
+                        showAbove: true,
+                        size: 18,
+                        itemStyle: {
+                            color: '#FAC858'
+                        }
+                    },
+                    axisLabel: {
+                        show: false // 隐藏分割线
+                    },
+                    axisTick: {
+                        show: false // 隐藏分割线
+                    },
+                    splitLine: {
+                        show: false // 隐藏分割线
+                    },
+                    pointer: {
+                        icon: 'path://M2.9,0.7L2.9,0.7c1.4,0,2.6,1.2,2.6,2.6v115c0,1.4-1.2,2.6-2.6,2.6l0,0c-1.4,0-2.6-1.2-2.6-2.6V3.3C0.3,1.9,1.4,0.7,2.9,0.7z',
+                        width: 8,
+                        length: '80%',
+                        offsetCenter: [0, '8%']
+                    },
+                    progress: {
+                        show: true,
+                        overlap: true,
+                        roundCap: true
+                    },
+                    axisLine: {
+                        roundCap: true
+                    },
+                    data: gaugeData,
+                    title: {
+                        fontSize: 14
+                    },
+                    detail: {
+                        width: 40,
+                        height: 14,
+                        fontSize: 14,
+                        color: '#fff',
+                        backgroundColor: 'inherit',
+                        borderRadius: 3,
+                        formatter: '{value}%'
+                    }
+                }
+            ]
+        };
+        setInterval(function () {
+            gaugeData[0].value = +(Math.random() * 100).toFixed(2);
+            gaugeData[1].value = +(Math.random() * 100).toFixed(2);
+            gaugeData[2].value = +(Math.random() * 100).toFixed(2);
+            myChart5.setOption({
+                series: [
+                    {
+                        data: gaugeData
+                    }
+                ]
+            });
+        }, 1000);
+
+        option5 && myChart5.setOption(option5);
+
+
+        var chartDom = document.getElementById('loop-b');
+        var myChart6 = echarts.init(chartDom);
+        var option6;
+
+        option6 = {
+            series: [
+                {
+                    type: 'gauge',
+                    center: ['50%', '60%'],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: 0,
+                    max: 60,
+                    splitNumber: 12,
+                    itemStyle: {
+                        color: '#FFAB91'
+                    },
+                    progress: {
+                        show: true,
+                        width: 10
+                    },
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false // 隐藏分割线
+                    },
+                    axisTick: {
+                        show: false // 隐藏分割线
+                    },
+                    splitLine: {
+                        show: false // 隐藏分割线
+                    },
+                    axisLabel: {
+                        show: false // 隐藏分割线
+                    },
+                    anchor: {
+                        show: false
+                    },
+                    title: {
+                        show: false
+                    },
+                    detail: {
+                        valueAnimation: true,
+                        width: '60%',
+                        lineHeight: 40,
+                        borderRadius: 8,
+                        offsetCenter: [0, '-15%'],
+                        fontSize: 20,
+                        fontWeight: 'bolder',
+                        formatter: '{value}',
+                        color: 'inherit'
+                    },
+                    data: [
+                        {
+                            value: 20
+                        }
+                    ]
+                },
+                {
+                    type: 'gauge',
+                    center: ['50%', '60%'],
+                    startAngle: 200,
+                    endAngle: -20,
+                    min: 0,
+                    max: 60,
+                    itemStyle: {
+                        color: '#FD7347'
+                    },
+                    progress: {
+                        show: true,
+                        width: 8
+                    },
+                    pointer: {
+                        show: false
+                    },
+                    axisLine: {
+                        show: false
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    splitLine: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false
+                    },
+                    detail: {
+                        show: false
+                    },
+                    data: [
+                        {
+                            value: 20
+                        }
+                    ]
+                }
+            ]
+        };
+        setInterval(function () {
+            const random = +(Math.random() * 60).toFixed(2);
+            myChart6.setOption({
+                series: [
+                    {
+                        data: [
+                            {
+                                value: random
+                            }
+                        ]
+                    },
+                    {
+                        data: [
+                            {
+                                value: random
+                            }
+                        ]
+                    }
+                ]
+            });
+        }, 1000);
+
+        option6 && myChart6.setOption(option6);
+
+
+        var chartDom = document.getElementById('net-PWR');
+        var myChart7 = echarts.init(chartDom);
+        var option7;
+
+        const gaugeData1 = [
+            {
+                value: 20,
+                title: {
+                    offsetCenter: ['0%', '-30%']
+                },
+                detail: {
+                    show: false, // 禁用显示数字
+                    valueAnimation: true,
+                    offsetCenter: ['0%', '-20%']
+                }
+            },
+            {
+                value: 40,
+                title: {
+                    offsetCenter: ['0%', '0%']
+                },
+                detail: {
+                    show: false, // 禁用显示数字
+                    valueAnimation: true,
+                    offsetCenter: ['0%', '10%']
+                }
+            },
+            {
+                value: 60,
+                title: {
+                    offsetCenter: ['0%', '30%']
+                },
+                detail: {
+                    show: false, // 禁用显示数字
+                    valueAnimation: true,
+                    offsetCenter: ['0%', '40%']
+                }
+            }
+        ];
+        option7 = {
+            series: [
+                {
+                    type: 'gauge',
+                    startAngle: 90,
+                    endAngle: -270,
+                    pointer: {
+                        show: false
+                    },
+                    progress: {
+                        show: true,
+                        overlap: false,
+                        roundCap: true,
+                        clip: false,
+                        itemStyle: {
+                            borderWidth: 1,
+                            borderColor: '#464646'
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            width: 40
+                        }
+                    },
+                    splitLine: {
+                        show: false,
+                        distance: 0,
+                        length: 10
+                    },
+                    axisTick: {
+                        show: false
+                    },
+                    axisLabel: {
+                        show: false,
+                        distance: 50
+                    },
+                    data: 1,
+                    title: {
+                        fontSize: 14
+                    },
+                    detail: {
+                        width: 50,
+                        height: 14,
+                        fontSize: 14,
+                        color: 'inherit',
+                        borderColor: 'inherit',
+                        borderRadius: 20,
+                        borderWidth: 1,
+                        formatter: '{value}%'
+                    }
+                }
+            ]
+        };
+        setInterval(function () {
+            gaugeData1[0].value = +(Math.random() * 100).toFixed(2);
+            gaugeData1[1].value = +(Math.random() * 100).toFixed(2);
+            gaugeData1[2].value = +(Math.random() * 100).toFixed(2);
+            myChart7.setOption({
+                series: [
+                    {
+                        data: gaugeData1,
+                        pointer: {
+                            show: false
+                        }
+                    }
+                ]
+            });
+        }, 1000);
+
+        option7 && myChart7.setOption(option7);
+
+
+        var chartDom = document.getElementById('overlap-wrapper');
+        var myChart8 = echarts.init(chartDom);
+        var option8;
+
+        option8 = {
+            series: [
+                {
+                    type: 'gauge',
+                    startAngle: 180,
+                    endAngle: 0,
+                    center: ['50%', '60%'],
+                    radius: '90%',
+                    min: 0,
+                    max: 1,
+                    splitNumber: 8,
+                    axisLine: {
+                        lineStyle: {
+                            width: 6,
+                            color: [
+                                [0.25, '#FF6E76'],
+                                [0.5, '#FDDD60'],
+                                [0.75, '#58D9F9'],
+                                [1, '#7CFFB2']
+                            ]
+                        }
+                    },
+                    pointer: {
+                        icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
+                        length: '12%',
+                        width: 20,
+                        offsetCenter: [0, '-60%'],
+                        itemStyle: {
+                            color: 'auto'
+                        }
+                    },
+                    axisTick: {
+                        show: false,
+
+                    },
+                    splitLine: {
+                        show: false,
+
+                    },
+                    axisLabel: {
+                        color: '#464646',
+                        fontSize: 20,
+                        distance: -60,
+                        rotate: 'tangential',
+                        show: false,
+
+                        formatter: function (value) {
+                            if (value === 0.875) {
+                                return 'Grade A';
+                            } else if (value === 0.625) {
+                                return 'Grade B';
+                            } else if (value === 0.375) {
+                                return 'Grade C';
+                            } else if (value === 0.125) {
+                                return 'Grade D';
+                            }
+                            return '';
+                        }
+                    },
+                    title: {
+                        offsetCenter: [0, '-10%'],
+                        fontSize: 20
+                    },
+                    detail: {
+                        fontSize: 30,
+                        offsetCenter: [0, '-35%'],
+                        valueAnimation: true,
+                        formatter: function (value) {
+                            return Math.round(value * 100) + '';
+                        },
+                        color: 'inherit'
+                    },
+                    data: [
+                        {
+                            value: 0.7
+                        }
+                    ]
+                }
+            ]
+        };
+
+        option8 && myChart8.setOption(option8);
+
+        // 设置定时器定期更新数据
+        setInterval(function () {
+            // 生成新的随机数值，例如0到100之间
+            var newValue = Math.round(Math.random() * 100);
+
+            // 更新图表数据
+            option8.series[0].data[0].value = newValue*0.01;
+            myChart8.setOption(option8);
+        }, 1000); // 每2秒更新一次，您可以根据需要调整这个时间间隔
+
+
+        var image = document.getElementById('spacex-model');
+
+        document.addEventListener('mousemove', function (event) {
+            // 获取鼠标相对于视口的坐标
+            var mouseX = event.clientX;
+            var mouseY = event.clientY;
+
+            // 更新图片位置
+            image.style.left = mouseX/15 + 'px';
+            // image.style.top = mouseY + 'px';
+        });
+</script>
+</body>
+</html>
