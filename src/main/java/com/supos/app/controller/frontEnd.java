@@ -79,6 +79,11 @@ public class frontEnd {
         return "spaceX.html";
     }
 
+    @RequestMapping("/qrform")
+    public String view10(Model model) {
+        return "qrcodeGenerate.html";
+    }
+
     @RequestMapping("/contactpage")
     public String view6(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
         String contactName = name;
@@ -93,7 +98,7 @@ public class frontEnd {
         sampleMailDto mail = new sampleMailDto();
         mail.setMail(email);
         mail.setName(name);
-        String text="http://192.168.31.220:8080/contactpage?name="+name+"&email="+email;
+        String text="http://47.236.10.165:8080/contactpage?name="+name+"&email="+email;
         byte[] imageBytes = null;
         try {
             int width = 300; // 二维码图片的宽度

@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+     .create-expense {
+         background-color: #ffffff;
+         display: flex;
+         flex-direction: row;
+         justify-content: center;
+         width: 100%;
+     }
+
+     .create-expense .div {
+         background-color: var(--white);
+         width: calc(375 / 375 * 100vw);
+         height: calc(812 / 812 * 100vh);
+         position: relative;
+     }
+
+     .create-expense .text-wrapper {
+         position: absolute;
+         top: calc(62 / 812 * 100vh);
+         left: calc(24 / 375 * 100vw);
+         font-family: "Inter-SemiBold", Helvetica;
+         font-weight: 600;
+         color: var(--blackback-01);
+         font-size: 16px;
+         letter-spacing: 0;
+         line-height: normal;
+         white-space: nowrap;
+     }
+
+     .create-expense .text-input {
+         position: absolute;
+         width: calc(329 / 375 * 100vw);
+         height: calc(71 / 812 * 100vh);
+         top: calc(143 / 812 * 100vh);
+         left: calc(24 / 375 * 100vw);
+     }
+
+     .create-expense .text-wrapper-2 {
+         position: absolute;
+         height: calc(17 / 812 * 100vh);
+         top: 0;
+         left: 0;
+         font-family: "Inter-Regular", Helvetica;
+         font-weight: 400;
+         color: var(--blackback-01);
+         font-size: 14px;
+         letter-spacing: 0;
+         line-height: normal;
+     }
+
+     .create-expense .input {
+         position: absolute;
+         width: calc(327 / 375 * 100vw);
+         height: calc(46 / 812 * 100vh);
+         top: calc(25 / 812 * 100vh);
+         left: 0;
+         background-color: var(--white);
+         border-radius: 8px;
+         border: 1px solid;
+         border-color: #e8e8e8;
+     }
+
+     .create-expense .text-input-2 {
+         position: absolute;
+         width: calc(329 / 375 * 100vw);
+         height: calc(71 / 812 * 100vh);
+         top: calc(246 / 812 * 100vh);
+         left: calc(24 / 375 * 100vw);
+     }
+
+     .create-expense .button {
+         all: unset;
+         box-sizing: border-box;
+         position: absolute;
+         width: calc(329 / 375 * 100vw);
+         height: calc(46 / 812 * 100vh);
+         top: calc(696 / 812 * 100vh);
+         left: calc(24 / 375 * 100vw);
+         color: #fff; /* 按钮文字颜色 */
+         border: none; /* 移除边框 */
+         cursor: pointer; /* 鼠标样式变为手型 */
+         transition: background-color 0.3s ease, transform 0.3s ease; /* 过渡效果 */
+     }
+
+     .create-expense .button:hover {
+         transform: scale(1.1); /* 鼠标悬停时放大按钮 */
+     }
+
+     .create-expense .overlap-group {
+         position: relative;
+         width: calc(327 / 375 * 100vw);
+         height: calc(46 / 812 * 100vh);
+         border-radius: 8px;
+         background: linear-gradient(
+                 180deg,
+                 rgba(250, 18, 20, 0.8) 0%,
+                 rgb(253.94, 58.19, 130.1) 48.45%,
+                 rgba(210, 0, 109, 0.8) 100%
+         );
+     }
+
+     .create-expense .text-wrapper-3 {
+         position: absolute;
+         height: calc(19 / 812 * 100vh);
+         top: calc(14 / 812 * 100vh);
+         left: calc(124 / 375 * 100vw);
+         font-family: "Inter-SemiBold", Helvetica;
+         font-weight: 600;
+         color: var(--white);
+         font-size: 16px;
+         text-align: center;
+         letter-spacing: 0;
+         line-height: normal;
+         white-space: nowrap;
+     }
+
+     .create-expense .text-wrapper-4 {
+         position: absolute;
+         width: calc(212 / 375 * 100vw);
+         height: calc(66 / 812 * 100vh);
+         top: calc(490 / 812 * 100vh);
+         left: calc(82 / 375 * 100vw);
+         font-family: "Inter-SemiBold", Helvetica;
+         font-weight: 600;
+         color: #000000;
+         font-size: 16px;
+         text-align: center;
+         letter-spacing: 0;
+         line-height: normal;
+     }
+
+ </style>
+</head>
+<body>
+<div class="create-expense">
+    <div class="div">
+        <div class="text-wrapper">创建您的个人名片</div>
+        <div class="text-input">
+            <div class="text-wrapper-2">英文名</div>
+            <input class="input"></input>
+        </div>
+        <div class="text-input-2">
+            <div class="text-wrapper-2">邮箱</div>
+            <input class="input"></input>
+        </div>
+        <button class="button">
+            <div class="overlap-group"><div class="text-wrapper-3">生成二维码</div></div>
+        </button>
+        <div class="text-wrapper-4">保存二维码即可分享</div>
+    </div>
+</div>
+</body>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var generateQRCodeButton = document.querySelector('.button');
+        generateQRCodeButton.addEventListener('click', function () {
+            // 获取输入框的值
+            var name = document.querySelector('.text-input .input').value;
+            var email = document.querySelector('.text-input-2 .input').value;
+
+            // 拼接 URL
+            var url = "/qrcodegenerate?name=" + encodeURIComponent(name) + "&email=" + encodeURIComponent(email);
+
+            // 页面跳转
+            window.location.href = url;
+        });
+    });
+</script>
+</html>
