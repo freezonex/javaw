@@ -8,10 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supos.app.dto.sampleMailDto;
 import com.supos.app.entity.SuposApi;
 import com.supos.app.aksk.SignUtils;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -65,6 +62,11 @@ public class HealthController {
     }
 
     @ApiOperation(value = "算法",notes = "生成SuposAPIAuth")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "成功返回页面",response = SuposApi.class),
+            @ApiResponse(code = 201, message = "我也懒得写"),
+            @ApiResponse(code = 401, message = "未授权访问",response = SuposApi.class)
+    })
     @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
     @PostMapping("/crypto")
     public ResponseEntity<String> crypto(@ApiParam(hidden = true) @RequestBody String requestBody) throws JsonProcessingException {
