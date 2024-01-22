@@ -8,6 +8,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supos.app.dto.sampleMailDto;
 import com.supos.app.entity.SuposApi;
 import com.supos.app.aksk.SignUtils;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -22,7 +25,8 @@ import static com.supos.app.impl.SampleMail.sendMail;
 @RestController
 public class HealthController {
 
-    @RequestMapping("/health")
+    @ApiOperation(value = "健康探针",notes = "健康探针")
+    @GetMapping("/health")
     public String health() {
         log.info("App health check.");
         return "health";
@@ -52,6 +56,15 @@ public class HealthController {
 //        return ResponseEntity.ok(response);
 //    }
 
+    @ApiOperation(value = "suposApi",notes = "suposApi接口的说明")
+    @PostMapping("/suposApi")
+    public ResponseEntity.BodyBuilder suposApi(@RequestBody SuposApi suposApi){
+        log.info(String.valueOf(suposApi));
+        return  ResponseEntity.ok();
+    }
+
+    @ApiOperation(value = "算法",notes = "生成SuposAPIAuth")
+    @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
     @PostMapping("/crypto")
     public ResponseEntity<String> crypto(@RequestBody String requestBody) throws JsonProcessingException {
         SuposApi suposApi = new ObjectMapper().readValue(requestBody, SuposApi.class);
@@ -59,9 +72,11 @@ public class HealthController {
         return ResponseEntity.ok(SignUtils.signHeaderUseAkSkWithInput(suposApi.getUri(),suposApi.getMethodName(),suposApi.getHeaderJson(),suposApi.getQueryJson(),suposApi.getAk(),suposApi.getSk()));
     }
 
+    @ApiOperation(value = "外部",notes = "外部邮件发送")
     @PostMapping("/example")
     @CrossOrigin
     @Async
+    @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
     public ResponseEntity<String> handlePostRequest(@RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
         JSONObject jsonObject = JSON.parseObject(requestBody);
@@ -78,10 +93,11 @@ public class HealthController {
         return ResponseEntity.ok(response);
     }
 
-
+    @ApiOperation(value = "内部",notes = "内部邮件发送")
     @PostMapping("/innerExample/cbscK6BDA8HCNg2Cgf60")
     @CrossOrigin
     @Async
+    @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
     public ResponseEntity<String> handleInnerExamplePostRequest(@RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
         JSONArray jsonArray = JSON.parseArray(requestBody);

@@ -6,6 +6,8 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -14,42 +16,53 @@ import org.springframework.format.annotation.DateTimeFormat;
  */
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
+@ApiModel(value="Packinfo",description="Packinfo")
 public class Packinfo implements Serializable {
     /**
      *
      */
+    @ApiModelProperty(value = "id",required = true,example = "1")
     private Integer id;
 
     /**
      *
      */
+    @ApiModelProperty(value = "desciption",required = true,example = "abcd")
     private String desciption;
 
     /**
      * 创建时间
      */
+    @ApiModelProperty(value = "submissionDate",required = true,example = "2024-01-22")
     private Date submissionDate;
 
     /**
      *
      */
+    @ApiModelProperty(value = "delFlag",required = true,example = "0")
     private Integer delFlag;
     /**
      *
      */
+    @ApiModelProperty(value = "familyname",required = true,example = "abcdefg")
     private String familyname;
 
+    @ApiModelProperty(hidden = true)
     private static final long serialVersionUID = 1L;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private int year;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private int month;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private int increase;
 
+    @ApiModelProperty(hidden = true)
     @TableField(exist = false)
     private int total;
 

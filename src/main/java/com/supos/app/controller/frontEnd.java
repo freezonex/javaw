@@ -8,6 +8,7 @@ import com.google.zxing.client.j2se.MatrixToImageConfig;
 import com.google.zxing.client.j2se.MatrixToImageWriter;
 import com.google.zxing.common.BitMatrix;
 import com.supos.app.dto.sampleMailDto;
+import io.swagger.annotations.ApiOperation;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,8 @@ public class frontEnd {
     @Value("${app.sk}")
     private String sk;
 
-    @RequestMapping("/multipleWindow3dScene")
+    @ApiOperation(value = "页面",notes = "3D浏览器缓存用例")
+    @GetMapping("/multipleWindow3dScene")
     public String view(Model model) {
 //        String pathNew = path + "apps/wenhao-javaw/css/example.css";
 //        String pathNewPNG = path + "apps/wenhao-javaw/i12.png";
@@ -53,7 +55,8 @@ public class frontEnd {
         return "index.html";
     }
 
-    @RequestMapping("/frontend")
+    @ApiOperation(value = "页面",notes = "springboot框架页面展示用例")
+    @GetMapping("/frontend")
     public String view1(Model model) {
         String pathNew = path + "apps/wenhao-javaw/css/example.css";
         String pathNewPNG = path + "apps/wenhao-javaw/i12.png";
@@ -64,27 +67,32 @@ public class frontEnd {
         return "example.html";
     }
 
-    @RequestMapping("/fun")
+    @ApiOperation(value = "页面",notes = "简历展示用例")
+    @GetMapping("/fun")
     public String view2(Model model) {
         return "fun.html";
     }
 
-    @RequestMapping("/survey")
+    @ApiOperation(value = "页面",notes = "问卷调查用例")
+    @GetMapping("/survey")
     public String view8(Model model) {
         return "survey.html";
     }
 
-    @RequestMapping("/spacex")
+    @ApiOperation(value = "页面",notes = "造火箭用例")
+    @GetMapping("/spacex")
     public String view9(Model model) {
         return "spaceX.html";
     }
 
-    @RequestMapping("/qrform")
+    @ApiOperation(value = "页面",notes = "名片二维码生成前置页面")
+    @GetMapping("/qrform")
     public String view10(Model model) {
         return "qrcodeGenerate.html";
     }
 
-    @RequestMapping("/contactpage")
+    @ApiOperation(value = "页面",notes = "名片二维码生成后置页面")
+    @GetMapping("/contactpage")
     public String view6(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
         String contactName = name;
         String contactEmail = email;
@@ -93,7 +101,8 @@ public class frontEnd {
         return "contactPage.html";
     }
 
-    @RequestMapping("/qrcodegenerate")
+    @ApiOperation(value = "页面",notes = "名片二维码生成中置页面")
+    @GetMapping("/qrcodegenerate")
     public ResponseEntity<byte[]> view7(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) throws IOException {
         sampleMailDto mail = new sampleMailDto();
         mail.setMail(email);
@@ -125,19 +134,22 @@ public class frontEnd {
         return new ResponseEntity<>(imageBytes, headers, HttpStatus.OK);
     }
 
-    @RequestMapping("/package")
+    @ApiOperation(value = "页面",notes = "败家统计主页面")
+    @GetMapping("/package")
     public String view3(Model model) {
         return "note.html";
     }
 
-    @RequestMapping("/suposapi")
+    @ApiOperation(value = "页面",notes = "在线SuposAPI小工具主页面")
+    @GetMapping("/suposapi")
     public String view4(Model model) {
         model.addAttribute("ak", ak);
         model.addAttribute("sk", sk);
         return "suposOpenApiCall.html";
     }
 
-    @RequestMapping("/packageCharts")
+    @ApiOperation(value = "页面",notes = "败家统计图页面")
+    @GetMapping("/packageCharts")
     public String view5() {
         return "noteUsage.html";
     }

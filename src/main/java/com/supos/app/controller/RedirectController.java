@@ -5,6 +5,7 @@ import com.bluetron.eco.sdk.api.SuposApi;
 import com.bluetron.eco.sdk.dto.common.ApiResponse;
 import com.supos.app.vo.AuthAccessToken;
 import com.supos.app.vo.RestResult;
+import io.swagger.annotations.ApiOperation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -45,7 +46,8 @@ public class RedirectController {
      *
      * @param response
      */
-    @RequestMapping("/authorize")
+    @ApiOperation(value = "授权",notes = "授权接口")
+    @GetMapping("/authorize")
     public void auto(String redirect_url, HttpServletResponse response) {
         System.out.println(redirect_url);
         String location = SuposApi.authService.authorize(redirect_url, "1");
@@ -54,6 +56,7 @@ public class RedirectController {
         response.setStatus(HttpStatus.FOUND.value());
 //        return;
     }
+    @ApiOperation(value = "权限码",notes = "权限码跳转")
     @CrossOrigin
     @GetMapping("accessToken")
     @ResponseBody
