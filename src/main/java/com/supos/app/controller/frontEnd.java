@@ -85,6 +85,12 @@ public class frontEnd {
         return "spaceX.html";
     }
 
+    @ApiOperation(value = "页面",notes = "redoc页面")
+    @GetMapping("/redoc")
+    public String view11(Model model) {
+        return "reDoc.html";
+    }
+
     @ApiOperation(value = "页面",notes = "名片二维码生成前置页面")
     @GetMapping("/qrform")
     public String view10(Model model) {

@@ -11,6 +11,7 @@ import com.supos.app.aksk.SignUtils;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Async;
@@ -66,7 +67,7 @@ public class HealthController {
     @ApiOperation(value = "算法",notes = "生成SuposAPIAuth")
     @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
     @PostMapping("/crypto")
-    public ResponseEntity<String> crypto(@RequestBody String requestBody) throws JsonProcessingException {
+    public ResponseEntity<String> crypto(@ApiParam(hidden = true) @RequestBody String requestBody) throws JsonProcessingException {
         SuposApi suposApi = new ObjectMapper().readValue(requestBody, SuposApi.class);
         System.out.println(suposApi);
         return ResponseEntity.ok(SignUtils.signHeaderUseAkSkWithInput(suposApi.getUri(),suposApi.getMethodName(),suposApi.getHeaderJson(),suposApi.getQueryJson(),suposApi.getAk(),suposApi.getSk()));
@@ -77,7 +78,7 @@ public class HealthController {
     @CrossOrigin
     @Async
     @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
-    public ResponseEntity<String> handlePostRequest(@RequestBody String requestBody) throws IOException {
+    public ResponseEntity<String> handlePostRequest(@ApiParam(hidden = true) @RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
         JSONObject jsonObject = JSON.parseObject(requestBody);
         log.info("handlePostRequest入参 {}",jsonObject);
@@ -98,7 +99,7 @@ public class HealthController {
     @CrossOrigin
     @Async
     @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
-    public ResponseEntity<String> handleInnerExamplePostRequest(@RequestBody String requestBody) throws IOException {
+    public ResponseEntity<String> handleInnerExamplePostRequest(@ApiParam(hidden = true) @RequestBody String requestBody) throws IOException {
         // 处理POST请求的逻辑
         JSONArray jsonArray = JSON.parseArray(requestBody);
         log.info("handleInnerExamplePostRequest入参 {}",jsonArray);

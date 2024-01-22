@@ -11,6 +11,7 @@ import com.supos.app.service.impl.PackinfoServiceImpl;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -64,7 +65,7 @@ public class Package {
     @ApiOperation(value = "数据新增",notes = "数据新增")
     @ApiImplicitParams({@ApiImplicitParam(name = "packinfo", dataType = "Packinfo", required = true, paramType = "body")})
     @PostMapping("/insert")
-    public String insert(@RequestBody String requestBody) throws JsonProcessingException {
+    public String insert(@ApiParam(hidden = true) @RequestBody String requestBody) throws JsonProcessingException {
         Packinfo packinfo = new ObjectMapper().readValue(requestBody,Packinfo.class);
         System.out.println(packinfo);
         packinfoServiceImpl.insert(packinfo);
