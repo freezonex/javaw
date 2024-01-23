@@ -51,13 +51,58 @@
         </div>
     </div>
 
+    <!-- Modal -->
+    <div id="myModal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-md shadow-md">
+            <span class="text-gray-800 text-lg block mb-4">行了行了 我懒得写了</span>
+            <!-- Text Input Field -->
+            <label for="textInput" class="text-gray-700 block mb-2">Enter Text:</label>
+            <input type="text" id="textInput" class="border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring focus:border-blue-300">
+            <span class="text-gray-800 text-lg block mb-4">行了行了 这样行了吧</span>
+            <!-- Text Input Field -->
+            <label for="textInput" class="text-gray-700 block mb-2">Enter Text:</label>
+            <input type="text" id="textInput1" class="border rounded-md px-3 py-2 mb-4 focus:outline-none focus:ring focus:border-blue-300">
+            <div class="flex justify-between">
+            <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none mr-2" onclick="confirmAction()">Confirm</button>
+            <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none" onclick="closeModal()">Cancel</button>
+            </div>
+        </div>
+    </div>
+    <!-- Modal -->
+    <div id="importModal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-md shadow-md">
+            <span class="text-gray-800 text-lg block mb-4">Import Content</span>
+            <!-- Add specific import content UI elements -->
+            <label for="fileInput" class="block mb-2 text-sm text-gray-700">Choose a file to import:</label>
+            <input type="file" id="fileInput" class="mb-4">
+            <!-- Add your import content UI elements here -->
+            <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none mr-2" onclick="confirmImport()">Import</button>
+            <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none" onclick="closeImportModal()">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div id="exportModal" class="fixed inset-0 bg-opacity-50 flex items-center justify-center hidden">
+        <div class="bg-white p-8 rounded-md shadow-md">
+            <span class="text-gray-800 text-lg block mb-4">Export Content</span>
+
+            <!-- Add specific export content UI elements -->
+            <p class="mb-4">Choose export options:我实在懒得写了。。快别点了</p>
+
+            <!-- Additional export options can be added here -->
+
+            <button class="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none mr-2" onclick="confirmExport()">Export</button>
+            <button class="px-4 py-2 bg-red-500 text-white rounded-md hover:bg-red-600 focus:outline-none" onclick="closeExportModal()">Cancel</button>
+        </div>
+    </div>
+
     <!-- Main Content -->
     <div class="flex-1 p-10">
         <div class="flex justify-between">
             <div class="flex space-x-2">
-                <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none">+ Add</button>
-                <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none">Export</button>
-                <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none">Import</button>
+                <button class="px-4 py-2 bg-green-500 text-white rounded-md hover:bg-green-600 focus:outline-none" onclick="openModal()">+ Add</button>
+                <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none" onclick="openExportModal()">Export</button>
+                <button class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 focus:outline-none" onclick="openImportModal()">Import</button>
             </div>
             <div class="relative">
                 <input type="search" class="pl-10 pr-4 py-2 rounded-md border-2 border-gray-300" placeholder="Search">
@@ -163,6 +208,75 @@
 </body>
 
 <script>
+
+    function openExportModal() {
+        var exportModal = document.getElementById('exportModal');
+        exportModal.classList.remove('hidden');
+    }
+
+    <!-- Function to close the export modal -->
+    function closeExportModal() {
+        var exportModal = document.getElementById('exportModal');
+        exportModal.classList.add('hidden');
+    }
+
+    <!-- Function to handle the export action -->
+    function confirmExport() {
+        // Add your logic for the export action here
+
+        // For example, you can simulate exporting by logging a message
+        console.log('Exported content');
+
+        closeExportModal(); // Close the export modal after confirmation
+    }
+
+    // Function to open the modal
+    function openModal() {
+        var modal = document.getElementById('myModal');
+        modal.classList.remove('hidden');
+    }
+
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById('myModal');
+        modal.classList.add('hidden');
+    }
+
+    // Function to handle the confirm action
+    function confirmAction() {
+        // Add your logic for the confirm action here
+        console.log('Confirmed');
+        closeModal(); // Close the modal after confirmation
+    }
+
+    <!-- Function to open the import modal -->
+    function openImportModal() {
+        var importModal = document.getElementById('importModal');
+        importModal.classList.remove('hidden');
+    }
+
+    <!-- Function to close the import modal -->
+    function closeImportModal() {
+        var importModal = document.getElementById('importModal');
+        importModal.classList.add('hidden');
+    }
+
+    <!-- Function to handle the import action -->
+    function confirmImport() {
+        // Add your logic for the import action here
+        var fileInput = document.getElementById('fileInput');
+        var selectedFile = fileInput.files[0];
+
+        if (selectedFile) {
+            console.log('Imported file:', selectedFile);
+            // Additional logic for handling the selected file
+        } else {
+            console.log('No file selected.');
+        }
+
+        closeImportModal(); // Close the import modal after confirmation
+    }
+
     // 使用 Fetch API 获取数据
     fetch('/apps/wenhao-javaw/package/history')
         .then(response => response.json())

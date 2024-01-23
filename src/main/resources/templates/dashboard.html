@@ -124,7 +124,6 @@
         <div class="flex flex-col mt-4 mb-6 ">
             <div class="overflow-x-auto">
                 <div class="flex">
-
                 <div class="align-middle inline-block min-w-3/5">
                     <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
                         <table class="min-w-full divide-y divide-gray-200">
@@ -162,41 +161,44 @@
                     </div>
                 </div>
 
-                <!-- Image Section -->
+                    <div class="flex-grow flex items-center justify-center"> <!-- Use flex-grow to occupy the remaining space -->
+                        <!-- Image Section -->
                     <div class="ml-4 flex items-center justify-center">
                         <div class="w-48 h-48 rounded-full" id="loop-a"></div>
                         <!-- Replace the above line with your image code -->
                     </div>
+                    </div>
+
                 </div>
             </div>
         </div>
 
         <!-- Trends Section -->
         <div class="grid grid-cols-3 gap-6">
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white shadow rounded-lg p-6" style="height: 450px;">
                 <div class="text-lg font-semibold text-gray-900">
                     Vibration trend
                 </div>
                 <div id="ppo" class="bg-white shadow rounded-lg p-6 w-full h-4/5"></div>
-                <div class="text-3xl font-bold text-blue-500 mt-4">
+                <div class="text-3xl font-bold text-blue-500 mt-4" id="randomNumberDisplay">
                     1200
                 </div>
             </div>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white shadow rounded-lg p-6" style="height: 450px;">
                 <div class="text-lg font-semibold text-gray-900">
                     Temperature trend
                 </div>
                 <div id="overlap-wrapper" class="bg-white shadow rounded-lg p-6 w-full h-4/5"></div>
-                <div class="text-3xl font-bold text-blue-500 mt-4">
+                <div class="text-3xl font-bold text-blue-500 mt-4" id="randomNumberDisplay1">
                     1200
                 </div>
             </div>
-            <div class="bg-white shadow rounded-lg p-6">
+            <div class="bg-white shadow rounded-lg p-6" style="height: 450px;">
                 <div class="text-lg font-semibold text-gray-900">
                     Energy consumption trend
                 </div>
                 <div id="loop-b" class="bg-white shadow rounded-lg p-6 w-full h-4/5"></div>
-                <div class="text-3xl font-bold text-blue-500 mt-4">
+                <div class="text-3xl font-bold text-blue-500 mt-4" id="randomNumberDisplay2">
                     1200
                 </div>
             </div>
@@ -213,228 +215,282 @@
 </body>
 
 <script>
-    // 使用 Fetch API 获取数据
-    fetch('/apps/wenhao-javaw/package/history')
-        .then(response => response.json())
-        .then(data => {
-            // 获取表格主体元素
-            const tableBody = document.getElementById('tableBody');
 
-            // 遍历 API 返回的数据
-            data.slice(0, 4).forEach(item => {
-                // 创建表格行
-                const row = document.createElement('tr');
+    // JavaScript
+    function updateRandomNumber() {
+        // Get the element by its ID
+        const randomNumberDisplay = document.getElementById('randomNumberDisplay');
 
-                // 遍历每个属性，并创建相应的单元格
-                Object.values(item).slice(0, 4).forEach(value => {
-                    const cell = document.createElement('td')
-                    // cell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
-                    cell.className = 'px-6 py-4 text-sm text-gray-500';
+        // Generate a random number (replace this logic with your desired way of generating random numbers)
+        const randomValue = Math.floor(Math.random() * 1000); // Example: Generates a random number between 0 and 1000
 
-                    cell.textContent = value;
-                    row.appendChild(cell);
+        // Update the content of the element with the new random number
+        randomNumberDisplay.textContent = randomValue;
+
+        // Get the element by its ID
+        const randomNumberDisplay1 = document.getElementById('randomNumberDisplay1');
+
+        // Generate a random number (replace this logic with your desired way of generating random numbers)
+        const randomValue1 = Math.floor(Math.random() * 1000); // Example: Generates a random number between 0 and 1000
+
+        // Update the content of the element with the new random number
+        randomNumberDisplay1.textContent = randomValue1;
+        // Get the element by its ID
+        const randomNumberDisplay2 = document.getElementById('randomNumberDisplay2');
+
+        // Generate a random number (replace this logic with your desired way of generating random numbers)
+        const randomValue2 = Math.floor(Math.random() * 1000); // Example: Generates a random number between 0 and 1000
+
+        // Update the content of the element with the new random number
+        randomNumberDisplay2.textContent = randomValue2;
+    }
+
+    // Call the function initially
+    updateRandomNumber();
+
+    // Update the random number every second
+    setInterval(updateRandomNumber, 5000);
+
+    function fetchDataAndDisplay() {
+        // 使用 Fetch API 获取数据
+        fetch('/apps/wenhao-javaw/package/history')
+            .then(response => response.json())
+            .then(data => {
+                // 获取表格主体元素
+                const tableBody = document.getElementById('tableBody');
+
+                // 清空表格主体
+                tableBody.innerHTML = '';
+                // 随机选择4条数据
+                const selectedData = getRandomElements(data, 4);
+
+                // 遍历 API 返回的数据
+                selectedData.forEach(item => {
+                    // 创建表格行
+                    const row = document.createElement('tr');
+
+                    // 遍历每个属性，并创建相应的单元格
+                    Object.values(item).slice(0, 4).forEach(value => {
+                        const cell = document.createElement('td')
+                        // cell.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                        cell.className = 'px-6 py-4 text-sm text-gray-500';
+
+                        cell.textContent = value;
+                        row.appendChild(cell);
+                    });
+
+                    // 在每行的末尾添加 "Details" 和 "Delete" 列
+                    const actionCell1 = document.createElement('td');
+                    actionCell1.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                    const viewLink = document.createElement('a');
+                    viewLink.href = '#';
+                    viewLink.className = 'text-indigo-600 hover:text-indigo-900';
+                    viewLink.textContent = 'View';
+                    actionCell1.appendChild(viewLink);
+
+                    // 在每行的末尾添加 "Details" 和 "Delete" 列
+                    const actionCell = document.createElement('td');
+                    actionCell.className = 'px-6 py-4 whitespace-nowrap text-right text-sm font-medium';
+
+                    const detailsLink = document.createElement('a');
+                    detailsLink.href = '#';
+                    detailsLink.className = 'text-indigo-600 hover:text-indigo-900';
+                    detailsLink.textContent = 'Details';
+
+                    const deleteLink = document.createElement('a');
+                    deleteLink.href = '#';
+                    deleteLink.className = 'text-red-600 hover:text-red-900 ml-4';
+                    deleteLink.textContent = 'Delete';
+
+                    actionCell.appendChild(detailsLink);
+                    actionCell.appendChild(deleteLink);
+
+
+                    // row.appendChild(actionCell1);
+
+                    // 将 "Details" 和 "Delete" 列添加到行
+                    // row.appendChild(actionCell);
+
+                    // 将行添加到表格主体
+                    tableBody.appendChild(row);
                 });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    }
 
-                // 在每行的末尾添加 "Details" 和 "Delete" 列
-                const actionCell1 = document.createElement('td');
-                actionCell1.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
-                const viewLink = document.createElement('a');
-                viewLink.href = '#';
-                viewLink.className = 'text-indigo-600 hover:text-indigo-900';
-                viewLink.textContent = 'View';
-                actionCell1.appendChild(viewLink);
+    // 随机选择指定数量的元素
+    function getRandomElements(array, numElements) {
+        const shuffledArray = array.slice().sort(() => Math.random() - 0.5);
+        return shuffledArray.slice(0, numElements);
+    }
 
-                // 在每行的末尾添加 "Details" 和 "Delete" 列
-                const actionCell = document.createElement('td');
-                actionCell.className = 'px-6 py-4 whitespace-nowrap text-right text-sm font-medium';
+    // 每秒钟执行一次
+    setInterval(fetchDataAndDisplay, 5000);
 
-                const detailsLink = document.createElement('a');
-                detailsLink.href = '#';
-                detailsLink.className = 'text-indigo-600 hover:text-indigo-900';
-                detailsLink.textContent = 'Details';
-
-                const deleteLink = document.createElement('a');
-                deleteLink.href = '#';
-                deleteLink.className = 'text-red-600 hover:text-red-900 ml-4';
-                deleteLink.textContent = 'Delete';
-
-                actionCell.appendChild(detailsLink);
-                actionCell.appendChild(deleteLink);
-
-
-                // row.appendChild(actionCell1);
-
-                // 将 "Details" 和 "Delete" 列添加到行
-                // row.appendChild(actionCell);
-
-                // 将行添加到表格主体
-                tableBody.appendChild(row);
-            });
-        })
-        .catch(error => console.error('Error fetching data:', error));
-
-
-    var chartDom = document.getElementById('ppo');
-    // chartDom.classList.add(' w-full h-4/5');
-    chartDom.style.width = 'w-full'; // Set your preferred width
-    chartDom.style.height = 'h-full'; // Set your preferred height
-    var myChart1 = echarts.init(chartDom);
+    var chartDom1 = document.getElementById('overlap-wrapper');
+    chartDom1.style.width = 'w-full'; // Set your preferred width
+    chartDom1.style.height = 'w-full'; // Set your preferred height
+    var myChart1 = echarts.init(chartDom1);
     var option1;
 
-    option1 = {
-        tooltip: {
-            formatter: '{a} <br/>{b} : {c}%'
-        },
-        series: [
-            {
-                name: 'Pressure',
-                type: 'gauge',
-                axisLabel: {
-                    show: false
-                },
-                axisTick: {
-                    show: false
-                },
-                splitLine: {
-                    show: false
-                },
-                axisLabel: {
-                    show: false
-                },
-                detail: {
-                    valueAnimation: false,
-                    formatter: '{value}'
-                },
-                progress: {
-                    show: true
-                },
-                detail: {
-                    valueAnimation: true,
-                    formatter: '{value}',
-                    color: 'white'
-                },
-                data: [
-                    {
-                        value: 50,
-                    }
-                ]
-            }
-        ]
-    };
+    function run1 (response) {
+        option1 = {
+            title: {
+                show: false // Set show property to false to hide the legend
+            },
+            tooltip: {
+                trigger: 'item',
+                formatter: '{a} <br/>{b} : {c} ({d}%)'
+            },
+            legend: {
+                show: false, // Set show property to false to hide the legend
+                left: 'center',
+                top: 'bottom',
+                data: response.dataList
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    mark: { show: true },
+                    dataView: { show: true, readOnly: false },
+                    restore: { show: true },
+                    saveAsImage: { show: true }
+                }
+            },
+            series: [
+                {
+                    name: 'Radius Mode',
+                    type: 'pie',
+                    radius: [20, 140],
+                    center: ['50%', '50%'],
+                    roseType: 'radius',
+                    itemStyle: {
+                        borderRadius: 5
+                    },
+                    label: {
+                        show: false
+                    },
+                    emphasis: {
+                        label: {
+                            show: true
+                        }
+                    },
+                    data: response.data
+                }
+            ]
+        };
+        option1 && myChart1.setOption(option1);
+    }
 
-    option1 && myChart1.setOption(option1);
-
-    // 设置定时器定期更新数据
-    setInterval(function () {
-        // 生成新的随机数值，例如0到100之间
-        var newValue = Math.round(Math.random() * 100);
-
-        // 更新图表数据
-        option1.series[0].data[0].value = newValue;
-        myChart1.setOption(option1);
-    }, 1000); // 每2秒更新一次，您可以根据需要调整这个时间间隔
-
-
-
-    var chartDom = document.getElementById('overlap-wrapper');
+    var chartDom = document.getElementById('ppo');
     chartDom.style.width = 'w-full'; // Set your preferred width
     chartDom.style.height = 'h-full'; // Set your preferred height
-    var myChart8 = echarts.init(chartDom);
-    var option8;
+    var myChart = echarts.init(chartDom);
+    var option;
 
-    option8 = {
-        series: [
-            {
-                type: 'gauge',
-                startAngle: 180,
-                endAngle: 0,
-                center: ['50%', '60%'],
-                radius: '90%',
-                min: 0,
-                max: 1,
-                splitNumber: 8,
-                axisLine: {
-                    lineStyle: {
-                        width: 6,
-                        color: [
-                            [0.25, '#FF6E76'],
-                            [0.5, '#FDDD60'],
-                            [0.75, '#58D9F9'],
-                            [1, '#7CFFB2']
+    function run(_rawData) {
+        // var countries = ['Australia', 'Canada', 'China', 'Cuba', 'Finland', 'France', 'Germany', 'Iceland', 'India', 'Japan', 'North Korea', 'South Korea', 'New Zealand', 'Norway', 'Poland', 'Russia', 'Turkey', 'United Kingdom', 'United States'];
+        const isMobile = window.innerWidth <= 600; // 假设屏幕宽度小于或等于 600px 为手机屏幕
+        const titlePosition = isMobile ? '25%' : 'center'; // 如果是手机屏幕，标题向左移动 40%，否则居中
+
+        const countries = [
+            'increase',
+            'total'
+        ];
+        const datasetWithFilters = [];
+        const seriesList = [];
+        echarts.util.each(countries, function (pack) {
+            var datasetId = 'dataset_' + pack;
+            datasetWithFilters.push({
+                id: datasetId,
+                fromDatasetId: 'dataset_raw',
+                transform: {
+                    type: 'filter',
+                    config: {
+                        and: [
+                            { dimension: 'month', gte: 1 },
+                            { dimension: 'pack', '=': pack }
                         ]
                     }
-                },
-                pointer: {
-                    icon: 'path://M12.8,0.7l12,40.1H0.7L12.8,0.7z',
-                    length: '12%',
-                    width: 20,
-                    offsetCenter: [0, '-60%'],
-                    itemStyle: {
-                        color: 'auto'
+                }
+            });
+            seriesList.push({
+                type: 'line',
+                datasetId: datasetId,
+                showSymbol: false,
+                name: pack,
+                endLabel: {
+                    show: true,
+                    formatter: function (params) {
+                        // return params.seriesName + ': ' + params.value[1];
+                        return params.value[1];
                     }
                 },
-                axisTick: {
-                    show: false,
-
+                labelLayout: {
+                    moveOverlap: 'shiftY'
                 },
-                splitLine: {
-                    show: false,
-
+                emphasis: {
+                    focus: 'series'
                 },
-                axisLabel: {
-                    color: '#464646',
-                    fontSize: 20,
-                    distance: -60,
-                    rotate: 'tangential',
-                    show: false,
-
-                    formatter: function (value) {
-                        if (value === 0.875) {
-                            return 'Grade A';
-                        } else if (value === 0.625) {
-                            return 'Grade B';
-                        } else if (value === 0.375) {
-                            return 'Grade C';
-                        } else if (value === 0.125) {
-                            return 'Grade D';
-                        }
-                        return '';
-                    }
+                encode: {
+                    x: 'month',
+                    y: 'no',
+                    label: ['pack', 'no'],
+                    itemName: 'month',
+                    tooltip: ['no']
+                }
+            });
+        });
+        option = {
+            animationDuration: 10000,
+            dataset: [
+                {
+                    id: 'dataset_raw',
+                    source: _rawData
                 },
-                title: {
-                    offsetCenter: [0, '-10%'],
-                    fontSize: 20
-                },
-                detail: {
-                    fontSize: 30,
-                    offsetCenter: [0, '-35%'],
-                    valueAnimation: true,
-                    formatter: function (value) {
-                        return Math.round(value * 100) + '';
-                    },
-                    color: 'inherit'
-                },
-                data: [
-                    {
-                        value: 0.7
-                    }
-                ]
-            }
-        ]
-    };
+                ...datasetWithFilters
+            ],
+            title: {
+                show: false // Set show property to false to hide the legend
+            },
+            tooltip: {
+                order: 'valueDesc',
+                trigger: 'axis'
+            },
+            xAxis: {
+                type: 'category',
+                nameLocation: 'middle'
+            },
+            yAxis: {
+                name: 'no'
+                // ,
+                // min: 36000,  // Set the minimum value of y-axis to 30000
+                // max: 40000   // Set the maximum value of y-axis to 50000
+            },
+            grid: {
+                right: 0
+            },
+            series: seriesList
+        };
+        myChart.setOption(option);
+    }
 
-    option8 && myChart8.setOption(option8);
-
-    // 设置定时器定期更新数据
-    setInterval(function () {
-        // 生成新的随机数值，例如0到100之间
-        var newValue = Math.round(Math.random() * 100);
-
-        // 更新图表数据
-        option8.series[0].data[0].value = newValue*0.01;
-        myChart8.setOption(option8);
-    }, 1000); // 每2秒更新一次，您可以根据需要调整这个时间间隔
-
+    document.addEventListener('DOMContentLoaded', () => {
+        fetch('/apps/wenhao-javaw/package/chart', {
+            method: "GET",
+        }) .then(response => response.text())
+            .then(responseBodyText => {
+                const jsonData = JSON.parse(responseBodyText);
+                run(jsonData);
+            })
+        fetch('/apps/wenhao-javaw/package/pieChart', {
+            method: "GET",
+        }) .then(response => response.text())
+            .then(responseBodyText => {
+                const jsonData = JSON.parse(responseBodyText);
+                run1(jsonData);
+            })
+    });
 
     var chartDom = document.getElementById('loop-b');
     chartDom.style.width = 'w-full'; // Set your preferred width
@@ -557,7 +613,7 @@
                 }
             ]
         });
-    }, 1000);
+    }, 2000);
 
     var chartDom = document.getElementById('loop-a');
     var myChart5 = echarts.init(chartDom);
@@ -654,18 +710,19 @@
                 }
             ]
         });
-    }, 1000);
+    }, 3000);
 
     option5 && myChart5.setOption(option5);
 
     option6 && myChart6.setOption(option6);
 
     window.addEventListener('load', function () {
+        fetchDataAndDisplay()
         // 改变图表尺寸，在容器大小发生改变时需要手动调用
         myChart1.resize();
         myChart5.resize();
         myChart6.resize();
-        myChart8.resize();
+        myChart.resize();
 
     });
     window.addEventListener('resize', function () {
@@ -673,7 +730,7 @@
         myChart1.resize();
         myChart5.resize();
         myChart6.resize();
-        myChart8.resize();
+        myChart.resize();
 
     });
 
