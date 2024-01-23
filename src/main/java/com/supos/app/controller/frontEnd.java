@@ -67,6 +67,18 @@ public class frontEnd {
         return "example.html";
     }
 
+    @ApiOperation(value = "页面",notes = "资产库存用例展示")
+    @GetMapping("/inventory")
+    public String view12() {
+        return "inventory.html";
+    }
+
+    @ApiOperation(value = "页面",notes = "资产面板用例展示")
+    @GetMapping("/dashboard")
+    public String view13() {
+        return "dashboard.html";
+    }
+
     @ApiOperation(value = "页面",notes = "简历展示用例")
     @GetMapping("/fun")
     public String view2(Model model) {
