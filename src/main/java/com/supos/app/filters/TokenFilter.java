@@ -3,6 +3,7 @@ package com.supos.app.filters;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpStatus;
 import com.alibaba.fastjson.JSONObject;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
 import javax.servlet.*;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -22,6 +24,7 @@ import java.util.regex.Pattern;
  * @date 2021/11/1
  */
 @Component
+@Slf4j
 public class TokenFilter implements Filter {
     @Value("${app.white-list}")
     String whiteList;
@@ -32,6 +35,17 @@ public class TokenFilter implements Filter {
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
+        Cookie[] cookies = request.getCookies();
+
+        // 打印每个Cookie的名称和值
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                log.info("Cookie Name: " + cookie.getName() + ", Value: " + cookie.getValue() + "<br>");
+            }
+        } else {
+            log.info("No cookies found");
+        }
+
         String[] excludeUris = whiteList.split(";");
         if (excludeUris != null && excludeUris.length > 0) {
             for (int i = 0; i < excludeUris.length; i++) {
