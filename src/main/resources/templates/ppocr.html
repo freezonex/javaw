@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OCR Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.x/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<div class="container mx-auto px-4 py-8">
+    <div class="flex flex-wrap -mx-4 justify-center items-center h-screen">
+        <div class="w-full md:w-1/2 px-4 mb-4 md:mb-0">
+            <input type="file" id="imageUpload" accept="image/*" class="block w-full text-lg py-2 px-3 rounded-lg border-2 border-gray-300 cursor-pointer"/>
+            <img id="imagePreview" src="" alt="Image preview" class="mt-4 rounded-lg shadow-lg max-h-80 w-auto hidden"/>
+        </div>
+        <div class="w-full md:w-1/2 px-4">
+            <div id="ocrResults" class="space-y-2">
+                <!-- OCR results will be displayed here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="apps/wenhao-javaw/ppocr/script.js">
+</script>
+</body>
+</html>

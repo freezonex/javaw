@@ -73,6 +73,12 @@ public class frontEnd {
         return "inventory.html";
     }
 
+    @ApiOperation(value = "ppocr",notes = "ppocr用例展示")
+    @GetMapping("/ppocr")
+    public String view17() {
+        return "ppocr.html";
+    }
+
     @ApiOperation(value = "扫雷页面",notes = "扫雷页面")
     @GetMapping("/minesweeper")
     public String view16() {
