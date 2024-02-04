@@ -79,6 +79,24 @@ public class frontEnd {
         return "ppocr.html";
     }
 
+    @ApiOperation(value = "pproadsign",notes = "pproadsign用例展示")
+    @GetMapping("/pproadsign")
+    public String view19() {
+        return "pproadsign.html";
+    }
+
+    @ApiOperation(value = "pphelmet",notes = "pphelmet用例展示")
+    @GetMapping("/pphelmet")
+    public String view20() {
+        return "pphelmet.html";
+    }
+
+    @ApiOperation(value = "ppvideohelmet",notes = "ppvideohelmet用例展示")
+    @GetMapping("/ppvideohelmet")
+    public String view21() {
+        return "ppvideohelmet.html";
+    }
+
     @ApiOperation(value = "videoppocr",notes = "videoppocr")
     @GetMapping("/videoppocr")
     public String view18() {

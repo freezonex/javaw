@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Processing Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.x/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 h-screen overflow-hidden">
+<div class="container mx-auto px-4 py-8 h-full flex flex-col">
+    <div class="bg-gray-200 p-6 rounded-lg mb-8 overflow-auto">
+        <h2 class="text-lg font-semibold mb-4">helmet detection</h2>
+    </div>
+    <div class="flex-grow flex flex-wrap justify-center items-center">
+        <div class="flex flex-col justify-center items-center w-full lg:w-1/2 px-4 mb-4 lg:mb-0">
+            <label for="imageUpload" class="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">Upload image</label>
+            <input type="file" id="imageUpload" accept="image/*" class="block w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 cursor-pointer focus:outline-none"/>
+            <img id="imagePreview" src="" alt="Image preview" class="mt-4 rounded-lg shadow-lg max-h-80 w-auto hidden"/>
+        </div>
+        <div class="w-full lg:w-1/2 px-4">
+            <div class="flex justify-center items-center h-full">
+                <img id="resultImage" src="" alt="Result preview" class="rounded-lg shadow-lg max-h-80 w-auto hidden"/>
+            </div>
+        </div>
+    </div>
+    <!-- End of Content Section -->
+</div>
+
+<script>
+    document.getElementById('imageUpload').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            // Display image preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('imagePreview');
+                preview.src = e.target.result;
+                preview.classList.remove('hidden');
+            };
+            reader.readAsDataURL(file);
+
+            // Prepare the file to be sent to the backend
+            const formData = new FormData();
+            formData.append('file', file);
+
+            fetch('/apps/wenhao-javaw/pphelmetupload', { // Make sure the URL matches your setup
+                method: 'POST',
+                body: formData,
+            })
+                .then(response => response.blob())
+                .then(blob => {
+                    const resultImage = document.getElementById('resultImage');
+                    resultImage.src = URL.createObjectURL(blob);
+                    resultImage.classList.remove('hidden');
+                })
+                .catch(error => console.error('Error:', error));
+        }
+    });
+</script>
+</body>
+</html>
