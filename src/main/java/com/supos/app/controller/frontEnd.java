@@ -85,6 +85,18 @@ public class frontEnd {
         return "pproadsign.html";
     }
 
+    @ApiOperation(value = "ppgeneralobejectdetection",notes = "ppgeneralobejectdetection用例展示")
+    @GetMapping("/ppgeneralobejectdetection")
+    public String view22() {
+        return "ppgeneralobejectdetection.html";
+    }
+
+    @ApiOperation(value = "ppvideogeneralobejectdetection",notes = "ppvideogeneralobejectdetection用例展示")
+    @GetMapping("/ppvideogeneralobejectdetection")
+    public String view23() {
+        return "ppvideogeneralobejectdetection.html";
+    }
+
     @ApiOperation(value = "pphelmet",notes = "pphelmet用例展示")
     @GetMapping("/pphelmet")
     public String view20() {
