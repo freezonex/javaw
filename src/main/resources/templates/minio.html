@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minio File Manager</title>
+    <!-- Include Tailwind CSS from CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50">
+<div class="container mx-auto px-4 py-8">
+    <div class="text-center mb-8">
+        <h1 class="font-bold text-3xl text-gray-800">Minio File Manager</h1>
+        <p class="text-gray-600">Manage your files and buckets with ease.</p>
+    </div>
+
+    <!-- Bucket Operations -->
+    <div class="grid md:grid-cols-3 gap-4 mb-8">
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Bucket Operations</h2>
+            <input type="text" id="bucketName" placeholder="Bucket Name" class="border-2 border-gray-200 rounded p-2 w-full mb-4">
+            <button onclick="makeBucket()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full mb-2">Create Bucket</button>
+            <button onclick="getAllBuckets()" class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded w-full mb-2">List Buckets</button>
+            <button onclick="listFiles()" class="bg-purple-500 hover:bg-purple-700 text-white font-bold py-2 px-4 rounded w-full">List Files in Bucket</button>
+        </div>
+
+        <!-- File Upload -->
+        <div class="bg-white shadow-lg rounded-lg p-6 md:col-span-2">
+            <h2 class="text-xl font-semibold mb-4">File Upload</h2>
+            <input type="file" id="fileUpload" class="border-2 border-gray-200 rounded p-2 w-full mb-4">
+            <button onclick="uploadFile()" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-full">Upload File</button>
+        </div>
+    </div>
+
+    <!-- Buckets and Files Listing -->
+    <div class="grid md:grid-cols-2 gap-4">
+        <!-- Bucket List -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Buckets</h2>
+            <ul id="bucketList" class="list-disc pl-5">
+                <!-- Bucket list items will be dynamically inserted here -->
+            </ul>
+        </div>
+
+        <!-- File List -->
+        <div class="bg-white shadow-lg rounded-lg p-6">
+            <h2 class="text-xl font-semibold mb-4">Files</h2>
+            <ul id="fileList" class="list-disc pl-5">
+                <!-- File list items will be dynamically inserted here -->
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Preview Modal -->
+<div id="previewModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full" onclick="closeModal()">
+    <div class="relative top-20 mx-auto p-5 border w-3/4 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-title">Preview</h3>
+            <div class="mt-2">
+                <p class="text-sm text-gray-500" id="previewContent">No content</p>
+            </div>
+        </div>
+        <div class="items-center px-4 py-3">
+            <button id="closeModalButton" class="px-4 py-2 bg-gray-500 text-white text-base font-medium rounded-md w-full shadow-sm hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300">
+                Close
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Define API endpoint
+    const API_ENDPOINT = '/apps/wenhao-javaw/product/file';
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Bucket operations
+        document.querySelector('#makeBucketBtn').addEventListener('click', makeBucket);
+        document.querySelector('#removeBucketBtn').addEventListener('click', removeBucket);
+        document.querySelector('#listBucketsBtn').addEventListener('click', getAllBuckets);
+
+        // File operations
+        document.querySelector('#uploadFileBtn').addEventListener('click', uploadFile);
+        document.querySelector('#previewFileBtn').addEventListener('click', previewFile);
+        document.querySelector('#downloadFileBtn').addEventListener('click', downloadFile);
+        document.querySelector('#deleteFileBtn').addEventListener('click', deleteFile);
+    });
+
+    async function fetchWrapper(url, options) {
+        try {
+            const response = await fetch(url, options);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.json();
+        } catch (error) {
+            console.error('Fetch Error:', error);
+        }
+    }
+
+    function makeBucket() {
+        const bucketName = document.getElementById('bucketName').value;
+        fetchWrapper(`${API_ENDPOINT}/makeBucket?bucketName=${bucketName}`, {
+            method: 'GET'
+        }).then(data => {
+            console.log('Bucket Created:', data);
+            getAllBuckets(); // Refresh bucket list
+        });
+    }
+
+    // function listFiles() {
+    //     const bucketName = document.getElementById('bucketName').value;
+    //     if (!bucketName) {
+    //         alert('Please enter a bucket name.');
+    //         return;
+    //     }
+    //
+    //     fetch(`${API_ENDPOINT}/getAllFilesInBucket?bucketName=${encodeURIComponent(bucketName)}`, {
+    //         method: 'GET',
+    //     })
+    //         .then(response => response.json())
+    //         .then(files => {
+    //             const fileList = document.getElementById('fileList');
+    //             fileList.innerHTML = ''; // Clear existing list
+    //             files.forEach(file => {
+    //                 const li = document.createElement('li');
+    //                 li.textContent = file;
+    //                 fileList.appendChild(li);
+    //             });
+    //         })
+    //         .catch(error => console.error('Error listing files:', error));
+    // }
+
+    function listFiles() {
+        const bucketName = document.getElementById('bucketName').value;
+        if (!bucketName) {
+            alert('Please enter a bucket name.');
+            return;
+        }
+
+        // Assuming you have an API endpoint /listFiles that returns a list of files for the bucket
+        fetch(`${API_ENDPOINT}/getAllFilesInBucket?bucketName=${encodeURIComponent(bucketName)}`)
+            .then(response => response.json())
+            .then(files => {
+                const fileList = document.getElementById('fileList');
+                fileList.innerHTML = ''; // Clear existing list
+                files.forEach(file => {
+                    const li = document.createElement('li');
+                    li.textContent = file;
+
+                    const previewButton = document.createElement('button');
+                    previewButton.textContent = 'Preview';
+                    previewButton.addEventListener('click', () => previewFile(file));
+                    previewButton.className = "ml-2 bg-purple-500 hover:bg-purple-700 text-white font-bold py-1 px-2 rounded";
+
+                    li.appendChild(previewButton);
+                    fileList.appendChild(li);
+                });
+            })
+            .catch(error => console.error('Error listing files:', error));
+    }
+
+    function previewFile(fileName) {
+        // 检查文件扩展名以判断是否是图片
+        const imageExtensions = ['.jpg', '.jpeg', '.png', '.gif', '.bmp', '.webp'];
+        const isImage = imageExtensions.some(extension => fileName.toLowerCase().endsWith(extension));
+
+        const apiUrl = `${API_ENDPOINT}/preview?fileName=${encodeURIComponent(fileName)}`;
+
+        fetch(apiUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // 假设返回的直接是文件的URL
+            })
+            .then(url => {
+                if (isImage) {
+                    const newUrl = url.replace('http://10.104.96.59:9000', '/apps/wenhao-javaw/product/file/backend');
+                    // 如果是图片，显示图片预览
+                    const previewContent = document.getElementById('previewContent');
+                    previewContent.innerHTML = `<img src="${newUrl}" alt="File Preview" class="mx-auto" />`; // 显示图片在模态框中
+                    document.getElementById('previewModal').classList.remove('hidden');
+                } else {
+                    const newUrl = url.replace('http://10.104.96.59:9000', '/apps/wenhao-javaw/product/file/backend');
+                    // 如果不是图片，触发下载
+                    window.location.href = newUrl; // 这会导致浏览器导航到该URL，触发下载
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching the file:', error);
+            });
+    }
+
+
+    function closeModal() {
+        document.getElementById('previewModal').classList.add('hidden');
+    }
+
+    // Close modal when "Close" button is clicked
+    document.getElementById('closeModalButton').addEventListener('click', closeModal);
+
+
+
+    function removeBucket() {
+        const bucketName = document.getElementById('bucketName').value;
+        fetchWrapper(`${API_ENDPOINT}/removeBucket?bucketName=${bucketName}`, {
+            method: 'GET'
+        }).then(data => {
+            console.log('Bucket Removed:', data);
+            getAllBuckets(); // Refresh bucket list
+        });
+    }
+
+    function getAllBuckets() {
+        fetchWrapper(`${API_ENDPOINT}/getAllBuckets`, {
+            method: 'GET'
+        }).then(bucketNames => {
+            const bucketList = document.getElementById('bucketList');
+            bucketList.innerHTML = ''; // Clear existing list
+            bucketNames.forEach(bucketName => {
+                const li = document.createElement('li');
+                li.textContent = bucketName; // Directly using the string from the array
+                bucketList.appendChild(li);
+            });
+        });
+    }
+
+
+    function uploadFile() {
+        const fileInput = document.getElementById('fileUpload');
+        const file = fileInput.files[0];
+        if (!file) {
+            alert('Please select a file to upload.');
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append('file', file);
+
+        fetch(`${API_ENDPOINT}/upload`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.text(); // Assuming the response is plain text
+            })
+            .then(url => {
+                console.log('File Uploaded:', url);
+                alert(`File uploaded successfully: ${url}`);
+                // Optionally refresh or update the UI here, e.g., displaying the uploaded file URL or embedding the uploaded image/video for preview
+            })
+            .catch(error => console.error('Error uploading file:', error));
+    }
+
+    function downloadFile() {
+        const fileName = document.getElementById('fileName').value;
+        // Implement download functionality
+        // This might involve setting window.location to the file URL or using a dedicated API endpoint
+        console.log('Download File:', fileName);
+    }
+
+    function deleteFile() {
+        const fileName = document.getElementById('fileName').value;
+        fetchWrapper(`${API_ENDPOINT}/delete?fileName=${fileName}`, {
+            method: 'POST' // or 'DELETE', depending on how your API is set up
+        }).then(data => {
+            console.log('File Deleted:', data);
+            // Optionally refresh or update the UI here
+        });
+    }
+
+</script>
+</body>
+</html>
