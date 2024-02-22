@@ -174,7 +174,7 @@
                         25/01/2024, 22:31:47
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="#" class="edit-btn text-indigo-600 hover:text-indigo-900">Edit</a>
                     </td>
                 </tr>
                 <tr class="bg-gray-50">
@@ -203,7 +203,7 @@
                         25/01/2024, 23:43:04
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="#" class="edit-btn text-indigo-600 hover:text-indigo-900">Edit</a>
                     </td>
                 </tr>
                 <tr>
@@ -232,7 +232,7 @@
                         25/01/2024, 23:48:44
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="#" class="edit-btn text-indigo-600 hover:text-indigo-900">Edit</a>
                     </td>
                 </tr>
                 <tr class="bg-gray-50">
@@ -261,7 +261,7 @@
                         25/01/2024, 22:30:09
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                        <a href="#" class="text-indigo-600 hover:text-indigo-900">Edit</a>
+                        <a href="#" class="edit-btn text-indigo-600 hover:text-indigo-900">Edit</a>
                     </td>
                 </tr>
                 </tbody>
@@ -301,6 +301,32 @@
         <img id="enlargedLogo"
              src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png"
              alt="Enlarged Logo" class="rounded-lg"/>
+    </div>
+</div>
+
+<!-- Edit Flow Modal -->
+<div id="editFlowModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Flow</h3>
+            <div class="mt-2 px-7 py-3">
+                <!-- Pre-fill values using JS -->
+                <input type="text" value="Current Flow Name" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <textarea class="mt-2 px-3 py-2 border rounded-md w-full">Current Description</textarea>
+                <select class="mt-2 px-3 py-2 border rounded-md w-full">
+                    <option selected>Current Type</option>
+                    <option>Type 1</option>
+                    <option>Type 2</option>
+                </select>
+                <input type="number" value="Current No. of Edges" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" value="Current No. of Cores" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" value="Current No. of Apps" class="mt-2 px-3 py-2 border rounded-md w-full" />
+            </div>
+            <div class="flex justify-around p-3">
+                <button id="cancelEditBtn" class="px-4 py-2 bg-gray-200 text-black rounded-md mr-2">Cancel</button>
+                <button id="saveEditBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md">Save Changes</button>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -415,6 +441,27 @@
         const icon = event.currentTarget.querySelector('.fa-chevron-down');
         icon.classList.toggle('fa-chevron-up');
     }
+
+    document.querySelectorAll('.edit-btn').forEach(button => {
+        button.addEventListener('click', function(event) {
+            const flowId = this.getAttribute('data-flow-id'); // Use data attributes to identify the flow
+            // Logic to fetch flow details based on `flowId` and populate the modal fields
+            // Show the modal
+            document.getElementById('editFlowModal').classList.remove('hidden');
+        });
+    });
+
+    document.getElementById('saveEditBtn').addEventListener('click', function() {
+        // Logic to save changes
+        // Hide the modal
+        alert('Edit成功');
+        document.getElementById('editFlowModal').classList.add('hidden');
+    });
+
+    document.getElementById('cancelEditBtn').addEventListener('click', function() {
+        document.getElementById('editFlowModal').classList.add('hidden');
+    });
+
 </script>
 </body>
 </html>
