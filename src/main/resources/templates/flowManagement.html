@@ -17,7 +17,7 @@
 <nav class="flex items-center justify-between px-4 py-2 bg-gray-50 text-gray-700 border-b border-gray-200">
     <div class="flex items-center">
         <a href="#" class="flex items-center">
-            <img alt="Your Logo" src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png" class="mr-2 h-12 w-12"/>
+            <img alt="Your Logo" src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png" class="logo mr-2 h-12 w-12"/>
             <span class="text-xl font-semibold">Openiiot</span>
         </a>
         <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
@@ -107,7 +107,7 @@
             <h2 class="text-xl font-semibold">Flows</h2>
             <div class="flex items-center">
                 <input type="search" placeholder="Search" class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none">
-                <button class="ml-4 text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg">
+                <button class="create-flow-btn ml-4 text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg">
                     <i class="fas fa-plus mr-2"></i> Create Flow
                 </button>
             </div>
@@ -269,6 +269,41 @@
         </div>
     </div>
 </div>
+<!-- Create Flow Modal -->
+<div id="createFlowModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative top mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Create New Flow</h3>
+            <div class="mt-2 px-7 py-3">
+                <input type="text" placeholder="Flow Name" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <textarea placeholder="Description" class="mt-2 px-3 py-2 border rounded-md w-full"></textarea>
+                <select class="mt-2 px-3 py-2 border rounded-md w-full">
+                    <option>Type 1</option>
+                    <option>Type 2</option>
+                </select>
+                <input type="number" placeholder="No. of Edges" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" placeholder="No. of Cores" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" placeholder="No. of Apps" class="mt-2 px-3 py-2 border rounded-md w-full" />
+            </div>
+            <div class="items-center px-4 py-3">
+                <button id="cancelBtn" class="px-4 py-2 bg-gray-200 text-black rounded-md mr-2">Cancel</button>
+                <button id="createBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logo Click Modal -->
+<div id="logoModal"
+     class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+        <!-- 放大的 Logo 图片 -->
+        <img id="enlargedLogo"
+             src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png"
+             alt="Enlarged Logo" class="rounded-lg"/>
+    </div>
+</div>
+
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const sidebar = document.getElementById('sidebar');
@@ -331,6 +366,40 @@
             } else {
                 sidebarToggle.style.left = 'calc(97%)'; // 侧边栏打开时，调整位置
                 // sidebarToggle.setAttribute('title', 'Close');
+            }
+        });
+
+        const createFlowBtn = document.querySelector('.create-flow-btn'); // 确保你的创建按钮有这个类
+        const modal = document.getElementById('createFlowModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const createBtn = document.getElementById('createBtn');
+
+        createFlowBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        createBtn.addEventListener('click', () => {
+            alert('发送成功');
+            // 在这里实现创建流程的逻辑
+            modal.classList.add('hidden');
+        });
+
+        const logo = document.querySelector('.logo'); // Logo 的选择器，确保它唯一对应你的 Logo
+        const logoModal = document.getElementById('logoModal');
+
+        logo.addEventListener('click', (e) => {
+            e.preventDefault(); // 防止链接的默认行为
+            logoModal.classList.remove('hidden'); // 显示模态窗口
+        });
+
+        // 点击模态窗口背景也能关闭模态窗口
+        logoModal.addEventListener('click', (e) => {
+            if (e.target === logoModal) {
+                logoModal.classList.add('hidden');
             }
         });
     });
