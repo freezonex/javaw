@@ -46,11 +46,11 @@
 
 <div class="flex flex-1 overflow-hidden">
     <!-- Sidebar -->
-    <div id="sidebar" class="w-64 bg-gray-50 shadow-md relative">
+    <div id="sidebar" class="w-64 bg-gray-50 shadow-md relative transition-width duration-300 ease-in-out">
         <div class="p-6">
-            <h1 id="sidebarTitle" class="text-2xl font-semibold">Configuration Board</h1>
+            <h1 id="sidebarTitle" class="text-2xl font-semibold transition-opacity duration-300 ease-in-out opacity-100">Configuration Board</h1>
         </div>
-        <nav id="sidebarNav" class="text-sm">
+        <nav id="sidebarNav" class="text-sm transition-opacity duration-300 ease-in-out opacity-100">
             <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200" onclick="toggleSubMenu(event)">
                 <i class="fas fa-users mr-3 w-[1rem]"></i>
                 User Management
@@ -96,6 +96,9 @@
         <button id="sidebarToggle" class="absolute top-1/2 -translate-y-1/2 right-0 transform mr-2 focus:outline-none" style="right: -1rem;">
             <i class="fas fa-arrow-left text-gray-600 hover:text-gray-900"></i>
         </button>
+        <div id="tooltip" class="hidden absolute z-10 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-md">
+            <!-- 工具提示文本将通过 JavaScript 动态设置 -->
+        </div>
     </div>
 
     <!-- Main Content -->
@@ -267,26 +270,69 @@
     </div>
 </div>
 <script>
-    const sidebar = document.getElementById('sidebar');
-    const sidebarTitle = document.getElementById('sidebarTitle');
-    const sidebarNav = document.getElementById('sidebarNav');
-    const sidebarToggle = document.getElementById('sidebarToggle');
+    document.addEventListener('DOMContentLoaded', function () {
+        const sidebar = document.getElementById('sidebar');
+        const sidebarTitle = document.getElementById('sidebarTitle');
+        const sidebarNav = document.getElementById('sidebarNav');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const tooltip = document.getElementById('tooltip'); // 获取工具提示元素
 
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('w-0');
-        sidebar.classList.toggle('w-64');
-        sidebarTitle.classList.toggle('hidden'); // 切换标题的隐藏状态
-        sidebarNav.classList.toggle('hidden'); // 切换导航的隐藏状态
-        // 切换箭头方向
-        sidebarToggle.querySelector('i').classList.toggle('fa-arrow-left');
-        sidebarToggle.querySelector('i').classList.toggle('fa-arrow-right');
-
-        // 移动sidebarToggle
-        if (sidebar.classList.contains('w-0')) {
-            sidebarToggle.style.left = '0';
-        } else {
-            sidebarToggle.style.left = 'calc(97%)'; // 侧边栏打开时，调整位置
+        // 显示工具提示
+        function showTooltip(text) {
+            tooltip.textContent = text; // 设置工具提示文本
+            const toggleRect = sidebarToggle.getBoundingClientRect(); // 获取切换按钮的位置和尺寸
+            tooltip.style.left = `${toggleRect.left - tooltip.offsetWidth + 40}px`; // 左移动，考虑工具提示自身宽度和额外的间距
+            tooltip.style.top = `${toggleRect.top + window.scrollY - tooltip.offsetHeight / 2 -40}px`; // 上移动，考虑滚动偏移
+            tooltip.classList.remove('hidden'); // 显示工具提示
         }
+
+        // 隐藏工具提示
+        function hideTooltip() {
+            tooltip.classList.add('hidden');
+        }
+
+        sidebarToggle.addEventListener('mouseenter', (event) => {
+            const tooltipText = sidebar.classList.contains('w-0') ? 'Open' : 'Close';
+            showTooltip(tooltipText, event); // 显示工具提示
+        });
+
+        sidebarToggle.addEventListener('mouseleave', hideTooltip); // 鼠标离开时隐藏工具提示
+
+        sidebarToggle.addEventListener('click', () => {
+            const isOpening = sidebar.classList.contains('w-0');
+            sidebar.classList.toggle('w-0');
+            sidebar.classList.toggle('w-64');
+
+            // 根据侧边栏是正在打开还是关闭来添加/移除透明度类
+            if (isOpening) {
+                // 正在打开侧边栏，添加 opacity-100 类，并移除 opacity-0
+                setTimeout(() => {
+                    sidebarTitle.classList.replace('opacity-0', 'opacity-100');
+                    sidebarNav.classList.replace('opacity-0', 'opacity-100');
+                }, 100); // 给宽度变化留出时间
+            } else {
+                // 正在关闭侧边栏，添加 opacity-0 类，并移除 opacity-100
+                sidebarTitle.classList.replace('opacity-100', 'opacity-0');
+                sidebarNav.classList.replace('opacity-100', 'opacity-0');
+            }
+
+            // 切换箭头方向
+            sidebarToggle.querySelector('i').classList.toggle('fa-arrow-left');
+            sidebarToggle.querySelector('i').classList.toggle('fa-arrow-right');
+
+            // 更新工具提示文本
+            const tooltipText = isOpening ? 'Close' : 'Open';
+            tooltip.textContent = tooltipText;
+
+            // 移动sidebarToggle
+            if (sidebar.classList.contains('w-0')) {
+                sidebarToggle.style.left = '0';
+                // sidebarToggle.setAttribute('title', 'Open');
+            } else {
+                sidebarToggle.style.left = 'calc(97%)'; // 侧边栏打开时，调整位置
+                // sidebarToggle.setAttribute('title', 'Close');
+            }
+        });
     });
 
     function toggleSubMenu(event) {
