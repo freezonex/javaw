@@ -76,7 +76,7 @@ public class frontEnd {
     @ApiOperation(value = "openIIOT用例展示",notes = "openIIOT用例展示")
     @GetMapping("/flowmanagement")
     public String view25() {
-        return "flowmanagement.html";
+        return "flowManagement.html";
     }
 
     @ApiOperation(value = "minio展示",notes = "minio用例展示")
