@@ -34,7 +34,7 @@
         <include refid="Base_Column_List"/>
         from lotto
         where del_flag=0
-        order by id desc
+        order by period desc
     </select>
 
     <select id="selectAllWithoutSend" resultType="com.supos.app.entity.Lotto">
