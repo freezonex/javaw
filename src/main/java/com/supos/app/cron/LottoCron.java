@@ -97,7 +97,7 @@ public class LottoCron {
                     prize = "七等奖，奖金 100元";
                 } else if (matchFront == 3 && matchBack == 1 || matchFront == 2 && matchBack == 2) {
                     prize = "八等奖，奖金 15元";
-                } else if (matchFront <= 3 && matchBack <= 2 && (matchFront + matchBack) >= 1) {
+                } else if (matchFront == 3 && matchBack == 0|| matchFront == 2 && matchBack == 1|| matchFront == 1 && matchBack == 2|| matchFront == 0 && matchBack == 2) {
                     prize = "九等奖，奖金 5元";
                 }
 
