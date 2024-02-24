@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supos.app.mapper.LottoMapper">
+
+    <resultMap id="BaseResultMap" type="com.supos.app.entity.Lotto">
+            <id property="id" column="id" jdbcType="INTEGER"/>
+            <result property="period" column="period" jdbcType="VARCHAR"/>
+            <result property="number" column="number" typeHandler="com.baomidou.mybatisplus.extension.handlers.FastjsonTypeHandler"/>
+            <result property="email" column="email" jdbcType="VARCHAR"/>
+            <result property="time" column="time" jdbcType="TIMESTAMP"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="result" column="result" jdbcType="TIMESTAMP"/>
+            <result property="send_flag" column="send_flag" jdbcType="INTEGER"/>
+            <result property="del_flag" column="del_flag" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,period,number,
+        email,time,send_flag,
+        del_flag,result,name
+    </sql>
+    <update id="updateByIdForLotto">
+        UPDATE lotto
+        SET
+            result = #{result,jdbcType=VARCHAR},
+            send_flag = #{send_flag,jdbcType=INTEGER}
+        WHERE id = #{id,jdbcType=INTEGER}
+    </update>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from lotto
+        where del_flag=0
+        order by id desc
+    </select>
+
+    <select id="selectAllWithoutSend" resultType="com.supos.app.entity.Lotto">
+        select
+        <include refid="Base_Column_List"/>
+        from lotto
+        where del_flag=0
+        and send_flag=0
+    </select>
+
+    <insert id="insert" parameterType="com.supos.app.entity.Lotto">
+        INSERT INTO lotto
+        (period, number, email, time, send_flag, del_flag, result, name)
+        VALUES
+        (
+        #{period},
+        #{number},
+        #{email},
+        COALESCE(#{time}, NOW()),  <!-- 使用COALESCE检查time是否为null，如果是则使用NOW() -->
+        COALESCE(#{send_flag}, 0),
+        COALESCE(#{del_flag}, 0),
+        #{result},
+        #{name}
+        )
+    </insert>
+</mapper>

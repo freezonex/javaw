@@ -1,0 +1,650 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Openiot Configuration Board</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<nav class="flex items-center justify-between px-4 py-2 bg-gray-50 text-gray-700 border-b border-gray-200">
+    <div class="flex items-center">
+        <a href="#" class="flex items-center">
+            <img alt="Your Logo" src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png" class="logo mr-2 h-12 w-12"/>
+            <span class="text-xl font-semibold">Vegetable</span>
+        </a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Products</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Services</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">About Us</a>
+    </div>
+    <div class="relative">
+        <input class="bg-gray-100 text-sm text-gray-700 rounded-md pl-10 py-1 focus:outline-none focus:ring-2 focus:ring-gray-200 w-96" placeholder="Search" type="text"/>
+        <span class="absolute left-2 top-0 mt-2 ml-2 text-gray-400">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+    <div class="flex items-center">
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-bell"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-clipboard-list"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-comment-alt"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-cog"></i></button>
+        <div class="mx-2 text-gray-700 text-sm">
+            N. Virginia
+        </div>
+        <button class="mx-2 text-sm text-gray-700 bg-gray-100 py-1 px-4 rounded-md hover:bg-gray-200">Wenhao</button>
+    </div>
+</nav>
+
+
+<div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="w-64 bg-gray-50 shadow-md relative transition-width duration-300 ease-in-out">
+        <div class="p-6">
+            <h1 id="sidebarTitle" class="text-2xl font-semibold transition-opacity duration-300 ease-in-out opacity-100">Configuration Board</h1>
+        </div>
+        <nav id="sidebarNav" class="text-sm transition-opacity duration-300 ease-in-out opacity-100">
+            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200" onclick="toggleSubMenu(event)">
+                <i class="fas fa-users mr-3 w-[1rem]"></i>
+                User Management
+                <i class="fas fa-chevron-down ml-auto"></i>
+            </a>
+            <!-- 子菜单项 -->
+            <ul id="userSubMenu" class="pl-9">
+                <li>
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-user mr-3 w-[1rem]"></i>
+                        Manage Users
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-user-plus mr-3 w-[1rem]"></i>
+                        Add User
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-network-wired mr-3 w-[1rem]"></i>
+                Lotto Management
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-microchip mr-3 w-[1rem]"></i>
+                Core Management
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-th-large mr-3 w-[1rem]"></i>
+                App Management
+            </a>
+            <a href="http://47.236.10.165:8080/apps/wenhao-javaw/flowmanagement" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-random mr-3 w-[1rem]"></i>
+                Flow Management
+            </a>
+            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-sign-out-alt mr-3 w-[1rem]"></i>
+                Logout
+            </a>
+        </nav>
+        <!-- 图标触发器 -->
+        <button id="sidebarToggle" class="absolute top-1/2 -translate-y-1/2 right-0 transform mr-2 focus:outline-none" style="right: -1rem;">
+            <i class="fas fa-arrow-left text-gray-600 hover:text-gray-900"></i>
+        </button>
+        <div id="tooltip" class="hidden absolute z-10 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-md">
+            <!-- 工具提示文本将通过 JavaScript 动态设置 -->
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="flex-1 p-8 overflow-auto">
+        <!-- 预测横幅 -->
+        <div class="mb-6 p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700">
+            <h3 class="font-semibold">最佳彩票预测</h3>
+            <p id="prediction"></p>
+        </div>
+
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-semibold">Lotto</h2>
+            <div class="flex items-center">
+                <input type="search" placeholder="Search" class="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none">
+                <button class="create-flow-btn ml-4 text-sm bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-4 rounded-lg">
+                    <i class="fas fa-plus mr-2"></i> Create Lotto
+                </button>
+            </div>
+        </div>
+
+        <!-- Table -->
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            <table class="w-full table-auto">
+                <thead class="bg-gray-200">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Period
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Name
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Number
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Result
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Email
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Time
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Update time
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Create time
+                    </th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                        Actions
+                    </th>
+                </tr>
+                </thead>
+                <tbody class="bg-white">
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<div id="createFlowModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative top mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3 text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Upload File</h3>
+            <div class="mt-2 px-7 py-3">
+                <!-- Name input -->
+                <select class="mt-1 px-3 py-2 border rounded-md w-full">
+                    <option value="Wenhao">Wenhao</option>
+                    <option value="Crystal">Crystal</option>
+                </select>
+                <!-- Lottery period input -->
+                <input id="lotteryPeriod" type="text" placeholder="Lottery Period" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <!-- Lottery numbers input -->
+                <textarea id="lotteryNumbers" placeholder="Lottery Numbers" class="mt-2 px-3 py-2 border rounded-md w-full" rows="5"></textarea>
+            </div>
+            <!-- Buttons below the text inputs -->
+            <div class="items-center px-4 py-3">
+                <button id="cancelBtn" class="px-4 py-2 bg-gray-200 text-black rounded-md mr-2">Cancel</button>
+                <button id="createBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md">Create</button>
+            </div>
+            <hr class="mt-4 mb-4 border-gray-300">
+            <div class="mt-2 px-7 py-3">
+                <!-- File upload input -->
+                <input type="file" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <!-- Upload button -->
+                <button id="uploadBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md mt-2">Upload</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logo Click Modal -->
+<div id="logoModal"
+     class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+        <!-- 放大的 Logo 图片 -->
+        <img id="enlargedLogo"
+             src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png"
+             alt="Enlarged Logo" class="rounded-lg"/>
+    </div>
+</div>
+
+<!-- Edit Flow Modal -->
+<div id="editFlowModal" class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="text-center">
+            <h3 class="text-lg leading-6 font-medium text-gray-900">Edit Flow</h3>
+            <div class="mt-2 px-7 py-3">
+                <!-- Pre-fill values using JS -->
+                <input type="text" value="Current Flow Name" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <textarea class="mt-2 px-3 py-2 border rounded-md w-full">Current Description</textarea>
+                <select class="mt-2 px-3 py-2 border rounded-md w-full">
+                    <option selected>Current Type</option>
+                    <option>Type 1</option>
+                    <option>Type 2</option>
+                </select>
+                <input type="number" value="Current No. of Edges" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" value="Current No. of Cores" class="mt-2 px-3 py-2 border rounded-md w-full" />
+                <input type="number" value="Current No. of Apps" class="mt-2 px-3 py-2 border rounded-md w-full" />
+            </div>
+            <div class="flex justify-around p-3">
+                <button id="cancelEditBtn" class="px-4 py-2 bg-gray-200 text-black rounded-md mr-2">Cancel</button>
+                <button id="saveEditBtn" class="px-4 py-2 bg-blue-500 text-white rounded-md">Save Changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const predictionKey = 'dailyLottoPrediction';
+        const lastUpdatedKey = 'lastUpdatedDate';
+
+        function generateRandomPrediction() {
+            // 随机生成预测号码，这里假设是7个号码，每个号码范围是01到35
+            let prediction = [];
+            for (let i = 0; i < 7; i++) {
+                let number = Math.floor(Math.random() * 35) + 1; // 生成1到35的随机数
+                prediction.push(number < 10 ? '0' + number.toString() : number.toString()); // 确保格式为两位数
+            }
+            return prediction.join(', ');
+        }
+
+        function updatePredictionIfNeeded() {
+            const today = new Date().toDateString();
+            const lastUpdatedDate = localStorage.getItem(lastUpdatedKey);
+
+            if (today !== lastUpdatedDate) {
+                // 如果今天的日期与最后更新的日期不同，则生成新的预测
+                const newPrediction = generateRandomPrediction();
+                localStorage.setItem(predictionKey, newPrediction);
+                localStorage.setItem(lastUpdatedKey, today);
+                return newPrediction;
+            } else {
+                // 否则，返回存储的预测
+                return localStorage.getItem(predictionKey);
+            }
+        }
+
+        // 显示预测结果
+        function displayPrediction() {
+            const prediction = updatePredictionIfNeeded();
+            const predictionElement = document.getElementById('prediction');
+            predictionElement.textContent = `下一期彩票的预测号码为: ${prediction}`;
+        }
+
+        displayPrediction();
+
+        const sidebar = document.getElementById('sidebar');
+        const sidebarTitle = document.getElementById('sidebarTitle');
+        const sidebarNav = document.getElementById('sidebarNav');
+        const sidebarToggle = document.getElementById('sidebarToggle');
+        const tooltip = document.getElementById('tooltip'); // 获取工具提示元素
+
+        // 显示工具提示
+        function showTooltip(text) {
+            tooltip.textContent = text; // 设置工具提示文本
+            const toggleRect = sidebarToggle.getBoundingClientRect(); // 获取切换按钮的位置和尺寸
+            tooltip.style.left = `${toggleRect.left - tooltip.offsetWidth + 40}px`; // 左移动，考虑工具提示自身宽度和额外的间距
+            tooltip.style.top = `${toggleRect.top + window.scrollY - tooltip.offsetHeight / 2 -40}px`; // 上移动，考虑滚动偏移
+            tooltip.classList.remove('hidden'); // 显示工具提示
+        }
+
+        // 隐藏工具提示
+        function hideTooltip() {
+            tooltip.classList.add('hidden');
+        }
+
+        sidebarToggle.addEventListener('mouseenter', (event) => {
+            const tooltipText = sidebar.classList.contains('w-0') ? 'Open' : 'Close';
+            showTooltip(tooltipText, event); // 显示工具提示
+        });
+
+        sidebarToggle.addEventListener('mouseleave', hideTooltip); // 鼠标离开时隐藏工具提示
+
+        sidebarToggle.addEventListener('click', () => {
+            const isOpening = sidebar.classList.contains('w-0');
+            sidebar.classList.toggle('w-0');
+            sidebar.classList.toggle('w-64');
+
+            // 根据侧边栏是正在打开还是关闭来添加/移除透明度类
+            if (isOpening) {
+                // 正在打开侧边栏，添加 opacity-100 类，并移除 opacity-0
+                setTimeout(() => {
+                    sidebarTitle.classList.replace('opacity-0', 'opacity-100');
+                    sidebarNav.classList.replace('opacity-0', 'opacity-100');
+                }, 100); // 给宽度变化留出时间
+            } else {
+                // 正在关闭侧边栏，添加 opacity-0 类，并移除 opacity-100
+                sidebarTitle.classList.replace('opacity-100', 'opacity-0');
+                sidebarNav.classList.replace('opacity-100', 'opacity-0');
+            }
+
+            // 切换箭头方向
+            sidebarToggle.querySelector('i').classList.toggle('fa-arrow-left');
+            sidebarToggle.querySelector('i').classList.toggle('fa-arrow-right');
+
+            // 更新工具提示文本
+            const tooltipText = isOpening ? 'Close' : 'Open';
+            tooltip.textContent = tooltipText;
+
+            // 移动sidebarToggle
+            if (sidebar.classList.contains('w-0')) {
+                sidebarToggle.style.left = '0';
+                // sidebarToggle.setAttribute('title', 'Open');
+            } else {
+                sidebarToggle.style.left = 'calc(97%)'; // 侧边栏打开时，调整位置
+                // sidebarToggle.setAttribute('title', 'Close');
+            }
+        });
+
+        const createFlowBtn = document.querySelector('.create-flow-btn'); // 确保你的创建按钮有这个类
+        const modal = document.getElementById('createFlowModal');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const createBtn = document.getElementById('createBtn');
+
+        createFlowBtn.addEventListener('click', () => {
+            modal.classList.remove('hidden');
+        });
+
+        cancelBtn.addEventListener('click', () => {
+            modal.classList.add('hidden');
+        });
+
+        createBtn.addEventListener('click', () => {
+            // Extracting values from input fields
+            const name = document.querySelector('#createFlowModal select').value;
+            const period = document.getElementById('lotteryPeriod').value;
+            const numbers = document.getElementById('lotteryNumbers').value;
+
+            // Attempting to parse the numbers field to validate JSON format
+            try {
+                const parsedNumbers = JSON.parse(numbers); // This line will throw an error if `numbers` is not valid JSON
+
+                // Creating JSON object with the extracted values
+                const data = {
+                    name: name,
+                    period: period,
+                    number: parsedNumbers
+                };
+
+                // Proceed with sending data to the backend API if numbers is valid JSON
+                fetch('/lotto/insert', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                })
+                    .then(response => {
+                        if (response.ok) {
+                            return response.json();
+                        }
+                        throw new Error('Network response was not ok.');
+                    })
+                    .then(jsonData => {
+                        // Handle successful response
+                        console.log(jsonData);
+                        alert('发送成功');
+                        modal.classList.add('hidden');
+                        location.reload();
+                    })
+                    .catch(error => {
+                        // Handle error
+                        console.error('There was a problem with the fetch operation:', error);
+                        alert('发送失败');
+                    });
+            } catch (error) {
+                // Handle JSON parsing error
+                console.error('JSON 格式错误:', error);
+                alert('Lottery Numbers 格式错误，请输入有效的 JSON 格式');
+            }
+        });
+
+
+        // 在模态框外部点击时隐藏模态框
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.classList.add('hidden');
+            }
+        });
+
+        const logo = document.querySelector('.logo'); // Logo 的选择器，确保它唯一对应你的 Logo
+        const logoModal = document.getElementById('logoModal');
+
+        logo.addEventListener('click', (e) => {
+            e.preventDefault(); // 防止链接的默认行为
+            logoModal.classList.remove('hidden'); // 显示模态窗口
+        });
+
+        // 点击模态窗口背景也能关闭模态窗口
+        logoModal.addEventListener('click', (e) => {
+            if (e.target === logoModal) {
+                logoModal.classList.add('hidden');
+            }
+        });
+
+        const tableData = [
+        ];
+
+        // 调用 /lotto/history 接口获取数据
+        fetch('/lotto/history')
+            .then(response => response.json())
+            .then(data => {
+                // 将获取到的数据追加到 tableData 数组中
+                data.forEach(item => {
+                    item.updateTime = "25/01/2024";
+                    item.createTime = "25/01/2024";
+                    item.send_flag = item.send_flag === 1 ?
+                        "<i class='fas fa-envelope-open-text text-blue-500'></i>" : // 已发送使用蓝色信封图标
+                        "<i class='fas fa-envelope text-gray-400'></i>"; // 未发送使用灰色信封图标
+                    item.actions = "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
+                        "<a href='https://www.lottery.gov.cn/tool/dltjsq.jspx/' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>";
+                    // 将更新后的数据添加到 tableData 数组中
+                    tableData.push(item);
+                });
+                // 在这里对数据进行渲染等操作
+                const tableBody = document.querySelector('.table-auto tbody');
+
+                const columnOrder = ['period', 'name', 'number', 'result', 'send_flag', 'time', 'updateTime', 'createTime', 'actions']; // 根据需要调整这个顺序
+
+                tableData.forEach((row, index) => {
+                    const tr = document.createElement('tr');
+                    tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+
+                    columnOrder.forEach(key => {
+                        if (key !== 'id') {
+                            const td = document.createElement('td');
+                            td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                            if (key === 'actions' || key === 'send_flag') { // 对于 actions 和 send_flag 列，我们将使用 innerHTML 来插入内容
+                                td.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium';
+                                td.innerHTML = row[key];
+                            } else if (key === 'time' && row[key]) {
+                                td.textContent = row[key].substring(0, 10);
+                            } else {
+                                td.textContent = row[key];
+                            }
+                            tr.appendChild(td);
+                        }
+                    });
+
+                    tableBody.appendChild(tr);
+                });
+            })
+            .catch(error => {
+                console.error('Error fetching data:', error);
+            });
+
+        const dataTable = document.querySelector('.table-auto');
+
+        // 在表格上添加点击事件监听器
+        dataTable.addEventListener('click', function(event) {
+            // 检查点击的元素是否是我们关注的 'edit-btn'
+            if (event.target && event.target.matches('.edit-btn')) {
+                const flowId = event.target.getAttribute('data-flow-id'); // 获取数据流ID
+                // 这里实现获取数据流详情并填充到编辑模态框的逻辑
+                document.getElementById('editFlowModal').classList.remove('hidden'); // 显示编辑模态框
+                event.preventDefault(); // 阻止链接默认行为
+            }
+        });
+
+        // 获取上传按钮
+        var uploadBtn = document.getElementById("uploadBtn");
+
+        // 添加点击事件监听器
+        uploadBtn.addEventListener("click", function () {
+            // 要上传的文件
+            var fileInput = document.querySelector('input[type="file"]');
+            var file = fileInput.files[0];
+
+            // 创建一个 FormData 对象，用于将文件数据发送到服务器
+            var formData = new FormData();
+            formData.append("file", file);
+
+            // 发送 POST 请求到指定接口
+            fetch('/apps/wenhao-javaw/upload', {
+                method: 'POST',
+                body: formData
+            })
+                .then(response => {
+                    if (response.ok) {
+                        return response.json(); // 将响应解析为 JSON 格式并返回
+                    } else {
+                        // 如果响应不成功，处理错误
+                        console.error('Failed to upload file');
+                        alert('创建成功');
+                        document.getElementById('createFlowModal').classList.add('hidden');
+                        throw new Error('Failed to upload file'); // 抛出一个错误
+                    }
+                })
+                .then(data => {
+                    // 创建一个数组来存储关键字
+                    let keywords = [];
+
+                    // 从data中提取关键字并输出到控制台
+                    if (data && data.result) {
+                        data.result[0].forEach(item => {
+                            if (item[1]) {
+                                keywords.push(item[1][0]); // 将关键字推送到数组中
+                            }
+                        });
+                    }
+                    let keywordsJSON = JSON.stringify(keywords);
+                    // 输出 JSON 字符串到控制台
+                    console.log(keywordsJSON);
+
+                    let keywordsArray = JSON.parse(keywordsJSON);
+
+                    let keywordGroups = [];
+                    let currentGroup = [];
+
+                    keywordsArray.forEach(keyword => {
+                        // 匹配三种不同的模式：三位数、两位数、两组两位数以及以0或①-⑩开头的三位数
+                        let matchThreeDigits = keyword.match(/^\d{3}$/);
+                        let matchTwoDigits = keyword.match(/^\d{2}$/);
+                        let matchTwoGroupsOfTwoDigits = keyword.match(/^\d{2}.\d{2}$/);
+                        let matchSpecialThreeDigits = keyword.match(/^(0\d{2}|[①-⑩]\d{2})$/);
+
+                        if (matchThreeDigits) {
+                            // 如果是三位数，保留后两位并插入数组
+                            currentGroup.push(matchThreeDigits[0].substring(1));
+                        } else if (matchTwoDigits) {
+                            // 如果是两位数，直接插入数组
+                            currentGroup.push(matchTwoDigits[0]);
+                        } else if (matchTwoGroupsOfTwoDigits) {
+                            // 如果是两组两位数，根据任意字符拆分并分别插入
+                            let splitNumbers = matchTwoGroupsOfTwoDigits[0].split(/[^0-9]+/);
+                            currentGroup.push(...splitNumbers);
+                        } else if (matchSpecialThreeDigits) {
+                            // 如果是特殊的三位数，保留后两位并插入数组
+                            currentGroup.push(matchSpecialThreeDigits[0].substring(1));
+                        }
+
+                        // 当当前组关键字数量达到7个时，将其添加到关键字组中，并重置当前组
+                        if (currentGroup.length === 7) {
+                            keywordGroups.push(currentGroup);
+                            currentGroup = [];
+                        }
+                    });
+                    // 如果循环结束后当前组中还有元素，也将其添加到关键字组中
+                    // if (currentGroup.length > 0) {
+                    //     keywordGroups.push(currentGroup);
+                    // }
+                    console.log('算法1 ',keywordGroups);
+
+                    if (keywordGroups.length === 0){
+                        let tmp = [];
+
+                        let result = keywords.join('');
+                        console.log(result);
+
+                        // 匹配14位数字，其中第10位可能是一个加号(+)
+                        let regex = /\d{10}\+?\d{4}/g;
+
+                        let matches = result.match(regex);
+                        let matchesString = matches.join('').replace(/\+/g, '');
+                        console.log(matchesString);
+
+                        for (var i = 0; i < matchesString.length; i += 2) {
+                            // 提取每两个字符，并保留为字符串格式
+                            var pair = matchesString.substring(i, i + 2);
+                            // 将字符串对转换为数组并添加到结果数组中
+                            tmp.push(pair);
+                        }
+                        keywordGroups.push(tmp);
+                    }
+
+                    console.log(keywordGroups);
+
+                    // // 将keywordGroups数组转换为横向格式的字符串
+                    // let formattedText = keywordGroups.map(group => "[\"" + group.join('","') + "\"]").join('\n');
+                    // // 更新<textarea>元素
+                    // document.getElementById('lotteryNumbers').value = formattedText;
+                    // document.getElementById('lotteryNumbers').value = keywordGroups.map(group => {
+                    //     return "[" + group.join(",") + "]";
+                    // }).join(",\n");
+                    document.getElementById('lotteryNumbers').value = JSON.stringify(keywordGroups);
+
+                    keywordsArray.forEach(keyword => {
+                        // 匹配三种不同的模式：三位数、两位数、两组两位数以及以0或①-⑩开头的三位数
+                        let period = keyword.match(/^\d{5}$|^第\d{5}$|^第\d{5}期$/g);
+
+                        if (period) {
+                            // 提取数字部分并插入数组
+                            let numberPart = keyword.match(/\d{5}/g)[0];
+                            document.getElementById('lotteryPeriod').value =numberPart;
+                        }
+                    });
+
+                    // 如果响应成功，可以执行一些操作
+                    // alert('创建成功');
+                    // document.getElementById('createFlowModal').classList.add('hidden');
+                    console.log('File uploaded successfully!');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        });
+
+    });
+
+    function toggleSubMenu(event) {
+        // 阻止默认链接行为
+        event.preventDefault();
+        // 切换子菜单的显示状态
+        const subMenu = document.getElementById('userSubMenu');
+        subMenu.classList.toggle('hidden');
+
+        // 切换子菜单图标方向
+        const icon = event.currentTarget.querySelector('.fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+    }
+
+    document.getElementById('saveEditBtn').addEventListener('click', function() {
+        // Logic to save changes
+        // Hide the modal
+        alert('Edit成功');
+        document.getElementById('editFlowModal').classList.add('hidden');
+    });
+
+    document.getElementById('cancelEditBtn').addEventListener('click', function() {
+        document.getElementById('editFlowModal').classList.add('hidden');
+    });
+
+</script>
+</body>
+</html>

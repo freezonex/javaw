@@ -73,6 +73,12 @@ public class frontEnd {
         return "inventory.html";
     }
 
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/lottomanagement")
+    public String view26() {
+        return "lottoManagement.html";
+    }
+
     @ApiOperation(value = "openIIOT用例展示",notes = "openIIOT用例展示")
     @GetMapping("/flowmanagement")
     public String view25() {
