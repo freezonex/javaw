@@ -29,7 +29,7 @@ public class LottoCron {
     @Autowired
     LottoServiceImpl lottoServiceImpl;
 
-    @Scheduled(cron="0 0 0/1 * * ?")   //每5秒执行一次
+    @Scheduled(cron="0 0 0/1 * * ?")   //每一小时执行一次
 //    @Scheduled(cron="0/5 * * * * ?")   //每5秒执行一次
     public void execute() throws IOException {
 
