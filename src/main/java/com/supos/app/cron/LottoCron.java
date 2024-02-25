@@ -118,7 +118,7 @@ public class LottoCron {
             String email = userEmails.get(name);
 
             sampleMailDto mailDto = new sampleMailDto();
-            mailDto.setName(String.join(", ", prizes)); // 中奖细节作为邮件内容
+            mailDto.setName(String.join(", ", prizes)+" 开奖号码为："+lotteryDrawResult); // 中奖细节作为邮件内容
             mailDto.setMail(email); // 设置收件人邮箱
 
             sendLottoMail(mailDto); // 发送邮件
