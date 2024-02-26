@@ -203,7 +203,7 @@ public class frontEnd {
         sampleMailDto mail = new sampleMailDto();
         mail.setMail(email);
         mail.setName(name);
-        String text="http://47.236.10.165:8080/apps/wenhao-javaw/contactpage?name="+name+"&email="+email;
+        String text="/apps/wenhao-javaw/contactpage?name="+name+"&email="+email;
         byte[] imageBytes = null;
         try {
             int width = 300; // 二维码图片的宽度

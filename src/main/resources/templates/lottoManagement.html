@@ -85,7 +85,7 @@
                 <i class="fas fa-th-large mr-3 w-[1rem]"></i>
                 App Management
             </a>
-            <a href="http://47.236.10.165:8080/apps/wenhao-javaw/flowmanagement" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="/apps/wenhao-javaw/flowmanagement" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-random mr-3 w-[1rem]"></i>
                 Flow Management
             </a>
@@ -171,11 +171,13 @@
                 <select class="mt-1 px-3 py-2 border rounded-md w-full">
                     <option value="Wenhao">Wenhao</option>
                     <option value="Crystal">Crystal</option>
+                    <option value="Zhanzhan">Zhanzhan</option>
+                    <option value="Shimu">Shimu</option>
                 </select>
                 <!-- Lottery period input -->
                 <input id="lotteryPeriod" type="text" placeholder="Lottery Period" class="mt-2 px-3 py-2 border rounded-md w-full" />
                 <!-- Lottery numbers input -->
-                <textarea id="lotteryNumbers" placeholder='请输入彩票号码，格式如下：[["08","17","19","24","28","01","02"]]' class="mt-2 px-3 py-2 border rounded-md w-full" rows="5"></textarea>
+                <textarea id="lotteryNumbers" placeholder='请输入彩票号码，格式如下：08293032341011' class="mt-2 px-3 py-2 border rounded-md w-full" rows="5"></textarea>
             </div>
             <!-- Buttons below the text inputs -->
             <div class="items-center px-4 py-3">
@@ -364,7 +366,7 @@
                 };
 
                 // Proceed with sending data to the backend API if numbers is valid JSON
-                fetch('/lotto/insert', {
+                fetch('/apps/wenhao-javaw/lotto/insert', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -396,6 +398,26 @@
             }
         });
 
+        const lotteryNumbersInput = document.getElementById('lotteryNumbers');
+
+        lotteryNumbersInput.addEventListener('blur', function () {
+            const rawNumbers = lotteryNumbersInput.value;
+            const formattedNumbers = formatLotteryNumbers(rawNumbers);
+            lotteryNumbersInput.value = JSON.stringify(formattedNumbers);
+        });
+
+        function formatLotteryNumbers(numbers) {
+            const result = [];
+            // 将输入字符串分割为两个字符一组的数组
+            const pairs = numbers.match(/.{1,2}/g) || [];
+            // 每14个数字（7个双位）为一组分割数组
+            for (let i = 0; i < pairs.length; i += 7) {
+                const chunk = pairs.slice(i, i + 7);
+                if (chunk.length) result.push(chunk);
+            }
+            return result;
+        }
+
 
         // 在模态框外部点击时隐藏模态框
         window.addEventListener('click', (event) => {
@@ -423,7 +445,7 @@
         ];
 
         // 调用 /lotto/history 接口获取数据
-        fetch('/lotto/history')
+        fetch('/apps/wenhao-javaw/lotto/history')
             .then(response => response.json())
             .then(data => {
                 // 将获取到的数据追加到 tableData 数组中

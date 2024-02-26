@@ -13,7 +13,7 @@ import java.util.List;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "lotto")
+@RequestMapping(value = "/lotto")
 public class LottoController {
 
     @Autowired
@@ -35,7 +35,13 @@ public class LottoController {
             lotto.setEmail("yuwenhao@freezonex.io");
         } else if ("Crystal".equals(lotto.getName())) {
             // 如果 lotto.name 等于 "Crystal"，设置 email 为 "Crystal@freezonex.io"
-            lotto.setEmail("Crystal@freezonex.io");
+            lotto.setEmail("zhxfirst@163.com");
+        }else if ("Zhanzhan".equals(lotto.getName())) {
+            // 如果 lotto.name 等于 "Crystal"，设置 email 为 "Crystal@freezonex.io"
+            lotto.setEmail("renzhanxiang@freezonex.io");
+        }else if ("Shimu".equals(lotto.getName())) {
+            // 如果 lotto.name 等于 "Crystal"，设置 email 为 "Crystal@freezonex.io"
+            lotto.setEmail("zhujianan@freezonex.io");
         }
 
         lottoServiceImpl.insert(lotto);
