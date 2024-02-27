@@ -358,6 +358,24 @@
             try {
                 const parsedNumbers = JSON.parse(numbers); // This line will throw an error if `numbers` is not valid JSON
 
+                // Function to validate the format of lottery numbers
+                const isValidFormat = (numbers) => {
+                    // Check if it's an array of arrays
+                    if (!Array.isArray(numbers) || !numbers.every(Array.isArray)) {
+                        return false;
+                    }
+                    // Check each array for valid two-digit number strings
+                    return numbers.every(subArray =>
+                        subArray.every(item =>
+                            typeof item === 'string' && /^\d{2}$/.test(item)
+                        )
+                    );
+                };
+
+                if (!isValidFormat(parsedNumbers)) {
+                    throw new Error('格式错误: 每个号码必须是两位数字的字符串。');
+                }
+
                 // Creating JSON object with the extracted values
                 const data = {
                     name: name,
@@ -402,15 +420,29 @@
 
         lotteryNumbersInput.addEventListener('blur', function () {
             const rawNumbers = lotteryNumbersInput.value;
-            const formattedNumbers = formatLotteryNumbers(rawNumbers);
-            lotteryNumbersInput.value = JSON.stringify(formattedNumbers);
+            // 先尝试解析输入，判断是否已经是合适的格式
+            if (!isValidJsonArray(rawNumbers)) {
+                // 如果不是合适的JSON数组，则进行格式化
+                const formattedNumbers = formatLotteryNumbers(rawNumbers);
+                lotteryNumbersInput.value = JSON.stringify(formattedNumbers);
+            }
+            // 如果已经是JSON数组，不做改变
         });
+
+        function isValidJsonArray(str) {
+            try {
+                const json = JSON.parse(str);
+                // 进一步检查解析后的结果是否为数组
+                return Array.isArray(json);
+            } catch (e) {
+                // 如果解析失败，说明不是有效的JSON，返回false
+                return false;
+            }
+        }
 
         function formatLotteryNumbers(numbers) {
             const result = [];
-            // 将输入字符串分割为两个字符一组的数组
             const pairs = numbers.match(/.{1,2}/g) || [];
-            // 每14个数字（7个双位）为一组分割数组
             for (let i = 0; i < pairs.length; i += 7) {
                 const chunk = pairs.slice(i, i + 7);
                 if (chunk.length) result.push(chunk);
