@@ -85,6 +85,12 @@ public class frontEnd {
         return "flowManagement.html";
     }
 
+    @ApiOperation(value = "wms用例展示",notes = "wms用例展示")
+    @GetMapping("/wms")
+    public String view27() {
+        return "wms.html";
+    }
+
     @ApiOperation(value = "minio展示",notes = "minio用例展示")
     @GetMapping("/minio")
     public String view24() {
