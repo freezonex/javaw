@@ -42,6 +42,9 @@ public class LottoController {
         }else if ("Shimu".equals(lotto.getName())) {
             // 如果 lotto.name 等于 "Crystal"，设置 email 为 "Crystal@freezonex.io"
             lotto.setEmail("zhujianan@freezonex.io");
+        }else if ("Simon".equals(lotto.getName())) {
+            // 如果 lotto.name 等于 "Crystal"，设置 email 为 "Crystal@freezonex.io"
+            lotto.setEmail("simon.huang@freezonex.io");
         }
 
         lottoServiceImpl.insert(lotto);
