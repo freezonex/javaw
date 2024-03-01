@@ -72,7 +72,6 @@ public class frontEnd {
     public String view12() {
         return "inventory.html";
     }
-
     @ApiOperation(value = "彩票用例展示",notes = "彩票用例展示")
     @GetMapping("/lottomanagement")
     public String view26() {

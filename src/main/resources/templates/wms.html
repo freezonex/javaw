@@ -5,7 +5,7 @@
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Openiot Configuration Board</title>
     <link href="apps/wenhao-javaw/output.css" rel="stylesheet">
-    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">
+<!--    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">-->
 <!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
     <style>
@@ -13,6 +13,11 @@
         body {
             font-family: 'Roboto', sans-serif;
         }
+
+        .flex-container {
+            height: 100vh; /* 视口高度 */
+        }
+
     </style>
 </head>
 <body class="bg-gray-100 flex flex-col h-screen">
@@ -199,7 +204,7 @@
         </div>
         <div class="flex py-8">
             <!-- Left section -->
-            <div class="flex flex-col w-3/4 mr-8 bg-white shadow">
+            <div class="flex flex-col w-3/4 mr-8 bg-white shadow" style="height: 45vh;">
                 <div class="border-b px-6 py-4 flex items-center justify-between">
                     <div class="flex items-center">
                         <h1 class="text-lg font-semibold">Orders</h1>
@@ -318,6 +323,98 @@
                                 Content
                             </td>
                         </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                Content
+                            </td>
+                        </tr>
                         <!-- Repeat for each row -->
                         <!-- ... -->
                         </tbody>
@@ -344,30 +441,14 @@
             </div>
 
             <!-- Right section -->
-            <div class="flex flex-col w-1/4 bg-white shadow">
-                <div class="border-b px-6 py-4">
-                    <h2 class="text-lg font-semibold">Latest Invoice and Bills</h2>
+            <div class="flex flex-col w-1/4 bg-white shadow overflow-y-auto" style="height: 45vh;">
+                <div class="full-width">
+                    <ul id="directory" class="list-none">
+                    </ul>
+<!--                    <button onclick="addDirectory()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
+<!--                        Add Directory-->
+<!--                    </button>-->
                 </div>
-                <ul class="divide-y divide-gray-200">
-                    <li class="px-6 py-4 flex justify-between items-center">
-                        <div class="text-sm text-gray-700">List item</div>
-                        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
-                    </li>
-                    <li class="px-6 py-4 flex justify-between items-center">
-                        <div class="text-sm text-gray-700">List item</div>
-                        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
-                    </li>
-                    <li class="px-6 py-4 flex justify-between items-center">
-                        <div class="text-sm text-gray-700">List item</div>
-                        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
-                    </li>
-                    <li class="px-6 py-4 flex justify-between items-center">
-                        <div class="text-sm text-gray-700">List item</div>
-                        <i class="fas fa-times text-gray-400 cursor-pointer"></i>
-                    </li>
-                    <!-- Repeat for each list item -->
-                    <!-- ... -->
-                </ul>
             </div>
         </div>
     </div>
@@ -391,6 +472,11 @@
     //npx tailwindcss -i ./src/main/resources/static/apps/wenhao-javaw/input.css -o ./src/main/resources/static/apps/wenhao-javaw/output.css --watch
     // 获取所有的图标按钮
     const iconButtons = document.querySelectorAll('.icon-button');
+
+    document.addEventListener('DOMContentLoaded', function() {
+        fetchDirectoryData();
+        renderDirectory(directoryData, document.getElementById('directory'));
+    });
 
     // 为每个图标按钮添加点击事件监听
     iconButtons.forEach(button => {
@@ -472,6 +558,173 @@
             logoModal.classList.add('hidden');
         }
     });
+
+
+    function fetchDirectoryData() {
+        fetch('/apps/wenhao-javaw/directory/current')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderDirectory(data, document.getElementById('directory'));
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+
+    function renderDirectory(data, parentElement, level = 0, path = '') {
+        data.forEach((directory, index) => {
+            let currentPath = `${path}/${directory.name}`;
+            let li = document.createElement('li');
+
+            let div = document.createElement('div');
+            div.setAttribute('data-path', currentPath);
+            div.classList.add('cursor-pointer', 'py-2', 'px-4', 'flex', 'justify-between', 'items-center', 'hover:bg-gray-100', 'transition-colors', 'duration-150', 'border-b', 'border-gray-200');
+
+            // 创建一个新的容器用于存放图标和目录名称，确保它们靠左对齐
+            let nameContainer = document.createElement('div');
+            nameContainer.classList.add('flex', 'items-center'); // 使图标和文字在同一行内并靠左对齐
+
+            // 创建并添加图标
+            let icon = document.createElement('i');
+            icon.classList.add('fas', level === 0 ? 'fa-folder' : level === 1 ? 'fa-folder-open' : 'fa-file', 'mr-2');
+            nameContainer.appendChild(icon);
+
+            // 创建并添加目录名称文本
+            let textNode = document.createTextNode(directory.name);
+            nameContainer.appendChild(textNode);
+
+            // 将nameContainer添加到div
+            div.appendChild(nameContainer);
+
+
+            // Create a container for the buttons to group them together
+            let buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('flex', 'items-center');
+
+            // Add "+" Button
+            let addButton = document.createElement('button');
+            addButton.textContent = '+';
+            addButton.classList.add(
+                'bg-gray-200', // 更柔和的背景色
+                'text-gray-800', // 深灰色文字，保持可读性
+                'px-2', // 减少内边距，使按钮更紧凑
+                'py-1', // 减少垂直内边距
+                'rounded', // 简化圆角
+                'hover:bg-gray-300', // 细微的悬停效果
+                'focus:outline-none',
+                'focus:ring-2',
+                'focus:ring-gray-400', // 焦点环使用更接近按钮背景色的颜色
+                'focus:ring-opacity-50',
+                'mr-2',
+                'w-6', // 设置固定宽度以匹配 addButton
+                'h-8' // 设置固定高度以匹配 addButton
+            );
+            addButton.onclick = function(event) {
+                console.log('Add at:', currentPath);
+                // Implement the logic to add a new directory or item at this level
+                event.stopPropagation(); // Prevent click event from bubbling up to parent elements
+
+                // Prompt user for new directory name
+                let newDirectoryName = prompt('Enter the name for the new directory:');
+                if (newDirectoryName) { // Check if the user entered a name
+                    let payload = {
+                        currentPath: currentPath,
+                        newName: newDirectoryName
+                    };
+
+                    // Send the payload to the backend
+                    fetch('/apps/wenhao-javaw/directory/insert', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Success:', data);
+                            // Optionally, refresh the directory structure here
+                            window.location.reload(); // Reload the page to reflect changes
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    // User cancelled the prompt or entered an empty string
+                    console.log('Directory creation cancelled or no name entered.');
+                }
+            };
+
+            // Add "-" Button
+            let removeButton = document.createElement('button');
+            removeButton.textContent = '-';
+            removeButton.classList.add(
+                'bg-gray-200', // 同上
+                'text-gray-800', // 深灰色文字
+                'px-2', // 减少内边距
+                'py-1', // 减少垂直内边距
+                'rounded', // 简化圆角
+                'hover:bg-gray-300', // 细微的悬停效果
+                'focus:outline-none',
+                'focus:ring-2',
+                'focus:ring-gray-400', // 焦点环颜色
+                'focus:ring-opacity-50',
+                'w-6', // 设置固定宽度以匹配 addButton
+                'h-8' // 设置固定高度以匹配 addButton
+            );
+            removeButton.onclick = function(event) {
+                event.stopPropagation();
+                console.log('Remove:', currentPath);
+                // Implement the logic to remove this directory or item
+                if (parentElement && parentElement.removeChild) {
+                    parentElement.removeChild(li);
+                }
+            };
+
+            // Add buttons to the container
+            buttonContainer.appendChild(addButton);
+            buttonContainer.appendChild(removeButton);
+
+            // Add the container to the div, aligning it to the right
+            div.style.display = 'flex';
+            div.style.justifyContent = 'space-between';
+            div.style.alignItems = 'center';
+            div.appendChild(buttonContainer);
+
+
+            li.appendChild(div);
+
+            if (directory.subdirectories && directory.subdirectories.length > 0) {
+                let ul = document.createElement('ul');
+                ul.classList.add('hidden', 'ml-4', 'list-none'); // Apply Tailwind styling
+                renderDirectory(directory.subdirectories, ul, level + 1, currentPath);
+                li.appendChild(ul);
+            }
+
+            div.addEventListener('click', function(event) {
+                event.stopPropagation();
+                let isExpanded = this.nextSibling && !this.nextSibling.classList.contains('hidden');
+                console.log(isExpanded ? 'Collapsed: ' : 'Expanded: ', directory.name);
+                if (this.nextSibling) {
+                    this.nextSibling.classList.toggle('hidden');
+                }
+            });
+
+            parentElement.appendChild(li);
+        });
+    }
+
+
 
 </script>
 </body>
