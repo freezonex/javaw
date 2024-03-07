@@ -144,7 +144,7 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                         Create time
                     </th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider actions-column" id="actions-column">
                         Actions
                     </th>
                 </tr>
@@ -217,7 +217,23 @@
 </div>
 
 <script>
+    // 使用JavaScript添加鼠标悬停提示
+    document.getElementById('actions-column').addEventListener('mouseover', function() {
+        this.title = "请点击该列页面跳转"; // 设置title属性作为提示
+        this.classList.add('bg-blue-100'); // 鼠标悬停时添加背景色改变，增加提示效果
+    });
+    document.getElementById('actions-column').addEventListener('mouseout', function() {
+        this.classList.remove('bg-blue-100'); // 鼠标移出时移除背景色改变
+    });
+
     document.addEventListener('DOMContentLoaded', function () {
+
+        const actionsColumn = document.querySelector('.actions-column');
+        actionsColumn.classList.add('animate-pulse', 'text-red-500', 'font-bold');
+        setTimeout(() => {
+            actionsColumn.classList.remove('animate-pulse', 'text-red-500', 'font-bold');
+        }, 5000); // 持续时间为5000毫秒（5秒），之后动画停止
+
         const sidebar = document.getElementById('sidebar');
         const sidebarTitle = document.getElementById('sidebarTitle');
         const sidebarNav = document.getElementById('sidebarNav');
@@ -317,7 +333,7 @@
 
         const tableData = [
             {
-                "name": "minIO",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/minio' target='_blank'>minIO</a>",
                 "description": "minIO分布式对象存储",
                 "type": "基础应用",
                 "edges": 1,
@@ -329,7 +345,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/minio' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "llama2",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/llm' target='_blank'>llama2</a>",
                 "description": "llm大语言模型",
                 "type": "基础应用",
                 "edges": 1,
@@ -341,7 +357,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/llm' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "grafana",
+                "name": "<a href='https://demo.unibutton.com:8443/grafana' target='_blank'>grafana</a>",
                 "description": "监控",
                 "type": "基础应用",
                 "edges": 1,
@@ -353,7 +369,7 @@
                     "<a href='https://demo.unibutton.com:8443/grafana' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "3dScene",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/multipleWindow3dScene' target='_blank'>3dScene</a>",
                 "description": "多窗口同步",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -365,7 +381,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/multipleWindow3dScene' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "frontend",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/frontend' target='_blank'>frontend</a>",
                 "description": "测试",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -377,7 +393,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/frontend' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "fun",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/fun' target='_blank'>fun</a>",
                 "description": "简历",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -389,7 +405,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/fun' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "spacex",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/spacex' target='_blank'>spacex</a>",
                 "description": "火箭仪表盘",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -401,7 +417,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/spacex' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "wms",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/wms' target='_blank'>wms</a>",
                 "description": "仓储管理页面",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -413,7 +429,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/wms' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "survey",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/survey' target='_blank'>survey</a>",
                 "description": " 意见收集",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -425,7 +441,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/survey' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "redoc",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/redoc' target='_blank'>redoc</a>",
                 "description": " swagger生成接口文档",
                 "type": "静态页面展示",
                 "edges": 1,
@@ -434,10 +450,22 @@
                 "updateTime": "25/01/2024",
                 "createTime": "25/01/2024",
                 "actions": "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
-                    "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/survey' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
+                    "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/redoc' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "Lotto",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/swagger-ui.html' target='_blank'>swagger</a>",
+                "description": " swagger调试工具",
+                "type": "综合系统展示",
+                "edges": 1,
+                "cores": 2,
+                "apps": 1,
+                "updateTime": "25/01/2024",
+                "createTime": "25/01/2024",
+                "actions": "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
+                    "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/swagger-ui.html' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
+            },
+            {
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/lottomanagement' target='_blank'>Lotto</a>",
                 "description": "大乐透管理",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -449,7 +477,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/lottomanagement' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "suposai",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/suposapi' target='_blank'>suposai</a>",
                 "description": "openAPI在线调用",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -461,7 +489,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/suposapi' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "asset Management",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/dashboard' target='_blank'>asset Management</a>",
                 "description": "资产管理(仪表盘)",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -473,7 +501,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/dashboard' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "asset Management",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/inventory' target='_blank'>asset Management</a>",
                 "description": "资产管理（库存）",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -485,7 +513,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/inventory' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "qrform",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/qrform' target='_blank'>qrform</a>",
                 "description": "创建名片",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -497,7 +525,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/qrform' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "package",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/package' target='_blank'>package</a>",
                 "description": "快递记录",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -509,7 +537,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/package' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "vue集成用例",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/#/vuedashboard' target='_blank'>vue集成用例</a>",
                 "description": "vue集成用例",
                 "type": "综合系统展示",
                 "edges": 1,
@@ -521,7 +549,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/#/vuedashboard' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "2048",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/2048' target='_blank'>2048</a>",
                 "description": "小游戏",
                 "type": "游戏",
                 "edges": 1,
@@ -533,7 +561,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/2048' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "minesweeper",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/minesweeper' target='_blank'>minesweeper</a>",
                 "description": "扫雷",
                 "type": "游戏",
                 "edges": 1,
@@ -545,7 +573,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/minesweeper' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "ocr",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppocr' target='_blank'>ocr</a>",
                 "description": "文字识别",
                 "type": "深度学习（静态）",
                 "edges": 1,
@@ -557,7 +585,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppocr' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "roadSign",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/pproadsign' target='_blank'>roadSign</a>",
                 "description": "路标识别",
                 "type": "深度学习（静态）",
                 "edges": 1,
@@ -569,7 +597,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/pproadsign' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "helmet",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/pphelmet' target='_blank'>helmet</a>",
                 "description": "头盔识别",
                 "type": "深度学习（静态）",
                 "edges": 1,
@@ -581,7 +609,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/pphelmet' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "general",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppgeneralobjectdetection' target='_blank'>general</a>",
                 "description": "通用识别",
                 "type": "深度学习（静态）",
                 "edges": 1,
@@ -593,7 +621,7 @@
                     "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppgeneralobjectdetection' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "ocr",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/videoppocr' target='_blank'>ocr</a>",
                 "description": "文字识别",
                 "type": "深度学习（视频流）",
                 "edges": 1,
@@ -605,7 +633,7 @@
                     "<a href='https://demo.unibutton.com:8443/apps/wenhao-javaw/videoppocr' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "helmet",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppvideohelmet' target='_blank'>helmet</a>",
                 "description": "头盔识别",
                 "type": "深度学习（视频流）",
                 "edges": 1,
@@ -617,7 +645,7 @@
                     "<a href='https://demo.unibutton.com:8443/apps/wenhao-javaw/ppvideohelmet' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>"
             },
             {
-                "name": "general",
+                "name": "<a href='http://47.236.10.165:8080/apps/wenhao-javaw/ppvideogeneralobjectdetection' target='_blank'>general</a>",
                 "description": "通用识别",
                 "type": "深度学习（视频流）",
                 "edges": 1,
@@ -637,17 +665,19 @@
             tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
 
             Object.keys(row).forEach(key => {
-                if (key !== 'actions') { // 对于actions列，我们将使用innerHTML来插入链接
-                    const td = document.createElement('td');
-                    td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
-                    td.textContent = row[key];
-                    tr.appendChild(td);
+                const td = document.createElement('td');
+                td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                if (key !== 'actions') { // 对于非actions列
+                    if (key === 'name') { // 特别处理name字段，使其内容为可点击的链接
+                        td.innerHTML = row[key]; // 使用innerHTML插入链接
+                    } else {
+                        td.textContent = row[key]; // 其他字段正常显示文本
+                    }
                 } else {
-                    const td = document.createElement('td');
                     td.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium';
-                    td.innerHTML = row[key]; // 使用innerHTML插入编辑链接
-                    tr.appendChild(td);
+                    td.innerHTML = row[key]; // 对于actions列，使用innerHTML插入链接
                 }
+                tr.appendChild(td);
             });
 
             tableBody.appendChild(tr);
