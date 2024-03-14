@@ -1,6 +1,8 @@
 package com.supos.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import java.lang.reflect.Type;
@@ -29,8 +31,8 @@ public class LottoServiceImpl extends ServiceImpl<LottoMapper, Lotto>
     @Autowired
     private LottoMapper lottoMapper;
 
-    public List<Lotto> selectAll() {
-        return lottoMapper.selectAll();
+    public PageInfo<Lotto> selectAll(int pageNum, int pageSize) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> lottoMapper.selectAll());
     }
 
     @Override

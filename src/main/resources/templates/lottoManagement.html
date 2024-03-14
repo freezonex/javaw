@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
 <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Openiot Configuration Board</title>
-<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
-    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+<!--    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
@@ -159,6 +159,9 @@
                 </tbody>
             </table>
         </div>
+        <div class="flex justify-end mt-3">
+            <div id="Pagination">Pagination Content</div>
+        </div>
     </div>
 </div>
 
@@ -235,6 +238,138 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function () {
+
+        // Initial page load
+        fetchPaginationData(1);
+
+        // Function to fetch pagination data
+        function fetchPaginationData(pageNum) {
+            fetch(`/apps/wenhao-javaw/lotto/history?pageNum=${pageNum}&pageSize=10`)
+                .then(response => response.json())
+                .then(data => {
+                    updatePaginationControls(data)
+                    data=data.list
+                    // 将获取到的数据追加到 tableData 数组中
+                    tableData.length = 0; // Clear existing data in tableData array.
+
+                    data.forEach(item => {
+                        item.updateTime = "25/01/2024";
+                        item.createTime = "25/01/2024";
+                        item.send_flag = item.send_flag === 1 ?
+                            "<i class='fas fa-envelope-open-text text-blue-500'></i>" : // 已发送使用蓝色信封图标
+                            "<i class='fas fa-envelope text-gray-400'></i>"; // 未发送使用灰色信封图标
+                        item.actions = "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
+                            "<a href='https://www.lottery.gov.cn/tool/dltjsq.jspx/' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>";
+                        // 将更新后的数据添加到 tableData 数组中
+                        tableData.push(item);
+                    });
+                    // 在这里对数据进行渲染等操作
+                    const tableBody = document.querySelector('.table-auto tbody');
+                    while (tableBody.firstChild) {
+                        tableBody.removeChild(tableBody.firstChild);
+                    }
+
+                    const columnOrder = ['period', 'name', 'number', 'result', 'send_flag', 'time', 'updateTime', 'createTime', 'actions']; // 根据需要调整这个顺序
+
+                    tableData.forEach((row, index) => {
+                        const tr = document.createElement('tr');
+                        tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+
+                        columnOrder.forEach(key => {
+                            if (key !== 'id') {
+                                const td = document.createElement('td');
+                                td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+                                if (key === 'actions' || key === 'send_flag') { // 对于 actions 和 send_flag 列，我们将使用 innerHTML 来插入内容
+                                    td.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium';
+                                    td.innerHTML = row[key];
+                                } else if (key === 'time' && row[key]) {
+                                    td.textContent = row[key].substring(0, 10);
+                                } else {
+                                    td.textContent = row[key];
+                                }
+                                tr.appendChild(td);
+                            }
+                        });
+
+                        tableBody.appendChild(tr);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                });
+        }
+
+        // Update pagination controls based on fetched data
+        function updatePaginationControls(data) {
+            const paginationContainer = document.getElementById('Pagination');
+            paginationContainer.innerHTML = ''; // Clear existing pagination controls
+
+            // Calculate dynamic range of pages to display
+            let startPage = Math.max(data.pageNum - Math.floor(data.navigatePages / 2), 1);
+            let endPage = Math.min(startPage + data.navigatePages - 1, data.pages);
+
+            if (endPage - startPage < data.navigatePages - 1) {
+                startPage = Math.max(endPage - data.navigatePages + 1, 1);
+            }
+
+            // Previous Button
+            if (data.hasPreviousPage) {
+                const prevButton = createPaginationButton(data.prePage, 'Previous');
+                paginationContainer.appendChild(prevButton);
+            }
+
+            // First Page Button if needed
+            if (startPage > 1) {
+                const firstPageButton = createPaginationButton(1, '1', false);
+                paginationContainer.appendChild(firstPageButton);
+                if (startPage > 2) {
+                    // Add ellipsis for a large gap
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'px-4 py-2';
+                    paginationContainer.appendChild(ellipsis);
+                }
+            }
+
+            // Page Numbers
+            for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
+                const pageButton = createPaginationButton(pageNum, pageNum, data.pageNum === pageNum);
+                paginationContainer.appendChild(pageButton);
+            }
+
+            // Last Page Button if needed
+            if (endPage < data.pages) {
+                if (endPage < data.pages - 1) {
+                    // Add ellipsis for a large gap
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'px-4 py-2';
+                    paginationContainer.appendChild(ellipsis);
+                }
+                const lastPageButton = createPaginationButton(data.pages, data.pages, false);
+                paginationContainer.appendChild(lastPageButton);
+            }
+
+            // Next Button
+            if (data.hasNextPage) {
+                const nextButton = createPaginationButton(data.nextPage, 'Next');
+                paginationContainer.appendChild(nextButton);
+            }
+        }
+        // Create and return a pagination button element
+        function createPaginationButton(pageNum, text, isActive = false) {
+            const button = document.createElement('a');
+            button.href = '#';
+            button.textContent = text;
+            button.className = `inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm ${isActive ? 'bg-blue-500 text-white' : 'text-blue-700 bg-white hover:bg-blue-50'} transition duration-150 ease-in-out`;
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                fetchPaginationData(pageNum);
+            });
+            return button;
+        }
+
+
         const predictionKey = 'dailyLottoPrediction';
         const lastUpdatedKey = 'lastUpdatedDate';
 
@@ -477,53 +612,53 @@
         const tableData = [
         ];
 
-        // 调用 /lotto/history 接口获取数据
-        fetch('/apps/wenhao-javaw/lotto/history')
-            .then(response => response.json())
-            .then(data => {
-                // 将获取到的数据追加到 tableData 数组中
-                data.forEach(item => {
-                    item.updateTime = "25/01/2024";
-                    item.createTime = "25/01/2024";
-                    item.send_flag = item.send_flag === 1 ?
-                        "<i class='fas fa-envelope-open-text text-blue-500'></i>" : // 已发送使用蓝色信封图标
-                        "<i class='fas fa-envelope text-gray-400'></i>"; // 未发送使用灰色信封图标
-                    item.actions = "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
-                        "<a href='https://www.lottery.gov.cn/tool/dltjsq.jspx/' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>";
-                    // 将更新后的数据添加到 tableData 数组中
-                    tableData.push(item);
-                });
-                // 在这里对数据进行渲染等操作
-                const tableBody = document.querySelector('.table-auto tbody');
-
-                const columnOrder = ['period', 'name', 'number', 'result', 'send_flag', 'time', 'updateTime', 'createTime', 'actions']; // 根据需要调整这个顺序
-
-                tableData.forEach((row, index) => {
-                    const tr = document.createElement('tr');
-                    tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
-
-                    columnOrder.forEach(key => {
-                        if (key !== 'id') {
-                            const td = document.createElement('td');
-                            td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
-                            if (key === 'actions' || key === 'send_flag') { // 对于 actions 和 send_flag 列，我们将使用 innerHTML 来插入内容
-                                td.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium';
-                                td.innerHTML = row[key];
-                            } else if (key === 'time' && row[key]) {
-                                td.textContent = row[key].substring(0, 10);
-                            } else {
-                                td.textContent = row[key];
-                            }
-                            tr.appendChild(td);
-                        }
-                    });
-
-                    tableBody.appendChild(tr);
-                });
-            })
-            .catch(error => {
-                console.error('Error fetching data:', error);
-            });
+        // // 调用 /lotto/history 接口获取数据
+        // fetch('/apps/wenhao-javaw/lotto/history?pageNum=1&pageSize=10')
+        //     .then(response => response.json())
+        //     .then(data => {data=data.list
+        //         // 将获取到的数据追加到 tableData 数组中
+        //         data.forEach(item => {
+        //             item.updateTime = "25/01/2024";
+        //             item.createTime = "25/01/2024";
+        //             item.send_flag = item.send_flag === 1 ?
+        //                 "<i class='fas fa-envelope-open-text text-blue-500'></i>" : // 已发送使用蓝色信封图标
+        //                 "<i class='fas fa-envelope text-gray-400'></i>"; // 未发送使用灰色信封图标
+        //             item.actions = "<a href='#' class='edit-btn text-indigo-600 hover:text-indigo-900'>Edit</a> <span style='margin-left: 8px;'>" +
+        //                 "<a href='https://www.lottery.gov.cn/tool/dltjsq.jspx/' target='_blank' class='open-btn text-gray-600 hover:text-gray-900'><i class='fas fa-external-link-alt'></i></a></span>";
+        //             // 将更新后的数据添加到 tableData 数组中
+        //             tableData.push(item);
+        //         });
+        //         // 在这里对数据进行渲染等操作
+        //         const tableBody = document.querySelector('.table-auto tbody');
+        //
+        //         const columnOrder = ['period', 'name', 'number', 'result', 'send_flag', 'time', 'updateTime', 'createTime', 'actions']; // 根据需要调整这个顺序
+        //
+        //         tableData.forEach((row, index) => {
+        //             const tr = document.createElement('tr');
+        //             tr.className = index % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+        //
+        //             columnOrder.forEach(key => {
+        //                 if (key !== 'id') {
+        //                     const td = document.createElement('td');
+        //                     td.className = 'px-6 py-4 whitespace-nowrap text-sm text-gray-500';
+        //                     if (key === 'actions' || key === 'send_flag') { // 对于 actions 和 send_flag 列，我们将使用 innerHTML 来插入内容
+        //                         td.className = 'px-6 py-4 whitespace-nowrap text-sm font-medium';
+        //                         td.innerHTML = row[key];
+        //                     } else if (key === 'time' && row[key]) {
+        //                         td.textContent = row[key].substring(0, 10);
+        //                     } else {
+        //                         td.textContent = row[key];
+        //                     }
+        //                     tr.appendChild(td);
+        //                 }
+        //             });
+        //
+        //             tableBody.appendChild(tr);
+        //         });
+        //     })
+        //     .catch(error => {
+        //         console.error('Error fetching data:', error);
+        //     });
 
         const dataTable = document.querySelector('.table-auto');
 

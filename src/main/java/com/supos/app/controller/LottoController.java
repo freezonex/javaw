@@ -1,6 +1,7 @@
 package com.supos.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.pagehelper.PageInfo;
 import com.supos.app.entity.Lotto;
 import com.supos.app.service.impl.LottoServiceImpl;
 import io.swagger.annotations.ApiOperation;
@@ -8,8 +9,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -21,8 +20,8 @@ public class LottoController {
 
     @ApiOperation(value = "乐透历史展示", notes = "乐透历史展示")
     @GetMapping("/history")
-    public List<Lotto> history() {
-       return lottoServiceImpl.selectAll();
+    public PageInfo<Lotto> history(@RequestParam int pageNum, @RequestParam int pageSize) {
+       return lottoServiceImpl.selectAll(pageNum,pageSize);
     }
 
     @ApiOperation(value = "数据新增",notes = "数据新增")

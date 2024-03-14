@@ -1,10 +1,8 @@
 package com.supos.app.service;
 
+import com.github.pagehelper.PageInfo;
 import com.supos.app.entity.Lotto;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.supos.app.entity.Packinfo;
-
-import java.util.List;
 
 /**
 * @author Wenhao
@@ -13,7 +11,7 @@ import java.util.List;
 */
 public interface LottoService extends IService<Lotto> {
 
-    List<Lotto> selectAll();
+    PageInfo<Lotto> selectAll(int pageNum, int pageSize);
 
     void insert(Lotto lotto);
 
