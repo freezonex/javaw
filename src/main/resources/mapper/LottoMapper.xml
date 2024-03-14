@@ -34,6 +34,9 @@
         <include refid="Base_Column_List"/>
         from lotto
         where del_flag=0
+        <if test="name != null and name != ''">
+            and name = #{name,jdbcType=VARCHAR}
+        </if>
         order by time desc
     </select>
 

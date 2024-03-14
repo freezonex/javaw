@@ -20,8 +20,8 @@ public class LottoController {
 
     @ApiOperation(value = "乐透历史展示", notes = "乐透历史展示")
     @GetMapping("/history")
-    public PageInfo<Lotto> history(@RequestParam int pageNum, @RequestParam int pageSize) {
-       return lottoServiceImpl.selectAll(pageNum,pageSize);
+    public PageInfo<Lotto> history(@RequestParam(defaultValue = "1") int pageNum, @RequestParam int pageSize,@RequestParam(required = false) String name) {
+        return lottoServiceImpl.selectAll(pageNum, pageSize, name);
     }
 
     @ApiOperation(value = "数据新增",notes = "数据新增")

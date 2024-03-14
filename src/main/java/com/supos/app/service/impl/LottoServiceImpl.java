@@ -31,8 +31,8 @@ public class LottoServiceImpl extends ServiceImpl<LottoMapper, Lotto>
     @Autowired
     private LottoMapper lottoMapper;
 
-    public PageInfo<Lotto> selectAll(int pageNum, int pageSize) {
-        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> lottoMapper.selectAll());
+    public PageInfo<Lotto> selectAll(int pageNum, int pageSize, String name) {
+        return PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> lottoMapper.selectAll(name));
     }
 
     @Override

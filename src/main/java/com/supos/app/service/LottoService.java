@@ -11,7 +11,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface LottoService extends IService<Lotto> {
 
-    PageInfo<Lotto> selectAll(int pageNum, int pageSize);
+    PageInfo<Lotto> selectAll(int pageNum, int pageSize, String name);
 
     void insert(Lotto lotto);
 

@@ -15,7 +15,7 @@ import java.util.List;
 @Mapper
 public interface LottoMapper extends BaseMapper<Lotto> {
 
-    List<Lotto> selectAll();
+    List<Lotto> selectAll(String name);
 
     List<Lotto> selectAllWithoutSend();
 
