@@ -83,19 +83,7 @@ public class Wms {
                         query.setWarehouse_id(warehouse.getId());
                         List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(query);
 
-                        WarehouseSelectAllResponse response = new WarehouseSelectAllResponse();
-                        response.setId(warehouse.getId());
-                        response.setWarehouse_id(warehouse.getWarehouse_id());
-                        response.setName(warehouse.getName());
-                        response.setType(warehouse.getType());
-                        response.setManager(warehouse.getManager());
-                        response.setDepartment(warehouse.getDepartment());
-                        response.setEmail(warehouse.getEmail());
-                        response.setProject_group(warehouse.getProject_group());
-                        response.setNote(warehouse.getNote());
-                        response.setDel_flag(warehouse.getDel_flag());
-                        response.setCreate_time(warehouse.getCreate_time());
-                        response.setUpdate_time(warehouse.getUpdate_time());
+                        WarehouseSelectAllResponse response = new WarehouseSelectAllResponse(warehouse);
                         response.setStore_locations(storageLocations);
                         return response;
                     })
@@ -104,9 +92,10 @@ public class Wms {
             return new ApiResponse<>(warehouseSelectAllResponses);
         } catch (Exception e) {
             log.info(e.getMessage());
-            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
+
 
     @ApiOperation(value = "storagelocation/add",notes = "storagelocation/add")
     @PostMapping("/wms/storagelocation/add")

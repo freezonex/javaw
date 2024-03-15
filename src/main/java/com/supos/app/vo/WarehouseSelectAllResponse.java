@@ -1,6 +1,7 @@
 package com.supos.app.vo;
 
 import com.supos.app.entity.WmsStorageLocation;
+import com.supos.app.entity.WmsWarehouse;
 
 import java.util.Date;
 import java.util.List;
@@ -9,6 +10,20 @@ public class WarehouseSelectAllResponse {
     /**
      *
      */
+    public WarehouseSelectAllResponse(WmsWarehouse warehouse) {
+        this.id = warehouse.getId();
+        this.name = warehouse.getName();
+        this.type = warehouse.getType();
+        this.manager = warehouse.getManager();
+        this.department = warehouse.getDepartment();
+        this.email = warehouse.getEmail();
+        this.project_group = warehouse.getProject_group();
+        this.note = warehouse.getNote();
+        this.del_flag = warehouse.getDel_flag();
+        this.create_time = warehouse.getCreate_time();
+        this.update_time = warehouse.getUpdate_time();
+    }
+
     private Long id;
 
     /**
