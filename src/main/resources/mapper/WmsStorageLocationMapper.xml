@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supos.app.mapper.WmsStorageLocationMapper">
+
+    <resultMap id="BaseResultMap" type="com.supos.app.entity.WmsStorageLocation">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="warehouse_id" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="occupied" column="occupied" jdbcType="TINYINT"/>
+            <result property="material_name" column="material_name" jdbcType="VARCHAR"/>
+            <result property="material_quantity" column="material_quantity" jdbcType="INTEGER"/>
+            <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,warehouse_id,name,
+        occupied,material_name,material_quantity,
+        del_flag,update_time,create_time
+    </sql>
+    <insert id="insertSelective" parameterType="com.supos.app.entity.WmsStorageLocation" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO wms_storage_location
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="warehouse_id != null">warehouse_id,</if>
+            <if test="name != null">name,</if>
+            <if test="occupied != null">occupied,</if>
+            <if test="material_name != null">material_name,</if>
+            <if test="material_quantity != null">material_quantity,</if>
+            <if test="del_flag != null">del_flag,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="warehouse_id != null">#{warehouse_id},</if>
+            <if test="name != null">#{name},</if>
+            <if test="occupied != null">#{occupied},</if>
+            <if test="material_name != null">#{material_name},</if>
+            <if test="material_quantity != null">#{material_quantity},</if>
+            <if test="del_flag != null">#{del_flag},</if>
+            <if test="update_time != null">#{update_time},</if>
+            <if test="create_time != null">#{create_time},</if>
+        </trim>
+    </insert>
+</mapper>
