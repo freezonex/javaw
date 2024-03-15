@@ -9,8 +9,6 @@
             <result property="warehouse_id" column="warehouse_id" jdbcType="BIGINT"/>
             <result property="name" column="name" jdbcType="VARCHAR"/>
             <result property="occupied" column="occupied" jdbcType="TINYINT"/>
-            <result property="material_name" column="material_name" jdbcType="VARCHAR"/>
-            <result property="material_quantity" column="material_quantity" jdbcType="INTEGER"/>
             <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
             <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
             <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
@@ -18,7 +16,7 @@
 
     <sql id="Base_Column_List">
         id,warehouse_id,name,
-        occupied,material_name,material_quantity,
+        occupied,
         del_flag,update_time,create_time
     </sql>
     <insert id="insertSelective" parameterType="com.supos.app.entity.WmsStorageLocation" useGeneratedKeys="true" keyProperty="id">
@@ -27,8 +25,6 @@
             <if test="warehouse_id != null">warehouse_id,</if>
             <if test="name != null">name,</if>
             <if test="occupied != null">occupied,</if>
-            <if test="material_name != null">material_name,</if>
-            <if test="material_quantity != null">material_quantity,</if>
             <if test="del_flag != null">del_flag,</if>
             <if test="update_time != null">update_time,</if>
             <if test="create_time != null">create_time,</if>
@@ -37,11 +33,53 @@
             <if test="warehouse_id != null">#{warehouse_id},</if>
             <if test="name != null">#{name},</if>
             <if test="occupied != null">#{occupied},</if>
-            <if test="material_name != null">#{material_name},</if>
-            <if test="material_quantity != null">#{material_quantity},</if>
             <if test="del_flag != null">#{del_flag},</if>
             <if test="update_time != null">#{update_time},</if>
             <if test="create_time != null">#{create_time},</if>
         </trim>
     </insert>
+    <update id="updateStorageLocationById" parameterType="com.supos.app.entity.WmsStorageLocation">
+        UPDATE wms_storage_location
+        <set>
+            <if test="warehouse_id != null">warehouse_id = #{warehouse_id},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="occupied != null">occupied = #{occupied},</if>
+            <if test="del_flag != null">del_flag = #{del_flag},</if>
+            <if test="update_time != null">update_time = #{update_time},</if>
+            <if test="create_time != null">create_time = #{create_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="deleteStorageLocationById" parameterType="com.supos.app.entity.WmsStorageLocation">
+        UPDATE wms_storage_location
+        set del_flag= true
+        WHERE id = #{id}
+    </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM wms_storage_location
+        <where>
+            del_flag IS NULL
+            <!-- Warehouse ID condition -->
+            <if test="warehouse_id != null and warehouse_id != ''">
+                AND warehouse_id = #{warehouse_id}
+            </if>
+            <!-- Name condition -->
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+            <!-- Occupied condition -->
+            <if test="occupied != null">
+                AND occupied = #{occupied}
+            </if>
+            <!-- Update Time condition -->
+            <if test="update_time != null">
+                AND update_time = #{update_time}
+            </if>
+            <!-- Create Time condition -->
+            <if test="create_time != null">
+                AND create_time = #{create_time}
+            </if>
+        </where>
+    </select>
 </mapper>

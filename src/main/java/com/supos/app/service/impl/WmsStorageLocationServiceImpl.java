@@ -2,11 +2,12 @@ package com.supos.app.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.supos.app.entity.WmsStorageLocation;
-import com.supos.app.mapper.WmsWarehouseMapper;
 import com.supos.app.service.WmsStorageLocationService;
 import com.supos.app.mapper.WmsStorageLocationMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
 * @author Wenhao
@@ -20,6 +21,18 @@ public class WmsStorageLocationServiceImpl extends ServiceImpl<WmsStorageLocatio
     private WmsStorageLocationMapper wmsStorageLocationMapper;
     public int insertSelective(WmsStorageLocation wmsStorageLocation) {
         return wmsStorageLocationMapper.insertSelective(wmsStorageLocation);
+    }
+
+    public int updateStorageLocationById(WmsStorageLocation wmsStorageLocation) {
+        return wmsStorageLocationMapper.updateStorageLocationById(wmsStorageLocation);
+    }
+
+    public int deleteStorageLocationById(WmsStorageLocation wmsStorageLocation) {
+        return wmsStorageLocationMapper.deleteStorageLocationById(wmsStorageLocation);
+    }
+
+    public List<WmsStorageLocation> selectAll(WmsStorageLocation wmsStorageLocation) {
+        return wmsStorageLocationMapper.selectAll(wmsStorageLocation);
     }
 }
 

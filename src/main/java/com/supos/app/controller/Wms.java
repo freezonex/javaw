@@ -9,6 +9,7 @@ import com.supos.app.entity.WmsStorageLocation;
 import com.supos.app.service.impl.LottoServiceImpl;
 import com.supos.app.service.impl.WmsStorageLocationServiceImpl;
 import com.supos.app.service.impl.WmsWarehouseServiceImpl;
+import com.supos.app.vo.WarehouseSelectAllResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -72,15 +74,38 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/get",notes = "warehouse/get")
     @PostMapping("/wms/warehouse/get")
-    public ApiResponse<List<WmsWarehouse>> warehouseSelectAll(@RequestBody WmsWarehouse wmsWarehouse) {
-        List<WmsWarehouse> wmsWarehouseList;
+    public ApiResponse<List<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody WmsWarehouse wmsWarehouse) {
         try {
-            wmsWarehouseList = wmsWarehouseServiceImpl.selectAll(wmsWarehouse);
+            List<WmsWarehouse> wmsWarehouseList = wmsWarehouseServiceImpl.selectAll(wmsWarehouse);
+            List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
+                    .map(warehouse -> {
+                        WmsStorageLocation query = new WmsStorageLocation();
+                        query.setWarehouse_id(warehouse.getId());
+                        List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(query);
+
+                        WarehouseSelectAllResponse response = new WarehouseSelectAllResponse();
+                        response.setId(warehouse.getId());
+                        response.setWarehouse_id(warehouse.getWarehouse_id());
+                        response.setName(warehouse.getName());
+                        response.setType(warehouse.getType());
+                        response.setManager(warehouse.getManager());
+                        response.setDepartment(warehouse.getDepartment());
+                        response.setEmail(warehouse.getEmail());
+                        response.setProject_group(warehouse.getProject_group());
+                        response.setNote(warehouse.getNote());
+                        response.setDel_flag(warehouse.getDel_flag());
+                        response.setCreate_time(warehouse.getCreate_time());
+                        response.setUpdate_time(warehouse.getUpdate_time());
+                        response.setStore_locations(storageLocations);
+                        return response;
+                    })
+                    .collect(Collectors.toList());
+
+            return new ApiResponse<>(warehouseSelectAllResponses);
         } catch (Exception e) {
             log.info(e.getMessage());
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
-        return new ApiResponse<>(wmsWarehouseList);
     }
 
     @ApiOperation(value = "storagelocation/add",notes = "storagelocation/add")
@@ -95,4 +120,44 @@ public class Wms {
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
     }
+    @ApiOperation(value = "storagelocation/update",notes = "storagelocation/update")
+    @PostMapping("/wms/storagelocation/update")
+    public ApiResponse<Map<String, String>> storagelocationUpdate(@RequestBody WmsStorageLocation wmsStorageLocation) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.updateStorageLocationById(wmsStorageLocation)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "storagelocation/delete",notes = "storagelocation/delete")
+    @PostMapping("/wms/storagelocation/delete")
+    public ApiResponse<Map<String, String>> storagelocationDelete(@RequestBody WmsStorageLocation wmsStorageLocation) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.deleteStorageLocationById(wmsStorageLocation)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "storagelocation/get",notes = "storagelocation/get")
+    @PostMapping("/wms/storagelocation/get")
+    public ApiResponse<List<WmsStorageLocation>> storagelocationSelectAll(@RequestBody WmsStorageLocation wmsStorageLocation) {
+        List<WmsStorageLocation> wmsStorageLocationList;
+
+        try {
+            wmsStorageLocationList= wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+            return new ApiResponse<>(wmsStorageLocationList);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
 }
