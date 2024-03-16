@@ -1,6 +1,7 @@
 package com.supos.app.entity;
 
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Date;
 import lombok.Data;
 

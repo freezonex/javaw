@@ -17,8 +17,10 @@ import java.util.List;
 @Service
 public class WmsStorageLocationServiceImpl extends ServiceImpl<WmsStorageLocationMapper, WmsStorageLocation>
     implements WmsStorageLocationService{
+
     @Autowired
     private WmsStorageLocationMapper wmsStorageLocationMapper;
+
     public int insertSelective(WmsStorageLocation wmsStorageLocation) {
         return wmsStorageLocationMapper.insertSelective(wmsStorageLocation);
     }

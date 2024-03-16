@@ -66,8 +66,7 @@ public class WarehouseSelectAllResponse {
      */
     private String note;
 
-    private List<WmsStorageLocation> store_locations;
-
+    private List<WarehouseSelectAllLocations> store_locations;
 
     /**
      *
@@ -158,14 +157,6 @@ public class WarehouseSelectAllResponse {
         this.note = note;
     }
 
-    public List<WmsStorageLocation> getStore_locations() {
-        return store_locations;
-    }
-
-    public void setStore_locations(List<WmsStorageLocation> store_locations) {
-        this.store_locations = store_locations;
-    }
-
     public Integer getDel_flag() {
         return del_flag;
     }
@@ -188,5 +179,13 @@ public class WarehouseSelectAllResponse {
 
     public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
+    }
+
+    public List<WarehouseSelectAllLocations> getStore_locations() {
+        return store_locations;
+    }
+
+    public void setStore_locations(List<WarehouseSelectAllLocations> store_locations) {
+        this.store_locations = store_locations;
     }
 }

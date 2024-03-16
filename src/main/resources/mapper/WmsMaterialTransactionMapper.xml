@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supos.app.mapper.WmsMaterialTransactionMapper">
+
+    <resultMap id="BaseResultMap" type="com.supos.app.entity.WmsMaterialTransaction">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="material_id" column="material_id" jdbcType="BIGINT"/>
+            <result property="type" column="type" jdbcType="VARCHAR"/>
+            <result property="source" column="source" jdbcType="VARCHAR"/>
+            <result property="inbound_id" column="inbound_id" jdbcType="BIGINT"/>
+            <result property="outbound_id" column="outbound_id" jdbcType="BIGINT"/>
+            <result property="warehouse_id" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="stock_location_id" column="stock_location_id" jdbcType="BIGINT"/>
+            <result property="rf_id" column="rf_id" jdbcType="VARCHAR"/>
+            <result property="operator" column="operator" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="note" column="note" jdbcType="VARCHAR"/>
+            <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,material_id,type,
+        source,inbound_id,outbound_id,
+        warehouse_id,stock_location_id,rf_id,
+        operator,status,note,
+        del_flag,create_time,update_time
+    </sql>
+    <select id="selectAllGroupByMaterialID" resultMap="BaseResultMap">
+        SELECT
+        MAX(id) AS id,
+        MAX(type) AS type,
+        material_id,
+        MAX(source) AS source,
+        MAX(inbound_id) AS inbound_id,
+        MAX(outbound_id) AS outbound_id,
+        MAX(warehouse_id) AS warehouse_id,
+        MAX(stock_location_id) AS stock_location_id,
+        MAX(rf_id) AS rf_id,
+        MAX(operator) AS operator,
+        MAX(status) AS status,
+        MAX(note) AS note,
+        MAX(del_flag) AS del_flag,
+        MAX(create_time) AS create_time,
+        MAX(update_time) AS update_time,
+        COUNT(*) AS quantity
+        FROM wms_material_transaction
+        <where>
+            del_flag IS NULL
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="material_id != null">
+                AND material_id = #{material_id}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="source != null">
+                AND source = #{source}
+            </if>
+            <if test="inbound_id != null">
+                AND inbound_id = #{inbound_id}
+            </if>
+            <if test="outbound_id != null">
+                AND outbound_id = #{outbound_id}
+            </if>
+            <if test="warehouse_id != null">
+                AND warehouse_id = #{warehouse_id}
+            </if>
+            <if test="stock_location_id != null">
+                AND stock_location_id = #{stock_location_id}
+            </if>
+            <if test="rf_id != null">
+                AND rf_id = #{rf_id}
+            </if>
+            <if test="operator != null">
+                AND operator = #{operator}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="note != null">
+                AND note = #{note}
+            </if>
+            <if test="update_time != null">
+                AND update_time = #{update_time}
+            </if>
+            <if test="create_time != null">
+                AND create_time = #{create_time}
+            </if>
+        </where>
+        GROUP BY material_id
+    </select>
+</mapper>

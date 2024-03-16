@@ -82,6 +82,9 @@
         FROM wms_warehouse
         <where>
             del_flag IS NULL
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
             <!-- Name condition -->
             <if test="warehouse_id != null and warehouse_id != ''">
                 AND warehouse_id = #{warehouse_id}

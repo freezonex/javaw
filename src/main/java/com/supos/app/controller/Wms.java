@@ -3,12 +3,12 @@ package com.supos.app.controller;
 import cn.hutool.core.lang.UUID;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supos.app.config.ApiResponse;
-import com.supos.app.entity.Lotto;
-import com.supos.app.entity.WmsWarehouse;
-import com.supos.app.entity.WmsStorageLocation;
-import com.supos.app.service.impl.LottoServiceImpl;
-import com.supos.app.service.impl.WmsStorageLocationServiceImpl;
-import com.supos.app.service.impl.WmsWarehouseServiceImpl;
+import com.supos.app.entity.*;
+import com.supos.app.service.WmsMaterialTransactionService;
+import com.supos.app.service.impl.*;
+import com.supos.app.utils.HttpUtils;
+import com.supos.app.vo.WarehouseSelectAllLocations;
+import com.supos.app.vo.WarehouseSelectAllMaterial;
 import com.supos.app.vo.WarehouseSelectAllResponse;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +32,12 @@ public class Wms {
 
     @Autowired
     WmsStorageLocationServiceImpl wmsStorageLocationServiceImpl;
+
+    @Autowired
+    WmsMaterialServiceImpl wmsMaterialServiceImpl;
+
+    @Autowired
+    WmsMaterialTransactionServiceImpl wmsMaterialTransactionServiceImpl;
 
     @ApiOperation(value = "warehouse/add",notes = "warehouse/add")
     @PostMapping("/wms/warehouse/add")
@@ -72,7 +78,7 @@ public class Wms {
         return new ApiResponse<>(responseData);
     }
 
-    @ApiOperation(value = "warehouse/get",notes = "warehouse/get")
+    @ApiOperation(value = "warehouse/get", notes = "warehouse/get")
     @PostMapping("/wms/warehouse/get")
     public ApiResponse<List<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody WmsWarehouse wmsWarehouse) {
         try {
@@ -83,8 +89,34 @@ public class Wms {
                         query.setWarehouse_id(warehouse.getId());
                         List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(query);
 
+                        List<WarehouseSelectAllLocations> warehouseSelectAllLocationsList = storageLocations.stream().map(storageLocation -> {
+                                    WmsMaterialTransaction materialTransactionquery = new WmsMaterialTransaction();
+                                    materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
+                                    materialTransactionquery.setStock_location_id(storageLocation.getId());
+
+                                    List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialID(materialTransactionquery);
+
+                                    List<WarehouseSelectAllMaterial> warehouseMaterials = MaterialTransactions.stream()
+                                            .map(transaction -> {
+                                                WarehouseSelectAllMaterial warehouseMaterial = new WarehouseSelectAllMaterial(transaction);
+                                                WmsMaterial wmsMaterial = new WmsMaterial();
+                                                wmsMaterial.setId(transaction.getWarehouse_id());
+                                                List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+                                                if (!materials.isEmpty()) {
+                                                    warehouseMaterial.setMaterialName(materials.get(0).getName());
+                                                }
+                                                return warehouseMaterial;
+                                            })
+                                            .collect(Collectors.toList());
+
+                                    WarehouseSelectAllLocations warehouseSelectAllLocation = new WarehouseSelectAllLocations(storageLocation);
+                                    warehouseSelectAllLocation.setMaterials(warehouseMaterials);
+                                    return warehouseSelectAllLocation;
+                                }
+                        ).collect(Collectors.toList());
+
                         WarehouseSelectAllResponse response = new WarehouseSelectAllResponse(warehouse);
-                        response.setStore_locations(storageLocations);
+                        response.setStore_locations(warehouseSelectAllLocationsList);
                         return response;
                     })
                     .collect(Collectors.toList());
@@ -95,7 +127,6 @@ public class Wms {
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
-
 
     @ApiOperation(value = "storagelocation/add",notes = "storagelocation/add")
     @PostMapping("/wms/storagelocation/add")
@@ -139,7 +170,6 @@ public class Wms {
     @PostMapping("/wms/storagelocation/get")
     public ApiResponse<List<WmsStorageLocation>> storagelocationSelectAll(@RequestBody WmsStorageLocation wmsStorageLocation) {
         List<WmsStorageLocation> wmsStorageLocationList;
-
         try {
             wmsStorageLocationList= wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
             return new ApiResponse<>(wmsStorageLocationList);
@@ -149,4 +179,55 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "material/add",notes = "material/add")
+    @PostMapping("/wms/material/add")
+    public ApiResponse<Map<String, String>> materialInsert(@RequestBody WmsMaterial wmsMaterial) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialServiceImpl.insertSelective(wmsMaterial)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "material/update",notes = "material/update")
+    @PostMapping("/wms/material/update")
+    public ApiResponse<Map<String, String>> materialUpdate(@RequestBody WmsMaterial wmsMaterial) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialServiceImpl.updateWmsMaterialById(wmsMaterial)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "material/delete",notes = "material/delete")
+    @PostMapping("/wms/material/delete")
+    public ApiResponse<Map<String, String>> materialDelete(@RequestBody WmsMaterial wmsMaterial) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialServiceImpl.deleteWmsMaterialById(wmsMaterial)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "material/get", notes = "material/get")
+    @PostMapping("/wms/material/get")
+    public ApiResponse<List<WmsMaterial>> materialSelectAll(@RequestBody WmsMaterial wmsMaterial) {
+        List<WmsMaterial> wmsMaterialList;
+        try {
+            wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+            return new ApiResponse<>(wmsMaterialList);
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
 }

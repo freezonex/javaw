@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supos.app.mapper.WmsMaterialMapper">
+
+    <resultMap id="BaseResultMap" type="com.supos.app.entity.WmsMaterial">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="product_code" column="product_code" jdbcType="VARCHAR"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="product_type" column="product_type" jdbcType="VARCHAR"/>
+            <result property="unit" column="unit" jdbcType="VARCHAR"/>
+            <result property="note" column="note" jdbcType="VARCHAR"/>
+            <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,product_code,name,
+        product_type,unit,note,
+        del_flag,create_time,update_time
+    </sql>
+    <insert id="insertSelective">
+        insert into wms_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="product_code != null">product_code,</if>
+            <if test="name != null">name,</if>
+            <if test="product_type != null">product_type,</if>
+            <if test="unit != null">unit,</if>
+            <if test="note != null">note,</if>
+            <if test="del_flag != null">del_flag,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="product_code != null">#{product_code,jdbcType=VARCHAR},</if>
+            <if test="name != null">#{name,jdbcType=VARCHAR},</if>
+            <if test="product_type != null">#{product_type,jdbcType=VARCHAR},</if>
+            <if test="unit != null">#{unit,jdbcType=VARCHAR},</if>
+            <if test="note != null">#{note,jdbcType=VARCHAR},</if>
+            <if test="del_flag != null">#{del_flag,jdbcType=TINYINT},</if>
+            <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
+            <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateWmsMaterialById" parameterType="com.supos.app.entity.WmsMaterial">
+        UPDATE wms_material
+        <set>
+            <if test="product_code != null">product_code = #{product_code},</if>
+            <if test="name != null">name = #{name},</if>
+            <if test="product_type != null">product_type = #{product_type},</if>
+            <if test="unit != null">unit = #{unit},</if>
+            <if test="note != null">note = #{note},</if>
+            <if test="del_flag != null">del_flag = #{del_flag},</if>
+            <if test="update_time != null">update_time = #{update_time},</if>
+            <if test="create_time != null">create_time = #{create_time}</if>
+        </set>
+        WHERE id = #{id}
+    </update>
+    <update id="deleteWmsMaterialById" parameterType="com.supos.app.entity.WmsMaterial">
+        UPDATE wms_material
+        set del_flag= true
+        WHERE id = #{id}
+    </update>
+    <select id="selectAll" resultMap="BaseResultMap">
+        SELECT *
+        FROM wms_material
+        <where>
+            del_flag IS NULL
+            <if test="id != null and id != ''">
+                AND id = #{id}
+            </if>
+            <!-- Product Code condition -->
+            <if test="product_code != null and product_code != ''">
+                AND product_code = #{product_code}
+            </if>
+            <!-- Name condition -->
+            <if test="name != null and name != ''">
+                AND name = #{name}
+            </if>
+            <!-- Product Type condition -->
+            <if test="product_type != null and product_type != ''">
+                AND product_type = #{product_type}
+            </if>
+            <!-- Unit condition -->
+            <if test="unit != null and unit != ''">
+                AND unit = #{unit}
+            </if>
+            <!-- Note condition -->
+            <if test="note != null and note != ''">
+                AND note = #{note}
+            </if>
+            <!-- Update Time condition -->
+            <if test="update_time != null">
+                AND update_time = #{update_time}
+            </if>
+            <!-- Create Time condition -->
+            <if test="create_time != null">
+                AND create_time = #{create_time}
+            </if>
+        </where>
+    </select>
+</mapper>
