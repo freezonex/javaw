@@ -101,6 +101,10 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
     public int deleteForTopNTransactionsStocktaking(long id) {
         return wmsMaterialTransactionMapper.deleteForTopNTransactionsStocktaking(id);
     }
+
+    public int getQuantityForStocktaking(String Rfid, String MaterialId,String StringStorageLocationId) {
+        return wmsMaterialTransactionMapper.getQuantityForStocktaking( Rfid,  MaterialId, StringStorageLocationId);
+    }
 }
 
 

@@ -693,4 +693,21 @@
         WHERE
             stocktaking_id = #{stocktakingId} and del_flag IS NULL
     </update>
+    <select id="getQuantityForStocktaking" resultType="int">
+        select
+        count(*) AS quantity
+        from wms_material_transaction
+        <where>
+            del_flag IS NULL and stocktaking_id IS NOT NULL
+            <if test="MaterialId != null">
+                AND material_id = #{MaterialId}
+            </if>
+            <if test="Rfid != null">
+                AND rf_id = #{Rfid}
+            </if>
+            <if test="StringStorageLocationId != null">
+                AND stock_location_id = #{StringStorageLocationId}
+            </if>
+        </where>
+    </select>
 </mapper>

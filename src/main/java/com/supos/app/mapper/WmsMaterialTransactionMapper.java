@@ -59,6 +59,7 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int deleteForTopNTransactionsStocktaking(long stocktakingId);
 
+    int getQuantityForStocktaking(String Rfid, String MaterialId,String StringStorageLocationId);
 
 }
 

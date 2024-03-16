@@ -731,11 +731,10 @@ public class Wms {
         try {
 
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setStock_location_id(getStocktakingRequest.getID());
+            wmsMaterialTransaction.setStocktaking_id(getStocktakingRequest.getID());
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
             wmsMaterialTransaction.setType(getStocktakingRequest.getType());
 
-            System.out.println(wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction));
             List<StocktakingRequest> stocktakingRequestList = wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction).stream().map(StocktakingRequest::new).collect(Collectors.toList());
 
             return new ApiResponse<>(stocktakingRequestList);
@@ -745,5 +744,63 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "stocktaking/get/detail", notes = "stocktaking/get/detail")
+    @PostMapping("/wms/stocktaking/detail")
+    public ApiResponse<List<ShelfInventory>> stocktakingDetailGet(@RequestBody GetStocktakingRequest getStocktakingRequest) {
+        try {
+
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setStocktaking_id(getStocktakingRequest.getID());
+            wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
+
+            List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction)
+                    .stream()
+                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
+                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
+                    .entrySet().stream()
+                    .map(entry -> {
+                        ShelfInventory shelfInventory = new ShelfInventory();
+                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
+
+                        // 获取对应的storage location名称
+                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
+                        wmsStorageLocation.setId(entry.getKey());
+                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+                        if (!wmsStorageLocationList.isEmpty()) {
+                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
+                        }
+
+                        // 将分组内的每个物料数据转换为Inventory对象
+                        List<Inventory> inventoryList = entry.getValue().stream()
+                                .map(transaction -> {
+                                    Inventory inventory = new Inventory();
+                                    inventory.setRfid(transaction.getRf_id());
+                                    inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
+                                    inventory.setQuantity(transaction.getQuantity());
+                                    inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(),inventory.getMaterialId(), String.valueOf(entry.getKey())));
+                                    inventory.setDiscrepancy(transaction.getQuantity()-wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(),inventory.getMaterialId(), String.valueOf(entry.getKey())));
+
+                                    WmsMaterial wmsMaterial = new WmsMaterial();
+                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+                                    if (!wmsMaterialList.isEmpty()) {
+                                        WmsMaterial material = wmsMaterialList.get(0);
+                                        inventory.setMaterialName(material.getName());
+                                    }
+                                    return inventory;
+                                })
+                                .collect(Collectors.toList());
+
+                        shelfInventory.setInventory(inventoryList);
+                        return shelfInventory;
+                    })
+                    .collect(Collectors.toList());
+
+            return new ApiResponse<>(shelfInventoryList);
+        } catch (Exception e) {
+            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
 
 }
