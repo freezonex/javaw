@@ -472,7 +472,7 @@ public class Wms {
         }
     }
 
-    @ApiOperation(value = "rfidmaterial/update",notes = "rfidmaterial/update")
+    @ApiOperation(value = "rfidmaterial/update", notes = "rfidmaterial/update")
     @PostMapping("/wms/rfidmaterial/update")
     public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
         Map<String, String> responseData = new HashMap<>();
@@ -480,14 +480,30 @@ public class Wms {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
             wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
-            IntStream.range(0, addRfidMaterialRequest.getQuantity())
-                    .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
-            responseData.put("id", "1");
+
+            int existingQuantity = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction)
+                    .stream()
+                    .findFirst()
+                    .map(WmsMaterialTransaction::getQuantity)
+                    .orElse(0);
+
+            int difference = addRfidMaterialRequest.getQuantity() - existingQuantity;
+
+            if (difference > 0) {
+                IntStream.range(0, difference)
+                        .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
+                responseData.put("id", "1");
+            } else {
+                IntStream.range(difference, 0)
+                        .forEach(i -> wmsMaterialTransactionServiceImpl.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction));
+                responseData.put("id", "2");
+            }
             return new ApiResponse<>(responseData);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.info(e.getMessage());
-            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
+
 
 }

@@ -40,6 +40,10 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
     List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type);
 
     int insertSelective(WmsMaterialTransaction wmsMaterialTransaction);
+
+    List<WmsMaterialTransaction> selectAllGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+
+    int deleteByRfidMaterialIDLimitOne(WmsMaterialTransaction wmsMaterialTransaction);
 }
 
 
