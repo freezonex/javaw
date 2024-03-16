@@ -375,7 +375,7 @@ public class Wms {
                 long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundPDA(
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundPDA(
                                 addInboundRequest.getType(),
                                 addInboundRequest.getSource(),
                                 addInboundRequest.getStatus(),
@@ -392,7 +392,7 @@ public class Wms {
                 long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundManual(
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundManual(
                                 addInboundRequest.getType(),
                                 addInboundRequest.getSource(),
                                 addInboundRequest.getStatus(),

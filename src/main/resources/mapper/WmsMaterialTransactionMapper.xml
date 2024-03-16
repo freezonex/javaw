@@ -262,4 +262,74 @@
             </if>
         </where>
     </select>
+    <update id="updateForTopNTransactionsOutboundPDA">
+        UPDATE
+            wms_material_transaction
+        SET
+            type =
+                #{type},
+            source =
+                #{source},
+            status =
+                #{status},
+            outbound_id =
+                #{outboundId},
+            stock_location_id =
+                #{storageLocationId}
+        WHERE
+            id IN (
+                SELECT
+                    id
+                FROM
+                    (
+                        SELECT
+                            id
+                        FROM
+                            wms_material_transaction
+                        WHERE
+                            rf_id =
+                            #{rfid}
+                          and del_flag IS NULL
+                          and outbound_id IS NULL
+                        ORDER BY
+                            id ASC
+                            LIMIT
+                            #{quantity}) AS subquery)
+    </update>
+    <update id="updateForTopNTransactionsOutboundManual">
+        UPDATE
+            wms_material_transaction
+        SET
+            type =
+                #{type},
+            source =
+                #{source},
+            status =
+                #{status},
+            rf_id =
+                #{rfid},
+            outbound_id =
+                #{outboundId},
+            stock_location_id =
+                #{storageLocationId}
+        WHERE
+            id IN (
+                SELECT
+                    id
+                FROM
+                    (
+                        SELECT
+                            id
+                        FROM
+                            wms_material_transaction
+                        WHERE
+                            material_id =
+                            #{materialId}
+                          and del_flag IS NULL
+                          and outbound_id IS NULL
+                        ORDER BY
+                            id ASC
+                            LIMIT
+                            #{quantity}) AS subquery)
+    </update>
 </mapper>

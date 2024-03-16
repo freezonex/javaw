@@ -49,6 +49,14 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
     public List<WmsMaterialTransaction> selectByRfidType(String rfid, String type) {
         return wmsMaterialTransactionMapper.selectByRfidType( rfid, type);
     }
+
+    public int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundPDA( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialId,  quantity);
+    }
+
+    public int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialId,  quantity);
+    }
 }
 
 
