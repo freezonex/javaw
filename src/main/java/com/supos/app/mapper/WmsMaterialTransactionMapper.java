@@ -22,9 +22,9 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectAllGroupByMaterialIDStockLocationId(WmsMaterialTransaction wmsMaterialTransaction);
 
-    int updateForTopNTransactionsManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
 
-    int updateForTopNTransactionsPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
 
     int updateByRfid(UpdateInboundRequest updateInboundRequest);
 

@@ -284,10 +284,10 @@ public class Wms {
             Map<String, String> responseData = new HashMap<>();
 
             if ("PDA".equals(addInboundRequest.getSource())) {
-                long newInboundId =  System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsPDA(
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundPDA(
                                 addInboundRequest.getType(),
                                 addInboundRequest.getSource(),
                                 addInboundRequest.getStatus(),
@@ -301,10 +301,10 @@ public class Wms {
                     });
                 });
             } else if ("manual".equals(addInboundRequest.getSource())) {
-                long newInboundId =  System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsManual(
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundManual(
                                 addInboundRequest.getType(),
                                 addInboundRequest.getSource(),
                                 addInboundRequest.getStatus(),
@@ -362,6 +362,54 @@ public class Wms {
         }catch (Exception e){
             log.info(e.getMessage());
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "outbound/add", notes = "outbound/add")
+    @PostMapping("/wms/outbound/add")
+    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody AddInboundRequest addInboundRequest) {
+        try {
+            Map<String, String> responseData = new HashMap<>();
+
+            if ("PDA".equals(addInboundRequest.getSource())) {
+                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+                    shelfInventory.getInventory().forEach(inventory -> {
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundPDA(
+                                addInboundRequest.getType(),
+                                addInboundRequest.getSource(),
+                                addInboundRequest.getStatus(),
+                                inventory.getRfid(),
+                                newOutboundId,
+                                shelfInventory.getStorageLocationId(),
+                                inventory.getMaterialId(),
+                                inventory.getQuantity()
+                        );
+                        responseData.put("id", String.valueOf(updated));
+                    });
+                });
+            } else if ("manual".equals(addInboundRequest.getSource())) {
+                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+                    shelfInventory.getInventory().forEach(inventory -> {
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundManual(
+                                addInboundRequest.getType(),
+                                addInboundRequest.getSource(),
+                                addInboundRequest.getStatus(),
+                                inventory.getRfid(),
+                                newOutboundId,
+                                shelfInventory.getStorageLocationId(),
+                                inventory.getMaterialId(),
+                                inventory.getQuantity()
+                        );
+                        responseData.put("id", String.valueOf(updated));
+                    });
+                });
+            }
+            return new ApiResponse<>(responseData);
+        } catch (Exception e) {
+            log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
 

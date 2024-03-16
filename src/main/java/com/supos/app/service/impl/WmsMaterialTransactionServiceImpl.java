@@ -30,12 +30,12 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransaction);
     }
 
-    public int updateForTopNTransactionsManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsManual( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundManual( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
     }
 
-    public int updateForTopNTransactionsPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
     }
 
     public int updateByRfid(UpdateInboundRequest updateInboundRequest) {

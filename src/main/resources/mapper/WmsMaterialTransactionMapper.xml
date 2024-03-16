@@ -29,7 +29,7 @@
         operator,status,note,
         del_flag,create_time,update_time
     </sql>
-    <update id="updateForTopNTransactionsManual">
+    <update id="updateForTopNTransactionsInboundManual">
         UPDATE
             wms_material_transaction
         SET
@@ -66,7 +66,7 @@
                             LIMIT
                             #{quantity}) AS subquery)
     </update>
-    <update id="updateForTopNTransactionsPDA">
+    <update id="updateForTopNTransactionsInboundPDA">
         UPDATE
             wms_material_transaction
         SET
