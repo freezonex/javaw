@@ -111,6 +111,11 @@
         </set>
         WHERE rf_id = #{refId} and del_flag IS NULL
     </update>
+    <update id="deleteByRfid" parameterType="com.supos.app.vo.UpdateInboundRequest">
+        UPDATE wms_material_transaction
+        set del_flag = true
+        WHERE rf_id = #{refId} and del_flag IS NULL
+    </update>
     <select id="selectAllGroupByMaterialID" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,
@@ -242,5 +247,19 @@
             </if>
         </where>
         GROUP BY material_id,stock_location_id
+    </select>
+    <select id="selectByRfidType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wms_material_transaction
+        <where>
+            del_flag IS NULL
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="rfid != null">
+                AND rf_id = #{rfid}
+            </if>
+        </where>
     </select>
 </mapper>

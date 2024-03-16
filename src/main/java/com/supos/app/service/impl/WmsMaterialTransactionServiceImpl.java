@@ -42,6 +42,13 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.updateByRfid(updateInboundRequest);
     }
 
+    public int deleteByRfid(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.deleteByRfid(updateInboundRequest);
+    }
+
+    public List<WmsMaterialTransaction> selectByRfidType(String rfid, String type) {
+        return wmsMaterialTransactionMapper.selectByRfidType( rfid, type);
+    }
 }
 
 

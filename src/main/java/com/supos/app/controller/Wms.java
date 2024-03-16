@@ -338,5 +338,31 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "inbound/delete", notes = "inbound/delete")
+    @PostMapping("/wms/inbound/delete")
+    public ApiResponse<Map<String, String>> inboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteByRfid(updateInboundRequest)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "inbound/get", notes = "inbound/get")
+    @PostMapping("/wms/inbound/get")
+    public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        try {
+            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+                    .map(SelectInboundResponse::new)
+                    .collect(Collectors.toList());
+            return new ApiResponse<>(response);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
 
 }
