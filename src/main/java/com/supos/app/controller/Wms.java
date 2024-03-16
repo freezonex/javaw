@@ -41,7 +41,7 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/add",notes = "warehouse/add")
     @PostMapping("/wms/warehouse/add")
-    public ApiResponse<Map<String, String>> warehouseInsert(@RequestBody WmsWarehouse wmsWarehouse) {
+    public ApiResponse<Map<String, String>> warehouseInsert(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsWarehouseServiceImpl.insertSelective(wmsWarehouse)));
@@ -54,7 +54,7 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/update",notes = "warehouse/update")
     @PostMapping("/wms/warehouse/update")
-    public ApiResponse<Map<String, String>> warehouseUpdate(@RequestBody WmsWarehouse wmsWarehouse) {
+    public ApiResponse<Map<String, String>> warehouseUpdate(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsWarehouseServiceImpl.updateWarehouseById(wmsWarehouse)));
@@ -67,7 +67,7 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/delete",notes = "warehouse/delete")
     @PostMapping("/wms/warehouse/delete")
-    public ApiResponse<Map<String, String>> warehouseDelete(@RequestBody WmsWarehouse wmsWarehouse) {
+    public ApiResponse<Map<String, String>> warehouseDelete(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsWarehouseServiceImpl.deleteWarehouseById(wmsWarehouse)));
@@ -80,7 +80,7 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/get", notes = "warehouse/get")
     @PostMapping("/wms/warehouse/get")
-    public ApiResponse<List<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody WmsWarehouse wmsWarehouse) {
+    public ApiResponse<List<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
         try {
             List<WmsWarehouse> wmsWarehouseList = wmsWarehouseServiceImpl.selectAll(wmsWarehouse);
             List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
@@ -130,7 +130,7 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/add",notes = "storagelocation/add")
     @PostMapping("/wms/storagelocation/add")
-    public ApiResponse<Map<String, String>> storagelocationInsert(@RequestBody WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<Map<String, String>> storagelocationInsert(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.insertSelective(wmsStorageLocation)));
@@ -143,7 +143,7 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/update",notes = "storagelocation/update")
     @PostMapping("/wms/storagelocation/update")
-    public ApiResponse<Map<String, String>> storagelocationUpdate(@RequestBody WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<Map<String, String>> storagelocationUpdate(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.updateStorageLocationById(wmsStorageLocation)));
@@ -156,7 +156,7 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/delete",notes = "storagelocation/delete")
     @PostMapping("/wms/storagelocation/delete")
-    public ApiResponse<Map<String, String>> storagelocationDelete(@RequestBody WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<Map<String, String>> storagelocationDelete(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.deleteStorageLocationById(wmsStorageLocation)));
@@ -169,7 +169,7 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/get", notes = "storagelocation/get")
     @PostMapping("/wms/storagelocation/get")
-    public ApiResponse<List<StorageLocationSelectAllResponse>> storagelocationSelectAll(@RequestBody WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<List<StorageLocationSelectAllResponse>> storagelocationSelectAll(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
         try {
             List<StorageLocationSelectAllResponse> StorageLocationSelectAllResponses = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation).stream().map(
                     storageLocation -> {
@@ -207,7 +207,7 @@ public class Wms {
 
     @ApiOperation(value = "material/add",notes = "material/add")
     @PostMapping("/wms/material/add")
-    public ApiResponse<Map<String, String>> materialInsert(@RequestBody WmsMaterial wmsMaterial) {
+    public ApiResponse<Map<String, String>> materialInsert(@RequestBody(required = false) WmsMaterial wmsMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialServiceImpl.insertSelective(wmsMaterial)));
@@ -220,7 +220,7 @@ public class Wms {
 
     @ApiOperation(value = "material/update",notes = "material/update")
     @PostMapping("/wms/material/update")
-    public ApiResponse<Map<String, String>> materialUpdate(@RequestBody WmsMaterial wmsMaterial) {
+    public ApiResponse<Map<String, String>> materialUpdate(@RequestBody(required = false) WmsMaterial wmsMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialServiceImpl.updateWmsMaterialById(wmsMaterial)));
@@ -233,7 +233,7 @@ public class Wms {
 
     @ApiOperation(value = "material/delete",notes = "material/delete")
     @PostMapping("/wms/material/delete")
-    public ApiResponse<Map<String, String>> materialDelete(@RequestBody WmsMaterial wmsMaterial) {
+    public ApiResponse<Map<String, String>> materialDelete(@RequestBody(required = false) WmsMaterial wmsMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialServiceImpl.deleteWmsMaterialById(wmsMaterial)));
@@ -246,7 +246,7 @@ public class Wms {
 
     @ApiOperation(value = "material/get", notes = "material/get")
     @PostMapping("/wms/material/get")
-    public ApiResponse<List<MaterialSelectAllResponse>> materialSelectAll(@RequestBody WmsMaterial wmsMaterial) {
+    public ApiResponse<List<MaterialSelectAllResponse>> materialSelectAll(@RequestBody(required = false) WmsMaterial wmsMaterial) {
         try {
             List<MaterialSelectAllResponse> materialSelectAllResponses = wmsMaterialServiceImpl.selectAll(wmsMaterial).stream().map(material -> {
                 WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
@@ -280,7 +280,7 @@ public class Wms {
 
     @ApiOperation(value = "inbound/add", notes = "inbound/add")
     @PostMapping("/wms/inbound/add")
-    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
 
@@ -328,7 +328,7 @@ public class Wms {
 
     @ApiOperation(value = "inbound/update", notes = "inbound/update")
     @PostMapping("/wms/inbound/update")
-    public ApiResponse<Map<String, String>> inboundUpdate(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> inboundUpdate(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByRfid(updateInboundRequest)));
@@ -341,7 +341,7 @@ public class Wms {
 
     @ApiOperation(value = "inbound/delete", notes = "inbound/delete")
     @PostMapping("/wms/inbound/delete")
-    public ApiResponse<Map<String, String>> inboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> inboundDelete(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForInbound(updateInboundRequest)));
@@ -354,7 +354,7 @@ public class Wms {
 
     @ApiOperation(value = "inbound/get", notes = "inbound/get")
     @PostMapping("/wms/inbound/get")
-    public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         try {
             List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
                     .map(SelectInboundResponse::new)
@@ -368,7 +368,7 @@ public class Wms {
 
     @ApiOperation(value = "outbound/add", notes = "outbound/add")
     @PostMapping("/wms/outbound/add")
-    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
 
@@ -415,7 +415,7 @@ public class Wms {
     }
     @ApiOperation(value = "outbound/update", notes = "outbound/update")
     @PostMapping("/wms/outbound/update")
-    public ApiResponse<Map<String, String>> outboundUpdate(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> outboundUpdate(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByRfid(updateInboundRequest)));
@@ -428,7 +428,7 @@ public class Wms {
 
     @ApiOperation(value = "outbound/delete", notes = "outbound/delete")
     @PostMapping("/wms/outbound/delete")
-    public ApiResponse<Map<String, String>> outboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> outboundDelete(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForOutbound(updateInboundRequest)));
@@ -441,7 +441,7 @@ public class Wms {
 
     @ApiOperation(value = "outbound/get", notes = "outbound/get")
     @PostMapping("/wms/outbound/get")
-    public ApiResponse<List<SelectOutboundResponse>> outboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<List<SelectOutboundResponse>> outboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         try {
             List<SelectOutboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
                     .map(SelectOutboundResponse::new)
@@ -455,7 +455,7 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/add",notes = "rfidmaterial/add")
     @PostMapping("/wms/rfidmaterial/add")
-    public ApiResponse<Map<String, String>> rfidmaterialInsert(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialInsert(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
@@ -473,7 +473,7 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/update", notes = "rfidmaterial/update")
     @PostMapping("/wms/rfidmaterial/update")
-    public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
@@ -506,7 +506,7 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/delete",notes = "rfidmaterial/delete")
     @PostMapping("/wms/rfidmaterial/delete")
-    public ApiResponse<Map<String, String>> rfidmaterialDelete(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialDelete(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
@@ -522,7 +522,7 @@ public class Wms {
     }
     @ApiOperation(value = "rfidmaterial/get", notes = "rfidmaterial/get")
     @PostMapping("/wms/rfidmaterial/get")
-    public ApiResponse<List<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<List<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
@@ -557,7 +557,7 @@ public class Wms {
 
     @ApiOperation(value = "inbound/detail", notes = "inbound/detail")
     @PostMapping("/wms/inbound/detail")
-    public ApiResponse<List<ShelfInventory>> inboundDetailGet(@RequestBody InboundRecordDetailRequest inboundRecordDetailRequest) {
+    public ApiResponse<List<ShelfInventory>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
@@ -612,7 +612,7 @@ public class Wms {
 
     @ApiOperation(value = "outbound/detail", notes = "outbound/detail")
     @PostMapping("/wms/outbound/detail")
-    public ApiResponse<List<ShelfInventory>> outboundDetailGet(@RequestBody InboundRecordDetailRequest inboundRecordDetailRequest) {
+    public ApiResponse<List<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
@@ -667,7 +667,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/add", notes = "stocktaking/add")
     @PostMapping("/wms/stocktaking/add")
-    public ApiResponse<Map<String, String>> stocktakingInsert(@RequestBody AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> stocktakingInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
             long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
@@ -690,7 +690,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/update", notes = "stocktaking/update")
     @PostMapping("/wms/stocktaking/update")
-    public ApiResponse<Map<String, String>> stocktakingUpdate(@RequestBody AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> stocktakingUpdate(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
             long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
@@ -713,7 +713,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/delete", notes = "stocktaking/delete")
     @PostMapping("/wms/stocktaking/delete")
-    public ApiResponse<Map<String, String>> stocktakingDelete(@RequestBody ID id) {
+    public ApiResponse<Map<String, String>> stocktakingDelete(@RequestBody(required = false) ID id) {
         try {
             Map<String, String> responseData = new HashMap<>();
             wmsMaterialTransactionServiceImpl.deleteForTopNTransactionsStocktaking(id.getID());
@@ -727,7 +727,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/get", notes = "stocktaking/get")
     @PostMapping("/wms/stocktaking/get")
-    public ApiResponse<List<StocktakingRequest>> stocktakingGet(@RequestBody GetStocktakingRequest getStocktakingRequest) {
+    public ApiResponse<List<StocktakingRequest>> stocktakingGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest) {
         try {
 
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
@@ -746,7 +746,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/get/detail", notes = "stocktaking/get/detail")
     @PostMapping("/wms/stocktaking/detail")
-    public ApiResponse<List<ShelfInventory>> stocktakingDetailGet(@RequestBody GetStocktakingRequest getStocktakingRequest) {
+    public ApiResponse<List<ShelfInventory>> stocktakingDetailGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest) {
         try {
 
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
