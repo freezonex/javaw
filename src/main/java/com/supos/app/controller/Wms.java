@@ -7,6 +7,7 @@ import com.supos.app.entity.*;
 import com.supos.app.service.WmsMaterialTransactionService;
 import com.supos.app.service.impl.*;
 import com.supos.app.utils.HttpUtils;
+import com.supos.app.vo.MaterialSelectAllResponse;
 import com.supos.app.vo.WarehouseSelectAllLocations;
 import com.supos.app.vo.WarehouseSelectAllMaterial;
 import com.supos.app.vo.WarehouseSelectAllResponse;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -220,14 +222,36 @@ public class Wms {
 
     @ApiOperation(value = "material/get", notes = "material/get")
     @PostMapping("/wms/material/get")
-    public ApiResponse<List<WmsMaterial>> materialSelectAll(@RequestBody WmsMaterial wmsMaterial) {
-        List<WmsMaterial> wmsMaterialList;
+    public ApiResponse<List<MaterialSelectAllResponse>> materialSelectAll(@RequestBody WmsMaterial wmsMaterial) {
         try {
-            wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
-            return new ApiResponse<>(wmsMaterialList);
+            List<MaterialSelectAllResponse> materialSelectAllResponses = wmsMaterialServiceImpl.selectAll(wmsMaterial).stream().map(material -> {
+                WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
+                wmsMaterialTransactionQuery.setMaterial_id(material.getId());
+                List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransactionQuery);
+
+                List<String> ids = new ArrayList<>();
+                List<String> names = new ArrayList<>();
+
+                transactions.forEach(transaction -> {
+                    ids.add(String.valueOf(transaction.getId()));
+                    WmsStorageLocation wmsStorageLocationQuery = new WmsStorageLocation();
+                    wmsStorageLocationQuery.setId(transaction.getStock_location_id());
+                    List<WmsStorageLocation> locations = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocationQuery);
+                    if (!locations.isEmpty()) {
+                        names.add(locations.get(0).getName());
+                    }
+                });
+
+                MaterialSelectAllResponse response = new MaterialSelectAllResponse(material);
+                response.setStorage_location_id(ids);
+                response.setStorage_location(names);
+                return response;
+            }).collect(Collectors.toList());
+            return new ApiResponse<>(materialSelectAllResponses);
         } catch (Exception e) {
             log.info(e.getMessage());
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
+
 }

@@ -17,6 +17,8 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectAllGroupByMaterialID(WmsMaterialTransaction wmsMaterialTransaction);
 
+    List<WmsMaterialTransaction> selectAllGroupByMaterialIDStockLocationId(WmsMaterialTransaction wmsMaterialTransaction);
+
 }
 
 
