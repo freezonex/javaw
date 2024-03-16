@@ -82,6 +82,10 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
     public List<WmsMaterialTransaction> selectAllInboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
         return wmsMaterialTransactionMapper.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction);
     }
+
+    public List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction);
+    }
 }
 
 

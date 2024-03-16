@@ -1,6 +1,7 @@
 package com.supos.app.vo;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonInclude;
 
 public class Inventory {
     @JsonProperty("rfid")
@@ -15,9 +16,11 @@ public class Inventory {
     @JsonProperty("material_name")
     private String materialName;
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     @JsonProperty("stock_quantity")
     private int stockQuantity;
 
+    @JsonInclude(JsonInclude.Include.NON_DEFAULT)
     @JsonProperty("discrepancy")
     private int discrepancy;
 
