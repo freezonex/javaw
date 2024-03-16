@@ -29,7 +29,7 @@
         operator,status,note,
         del_flag,create_time,update_time
     </sql>
-    <update id="updateForTopNTransactions">
+    <update id="updateForTopNTransactionsManual">
         UPDATE
             wms_material_transaction
         SET
@@ -42,7 +42,9 @@
             rf_id =
                 #{rfid},
             inbound_id =
-                #{inboundId}
+                #{inboundId},
+            stock_location_id =
+                #{storageLocationId}
         WHERE
             id IN (
                 SELECT
@@ -58,12 +60,56 @@
                             #{materialId}
                           and del_flag IS NULL
                           and inbound_id IS NULL
-                          AND stock_location_id =
-                              #{storageLocationId}
+                          and outbound_id IS NULL
                         ORDER BY
                             id ASC
                             LIMIT
                             #{quantity}) AS subquery)
+    </update>
+    <update id="updateForTopNTransactionsPDA">
+        UPDATE
+            wms_material_transaction
+        SET
+            type =
+                #{type},
+            source =
+                #{source},
+            status =
+                #{status},
+            inbound_id =
+                #{inboundId},
+            stock_location_id =
+                #{storageLocationId}
+        WHERE
+            id IN (
+                SELECT
+                    id
+                FROM
+                    (
+                        SELECT
+                            id
+                        FROM
+                            wms_material_transaction
+                        WHERE
+                            rf_id =
+                            #{rfid}
+                          and del_flag IS NULL
+                          and inbound_id IS NULL
+                          and outbound_id IS NULL
+                        ORDER BY
+                            id ASC
+                            LIMIT
+                            #{quantity}) AS subquery)
+    </update>
+    <update id="updateByRfid" parameterType="com.supos.app.vo.UpdateInboundRequest">
+        UPDATE wms_material_transaction
+        <set>
+            <if test="type != null">type = #{type},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="note != null">note = #{note},</if>
+        </set>
+        WHERE rf_id = #{refId} and del_flag IS NULL
     </update>
     <select id="selectAllGroupByMaterialID" resultMap="BaseResultMap">
         SELECT

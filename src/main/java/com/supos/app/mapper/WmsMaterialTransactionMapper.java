@@ -3,6 +3,7 @@ package com.supos.app.mapper;
 import cn.hutool.core.lang.UUID;
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.supos.app.vo.UpdateInboundRequest;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
@@ -20,7 +21,11 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectAllGroupByMaterialIDStockLocationId(WmsMaterialTransaction wmsMaterialTransaction);
 
-    int updateForTopNTransactions(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+
+    int updateForTopNTransactionsPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+
+    int updateByRfid(UpdateInboundRequest updateInboundRequest);
 }
 
 

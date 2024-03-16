@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.supos.app.service.WmsMaterialTransactionService;
 import com.supos.app.mapper.WmsMaterialTransactionMapper;
+import com.supos.app.vo.UpdateInboundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,10 +30,18 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransaction);
     }
 
-    public int updateForTopNTransactions(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactions( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
-
+    public int updateForTopNTransactionsManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsManual( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
     }
+
+    public int updateForTopNTransactionsPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+    }
+
+    public int updateByRfid(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.updateByRfid(updateInboundRequest);
+    }
+
 }
 
 

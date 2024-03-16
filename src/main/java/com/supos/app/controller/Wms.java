@@ -287,7 +287,24 @@ public class Wms {
                 long newInboundId =  System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactions(
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsPDA(
+                                addInboundRequest.getType(),
+                                addInboundRequest.getSource(),
+                                addInboundRequest.getStatus(),
+                                inventory.getRfid(),
+                                newInboundId,
+                                shelfInventory.getStorageLocationId(),
+                                inventory.getMaterialId(),
+                                inventory.getQuantity()
+                        );
+                        responseData.put("id", String.valueOf(updated));
+                    });
+                });
+            } else if ("manual".equals(addInboundRequest.getSource())) {
+                long newInboundId =  System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+                    shelfInventory.getInventory().forEach(inventory -> {
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsManual(
                                 addInboundRequest.getType(),
                                 addInboundRequest.getSource(),
                                 addInboundRequest.getStatus(),
@@ -305,6 +322,19 @@ public class Wms {
         } catch (Exception e) {
             log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "inbound/update", notes = "inbound/update")
+    @PostMapping("/wms/inbound/update")
+    public ApiResponse<Map<String, String>> inboundUpdate(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByRfid(updateInboundRequest)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
     }
 
