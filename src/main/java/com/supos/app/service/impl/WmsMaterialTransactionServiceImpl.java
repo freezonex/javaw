@@ -23,6 +23,10 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
     @Autowired
     private WmsMaterialTransactionMapper wmsMaterialTransactionMapper;
 
+    public int insertSelective(WmsMaterialTransaction wmsMaterialTransaction){
+        return wmsMaterialTransactionMapper.insertSelective(wmsMaterialTransaction);
+    }
+
     public List<WmsMaterialTransaction> selectAllGroupByMaterialID(WmsMaterialTransaction wmsMaterialTransaction){
         return wmsMaterialTransactionMapper.selectAllGroupByMaterialID(wmsMaterialTransaction);
     }

@@ -346,4 +346,44 @@
             </if>
         </where>
     </select>
+    <insert id="insertSelective">
+        insert into wms_material_transaction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="material_id != null">material_id,</if>
+            <if test="type != null">type,</if>
+            <if test="source != null">source,</if>
+            <if test="inbound_id != null">inbound_id,</if>
+            <if test="outbound_id != null">outbound_id,</if>
+            <if test="warehouse_id != null">warehouse_id,</if>
+            <if test="stock_location_id != null">stock_location_id,</if>
+            <if test="rf_id != null">rf_id,</if>
+            <if test="operator != null">operator,</if>
+            <if test="status != null">status,</if>
+            <if test="note != null">note,</if>
+            <if test="del_flag != null">del_flag,</if>
+            <if test="create_time != null">create_time,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="Materials != null">materials,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="material_id != null">#{material_id,jdbcType=BIGINT},</if>
+            <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
+            <if test="inbound_id != null">#{inbound_id,jdbcType=BIGINT},</if>
+            <if test="outbound_id != null">#{outbound_id,jdbcType=BIGINT},</if>
+            <if test="warehouse_id != null">#{warehouse_id,jdbcType=BIGINT},</if>
+            <if test="stock_location_id != null">#{stock_location_id,jdbcType=BIGINT},</if>
+            <if test="rf_id != null">#{rf_id,jdbcType=VARCHAR},</if>
+            <if test="operator != null">#{operator,jdbcType=VARCHAR},</if>
+            <if test="status != null">#{status,jdbcType=VARCHAR},</if>
+            <if test="note != null">#{note,jdbcType=VARCHAR},</if>
+            <if test="del_flag != null">#{del_flag,jdbcType=TINYINT},</if>
+            <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
+            <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
+            <if test="Materials != null">#{Materials},</if>
+        </trim>
+    </insert>
 </mapper>

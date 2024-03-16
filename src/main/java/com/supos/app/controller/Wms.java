@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
@@ -140,6 +141,7 @@ public class Wms {
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
     }
+
     @ApiOperation(value = "storagelocation/update",notes = "storagelocation/update")
     @PostMapping("/wms/storagelocation/update")
     public ApiResponse<Map<String, String>> storagelocationUpdate(@RequestBody WmsStorageLocation wmsStorageLocation) {
@@ -446,6 +448,42 @@ public class Wms {
                     .map(SelectInboundResponse::new)
                     .collect(Collectors.toList());
             return new ApiResponse<>(response);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "rfidmaterial/add",notes = "rfidmaterial/add")
+    @PostMapping("/wms/rfidmaterial/add")
+    public ApiResponse<Map<String, String>> rfidmaterialInsert(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
+            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
+            IntStream.range(0, addRfidMaterialRequest.getQuantity())
+                    .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
+            responseData.put("id", "1");
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "rfidmaterial/update",notes = "rfidmaterial/update")
+    @PostMapping("/wms/rfidmaterial/update")
+    public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
+            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
+            IntStream.range(0, addRfidMaterialRequest.getQuantity())
+                    .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
+            responseData.put("id", "1");
+            return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());

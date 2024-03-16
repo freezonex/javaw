@@ -1,4 +1,5 @@
 package com.supos.app.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import cn.hutool.core.lang.UUID;
 import com.supos.app.entity.WmsMaterialTransaction;
@@ -37,6 +38,8 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
     int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
 
     List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type);
+
+    int insertSelective(WmsMaterialTransaction wmsMaterialTransaction);
 }
 
 
