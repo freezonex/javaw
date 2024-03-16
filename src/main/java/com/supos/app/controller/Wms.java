@@ -725,4 +725,25 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "stocktaking/get", notes = "stocktaking/get")
+    @PostMapping("/wms/stocktaking/get")
+    public ApiResponse<List<StocktakingRequest>> stocktakingGet(@RequestBody GetStocktakingRequest getStocktakingRequest) {
+        try {
+
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setStock_location_id(getStocktakingRequest.getID());
+            wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
+            wmsMaterialTransaction.setType(getStocktakingRequest.getType());
+
+            System.out.println(wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction));
+            List<StocktakingRequest> stocktakingRequestList = wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction).stream().map(StocktakingRequest::new).collect(Collectors.toList());
+
+            return new ApiResponse<>(stocktakingRequestList);
+        } catch (Exception e) {
+            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+
 }

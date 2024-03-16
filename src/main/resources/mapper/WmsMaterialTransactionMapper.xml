@@ -474,7 +474,7 @@
     </select>
     <select id="selectAll" resultMap="BaseResultMap">
         SELECT
-        <include refid="Base_Column_List"/>
+        *
         FROM wms_material_transaction
         <where>
             del_flag IS NULL
@@ -499,7 +499,7 @@
             <if test="warehouse_id != null">
                 AND warehouse_id = #{warehouse_id}
             </if>
-            <if test="stock_location_id != null">
+            <if test="stock_location_id != null and quantity > 0">
                 AND stock_location_id = #{stock_location_id}
             </if>
             <if test="rf_id != null">
@@ -521,7 +521,7 @@
                 AND create_time = #{create_time}
             </if>
         </where>
-        <if test="quantity != null">
+        <if test="quantity != null and quantity > 0">
             LIMIT #{quantity}
         </if>
     </select>
