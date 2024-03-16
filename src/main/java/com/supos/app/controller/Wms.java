@@ -355,7 +355,7 @@ public class Wms {
     @PostMapping("/wms/inbound/get")
     public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
         try {
-            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
                     .map(SelectInboundResponse::new)
                     .collect(Collectors.toList());
             return new ApiResponse<>(response);
@@ -410,6 +410,45 @@ public class Wms {
         } catch (Exception e) {
             log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+    @ApiOperation(value = "outbound/update", notes = "outbound/update")
+    @PostMapping("/wms/outbound/update")
+    public ApiResponse<Map<String, String>> outboundUpdate(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByRfid(updateInboundRequest)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "outbound/delete", notes = "outbound/delete")
+    @PostMapping("/wms/outbound/delete")
+    public ApiResponse<Map<String, String>> outboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteByRfid(updateInboundRequest)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "outbound/get", notes = "outbound/get")
+    @PostMapping("/wms/outbound/get")
+    public ApiResponse<List<SelectInboundResponse>> outboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
+        try {
+            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+                    .map(SelectInboundResponse::new)
+                    .collect(Collectors.toList());
+            return new ApiResponse<>(response);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
     }
 

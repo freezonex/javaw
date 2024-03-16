@@ -248,12 +248,12 @@
         </where>
         GROUP BY material_id,stock_location_id
     </select>
-    <select id="selectByRfidType" resultMap="BaseResultMap">
+    <select id="selectByInboundRfidType" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from wms_material_transaction
         <where>
-            del_flag IS NULL
+            del_flag IS NULL and inbound_id IS NOT NULL
             <if test="type != null">
                 AND type = #{type}
             </if>
@@ -332,4 +332,18 @@
                             LIMIT
                             #{quantity}) AS subquery)
     </update>
+    <select id="selectByOutboundRfidType" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wms_material_transaction
+        <where>
+            del_flag IS NULL and outbound_id IS NOT NULL
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="rfid != null">
+                AND rf_id = #{rfid}
+            </if>
+        </where>
+    </select>
 </mapper>
