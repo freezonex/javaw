@@ -3,6 +3,9 @@ package com.supos.app.entity;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Date;
+import java.util.List;
+
+import com.supos.app.vo.StorageLocationSelectAllMaterial;
 import lombok.Data;
 
 /**
@@ -89,6 +92,8 @@ public class WmsMaterialTransaction implements Serializable {
     private Date update_time;
 
     private static final long serialVersionUID = 1L;
+
+    List<StorageLocationSelectAllMaterial>Materials;
 
     @Override
     public boolean equals(Object that) {

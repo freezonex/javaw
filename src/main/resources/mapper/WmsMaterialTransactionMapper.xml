@@ -29,6 +29,42 @@
         operator,status,note,
         del_flag,create_time,update_time
     </sql>
+    <update id="updateForTopNTransactions">
+        UPDATE
+            wms_material_transaction
+        SET
+            type =
+                #{type},
+            source =
+                #{source},
+            status =
+                #{status},
+            rf_id =
+                #{rfid},
+            inbound_id =
+                #{inboundId}
+        WHERE
+            id IN (
+                SELECT
+                    id
+                FROM
+                    (
+                        SELECT
+                            id
+                        FROM
+                            wms_material_transaction
+                        WHERE
+                            material_id =
+                            #{materialId}
+                          and del_flag IS NULL
+                          and inbound_id IS NULL
+                          AND stock_location_id =
+                              #{storageLocationId}
+                        ORDER BY
+                            id ASC
+                            LIMIT
+                            #{quantity}) AS subquery)
+    </update>
     <select id="selectAllGroupByMaterialID" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,

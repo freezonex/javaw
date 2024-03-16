@@ -1,16 +1,16 @@
 package com.supos.app.vo;
 
 import com.supos.app.entity.WmsMaterialTransaction;
-import com.supos.app.entity.WmsWarehouse;
 
-public class WarehouseSelectAllMaterial {
-    public WarehouseSelectAllMaterial(WmsMaterialTransaction materialTransactionquery) {
-        this.quantity = materialTransactionquery.getQuantity();
-        this.material_id = materialTransactionquery.getMaterial_id();
-    }
+public class StorageLocationSelectAllMaterial {
     long material_id;
     String material_name;
     int quantity;
+
+    public StorageLocationSelectAllMaterial(WmsMaterialTransaction materialTransactionquery) {
+        this.quantity = materialTransactionquery.getQuantity();
+        this.material_id = materialTransactionquery.getMaterial_id();
+    }
 
     public long getMaterial_id() {
         return material_id;
@@ -24,8 +24,8 @@ public class WarehouseSelectAllMaterial {
         return material_name;
     }
 
-    public void setMaterial_name(String materialName) {
-        material_name = materialName;
+    public void setMaterial_name(String material_name) {
+        this.material_name = material_name;
     }
 
     public int getQuantity() {
@@ -33,6 +33,6 @@ public class WarehouseSelectAllMaterial {
     }
 
     public void setQuantity(int quantity) {
-        quantity = quantity;
+        this.quantity = quantity;
     }
 }

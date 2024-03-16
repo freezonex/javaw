@@ -29,6 +29,10 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransaction);
     }
 
+    public int updateForTopNTransactions(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactions( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+
+    }
 }
 
 

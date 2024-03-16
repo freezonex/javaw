@@ -7,10 +7,7 @@ import com.supos.app.entity.*;
 import com.supos.app.service.WmsMaterialTransactionService;
 import com.supos.app.service.impl.*;
 import com.supos.app.utils.HttpUtils;
-import com.supos.app.vo.MaterialSelectAllResponse;
-import com.supos.app.vo.WarehouseSelectAllLocations;
-import com.supos.app.vo.WarehouseSelectAllMaterial;
-import com.supos.app.vo.WarehouseSelectAllResponse;
+import com.supos.app.vo.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -102,10 +100,10 @@ public class Wms {
                                             .map(transaction -> {
                                                 WarehouseSelectAllMaterial warehouseMaterial = new WarehouseSelectAllMaterial(transaction);
                                                 WmsMaterial wmsMaterial = new WmsMaterial();
-                                                wmsMaterial.setId(transaction.getWarehouse_id());
+                                                wmsMaterial.setId(transaction.getMaterial_id());
                                                 List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                                 if (!materials.isEmpty()) {
-                                                    warehouseMaterial.setMaterialName(materials.get(0).getName());
+                                                    warehouseMaterial.setMaterial_name(materials.get(0).getName());
                                                 }
                                                 return warehouseMaterial;
                                             })
@@ -168,16 +166,41 @@ public class Wms {
         }
     }
 
-    @ApiOperation(value = "storagelocation/get",notes = "storagelocation/get")
+    @ApiOperation(value = "storagelocation/get", notes = "storagelocation/get")
     @PostMapping("/wms/storagelocation/get")
-    public ApiResponse<List<WmsStorageLocation>> storagelocationSelectAll(@RequestBody WmsStorageLocation wmsStorageLocation) {
-        List<WmsStorageLocation> wmsStorageLocationList;
+    public ApiResponse<List<StorageLocationSelectAllResponse>> storagelocationSelectAll(@RequestBody WmsStorageLocation wmsStorageLocation) {
         try {
-            wmsStorageLocationList= wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
-            return new ApiResponse<>(wmsStorageLocationList);
-        }catch (Exception e){
+            List<StorageLocationSelectAllResponse> StorageLocationSelectAllResponses = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation).stream().map(
+                    storageLocation -> {
+                        StorageLocationSelectAllResponse storageLocationSelectAllResponse = new StorageLocationSelectAllResponse(storageLocation);
+
+                        WmsMaterialTransaction materialTransactionquery = new WmsMaterialTransaction();
+                        materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
+                        materialTransactionquery.setStock_location_id(storageLocation.getId());
+
+                        List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialID(materialTransactionquery);
+
+                        List<StorageLocationSelectAllMaterial> storageLocationMaterials = MaterialTransactions.stream()
+                                .map(transaction -> {
+                                    StorageLocationSelectAllMaterial locationMaterial = new StorageLocationSelectAllMaterial(transaction);
+                                    WmsMaterial wmsMaterial = new WmsMaterial();
+                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+                                    if (!materials.isEmpty()) {
+                                        locationMaterial.setMaterial_name(materials.get(0).getName());
+                                    }
+                                    return locationMaterial;
+                                })
+                                .collect(Collectors.toList());
+
+                        storageLocationSelectAllResponse.setMaterials(storageLocationMaterials);
+                        return storageLocationSelectAllResponse;
+                    }
+            ).collect(Collectors.toList());
+            return new ApiResponse<>(StorageLocationSelectAllResponses);
+        } catch (Exception e) {
             log.info(e.getMessage());
-            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
 
@@ -253,5 +276,37 @@ public class Wms {
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
+
+    @ApiOperation(value = "inbound/add", notes = "inbound/add")
+    @PostMapping("/wms/inbound/add")
+    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody AddInboundRequest addInboundRequest) {
+        try {
+            Map<String, String> responseData = new HashMap<>();
+
+            if ("PDA".equals(addInboundRequest.getSource())) {
+                long newInboundId =  System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+                    shelfInventory.getInventory().forEach(inventory -> {
+                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactions(
+                                addInboundRequest.getType(),
+                                addInboundRequest.getSource(),
+                                addInboundRequest.getStatus(),
+                                inventory.getRfid(),
+                                newInboundId,
+                                shelfInventory.getStorageLocationId(),
+                                inventory.getMaterialId(),
+                                inventory.getQuantity()
+                        );
+                        responseData.put("id", String.valueOf(updated));
+                    });
+                });
+            }
+            return new ApiResponse<>(responseData);
+        } catch (Exception e) {
+            log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
 
 }
