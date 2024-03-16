@@ -31,6 +31,10 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int deleteByRfid(UpdateInboundRequest updateInboundRequest);
 
+    int deleteForOutbound(UpdateInboundRequest updateInboundRequest);
+
+    int deleteForInbound(UpdateInboundRequest updateInboundRequest);
+
     List<WmsMaterialTransaction> selectByInboundRfidType(String rfid,String type);
 
     int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
@@ -50,6 +54,10 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
     List<WmsMaterialTransaction> selectAllInboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
 
     List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+
+    int updateForTopNTransactionsStocktaking(long stocktakingId, String materialId, int quantity, String storageLocationId);
+
+    int deleteForTopNTransactionsStocktaking(long stocktakingId);
 
 
 }

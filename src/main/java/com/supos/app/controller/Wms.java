@@ -1,6 +1,5 @@
 package com.supos.app.controller;
 
-import cn.hutool.core.lang.UUID;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.supos.app.config.ApiResponse;
 import com.supos.app.entity.*;
@@ -345,7 +344,7 @@ public class Wms {
     public ApiResponse<Map<String, String>> inboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteByRfid(updateInboundRequest)));
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForInbound(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
@@ -432,7 +431,7 @@ public class Wms {
     public ApiResponse<Map<String, String>> outboundDelete(@RequestBody UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteByRfid(updateInboundRequest)));
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForOutbound(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
@@ -442,10 +441,10 @@ public class Wms {
 
     @ApiOperation(value = "outbound/get", notes = "outbound/get")
     @PostMapping("/wms/outbound/get")
-    public ApiResponse<List<SelectInboundResponse>> outboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<List<SelectOutboundResponse>> outboundGet(@RequestBody UpdateInboundRequest updateInboundRequest) {
         try {
-            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
-                    .map(SelectInboundResponse::new)
+            List<SelectOutboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+                    .map(SelectOutboundResponse::new)
                     .collect(Collectors.toList());
             return new ApiResponse<>(response);
         }catch (Exception e){
@@ -666,58 +665,64 @@ public class Wms {
         }
     }
 
-//    @ApiOperation(value = "stocktaking/add", notes = "stocktaking/add")
-//    @PostMapping("/wms/stocktaking/add")
-//    public ApiResponse<List<ShelfInventory>> stocktakingInsert(@RequestBody InboundRecordDetailRequest inboundRecordDetailRequest) {
-//        try {
-//            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-//            wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
-//
-//            List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction)
-//                    .stream()
-//                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
-//                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
-//                    .entrySet().stream()
-//                    .map(entry -> {
-//                        ShelfInventory shelfInventory = new ShelfInventory();
-//                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
-//
-//                        // 获取对应的storage location名称
-//                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
-//                        wmsStorageLocation.setId(entry.getKey());
-//                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
-//                        if (!wmsStorageLocationList.isEmpty()) {
-//                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
-//                        }
-//
-//                        // 将分组内的每个物料数据转换为Inventory对象
-//                        List<Inventory> inventoryList = entry.getValue().stream()
-//                                .map(transaction -> {
-//                                    Inventory inventory = new Inventory();
-//                                    inventory.setRfid(transaction.getRf_id());
-//                                    inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
-//                                    inventory.setQuantity(transaction.getQuantity());
-//
-//                                    WmsMaterial wmsMaterial = new WmsMaterial();
-//                                    wmsMaterial.setId(transaction.getMaterial_id());
-//                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
-//                                    if (!wmsMaterialList.isEmpty()) {
-//                                        WmsMaterial material = wmsMaterialList.get(0);
-//                                        inventory.setMaterialName(material.getName());
-//                                    }
-//                                    return inventory;
-//                                })
-//                                .collect(Collectors.toList());
-//
-//                        shelfInventory.setInventory(inventoryList);
-//                        return shelfInventory;
-//                    })
-//                    .collect(Collectors.toList());
-//
-//            return new ApiResponse<>(shelfInventoryList);
-//        } catch (Exception e) {
-//            log.error("Error occurred while processing the request: " + e.getMessage(), e);
-//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
-//        }
-//    }
+    @ApiOperation(value = "stocktaking/add", notes = "stocktaking/add")
+    @PostMapping("/wms/stocktaking/add")
+    public ApiResponse<Map<String, String>> stocktakingInsert(@RequestBody AddInboundRequest addInboundRequest) {
+        try {
+            Map<String, String> responseData = new HashMap<>();
+            long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+            addInboundRequest.getShelfRecords().stream().forEach(
+                    i->{
+                        i.getInventory().stream().forEach(
+                                b->{
+                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialId(),b.getQuantity(),i.getStorageLocationId());
+                                }
+                        );
+                    }
+            );
+            responseData.put("id", "2");
+            return new ApiResponse<>(responseData);
+        } catch (Exception e) {
+            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "stocktaking/update", notes = "stocktaking/update")
+    @PostMapping("/wms/stocktaking/update")
+    public ApiResponse<Map<String, String>> stocktakingUpdate(@RequestBody AddInboundRequest addInboundRequest) {
+        try {
+            Map<String, String> responseData = new HashMap<>();
+            long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+            addInboundRequest.getShelfRecords().stream().forEach(
+                    i->{
+                        i.getInventory().stream().forEach(
+                                b->{
+                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialId(),b.getQuantity(),i.getStorageLocationId());
+                                }
+                        );
+                    }
+            );
+            responseData.put("id", "1");
+            return new ApiResponse<>(responseData);
+        } catch (Exception e) {
+            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "stocktaking/delete", notes = "stocktaking/delete")
+    @PostMapping("/wms/stocktaking/delete")
+    public ApiResponse<Map<String, String>> stocktakingDelete(@RequestBody ID id) {
+        try {
+            Map<String, String> responseData = new HashMap<>();
+            wmsMaterialTransactionServiceImpl.deleteForTopNTransactionsStocktaking(id.getID());
+            responseData.put("id", "1");
+            return new ApiResponse<>(responseData);
+        } catch (Exception e) {
+            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
 }

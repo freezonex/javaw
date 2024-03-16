@@ -12,6 +12,7 @@
             <result property="inbound_id" column="inbound_id" jdbcType="BIGINT"/>
             <result property="outbound_id" column="outbound_id" jdbcType="BIGINT"/>
             <result property="warehouse_id" column="warehouse_id" jdbcType="BIGINT"/>
+            <result property="stocktaking_id" column="stocktaking_id" jdbcType="BIGINT"/>
             <result property="stock_location_id" column="stock_location_id" jdbcType="BIGINT"/>
             <result property="rf_id" column="rf_id" jdbcType="VARCHAR"/>
             <result property="operator" column="operator" jdbcType="VARCHAR"/>
@@ -115,6 +116,16 @@
         UPDATE wms_material_transaction
         set del_flag = true
         WHERE rf_id = #{refId} and del_flag IS NULL
+    </update>
+    <update id="deleteForOutbound" parameterType="com.supos.app.vo.UpdateInboundRequest">
+        UPDATE wms_material_transaction
+        set outbound_id = NULL
+        WHERE outbound_id = #{id} and del_flag IS NULL
+    </update>
+    <update id="deleteForInbound" parameterType="com.supos.app.vo.UpdateInboundRequest">
+        UPDATE wms_material_transaction
+        set inbound_id = NULL
+        WHERE inbound_id = #{id} and del_flag IS NULL
     </update>
     <update id="deleteByRfidMaterialIDLimitOne" parameterType="com.supos.app.vo.UpdateInboundRequest">
         UPDATE wms_material_transaction
@@ -646,4 +657,40 @@
         </where>
         GROUP BY material_id, rf_id,stock_location_id
     </select>
+    <update id="updateForTopNTransactionsStocktaking">
+        UPDATE
+            wms_material_transaction
+        SET
+            stocktaking_id = #{stocktakingId}
+        WHERE
+            id IN (
+                SELECT
+                    id
+                FROM
+                    (
+                        SELECT
+                            id
+                        FROM
+                            wms_material_transaction
+                        WHERE
+                            material_id =
+                            #{materialId}
+                          and stock_location_id =
+                              #{storageLocationId}
+                          and del_flag IS NULL
+                          and inbound_id IS NOT NULL
+                          and outbound_id IS NOT NULL
+                        ORDER BY
+                            id ASC
+                            LIMIT
+                            #{quantity}) AS subquery)
+    </update>
+    <update id="deleteForTopNTransactionsStocktaking">
+        UPDATE
+            wms_material_transaction
+        SET
+            stocktaking_id = NULL
+        WHERE
+            stocktaking_id = #{stocktakingId} and del_flag IS NULL
+    </update>
 </mapper>

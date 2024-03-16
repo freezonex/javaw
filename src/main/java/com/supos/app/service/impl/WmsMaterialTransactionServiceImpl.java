@@ -51,6 +51,14 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.deleteByRfid(updateInboundRequest);
     }
 
+    public int deleteForOutbound(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.deleteForOutbound(updateInboundRequest);
+    }
+
+    public int deleteForInbound(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.deleteForInbound(updateInboundRequest);
+    }
+
     public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type) {
         return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type);
     }
@@ -85,6 +93,13 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
 
     public List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
         return wmsMaterialTransactionMapper.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction);
+    }
+    public int updateForTopNTransactionsStocktaking(long stocktakingId, String materialId, int quantity, String storageLocationId) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsStocktaking(stocktakingId,  materialId,  quantity,storageLocationId);
+    }
+
+    public int deleteForTopNTransactionsStocktaking(long id) {
+        return wmsMaterialTransactionMapper.deleteForTopNTransactionsStocktaking(id);
     }
 }
 
