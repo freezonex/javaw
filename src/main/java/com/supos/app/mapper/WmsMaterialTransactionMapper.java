@@ -47,6 +47,8 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectAll(WmsMaterialTransaction wmsMaterialTransaction);
 
+    List<WmsMaterialTransaction> selectAllInboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+
 }
 
 
