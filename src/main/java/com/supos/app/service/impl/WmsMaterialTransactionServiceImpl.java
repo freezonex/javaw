@@ -74,7 +74,9 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
 
     public int deleteByRfidMaterialIDLimitOne(WmsMaterialTransaction wmsMaterialTransaction) {
         return wmsMaterialTransactionMapper.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction);
-
+    }
+    public List<WmsMaterialTransaction> selectAll(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAll(wmsMaterialTransaction);
     }
 }
 

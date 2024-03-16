@@ -505,5 +505,55 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "rfidmaterial/delete",notes = "rfidmaterial/delete")
+    @PostMapping("/wms/rfidmaterial/delete")
+    public ApiResponse<Map<String, String>> rfidmaterialDelete(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
+            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
+            wmsMaterialTransactionServiceImpl.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction);
+            responseData.put("id", "1");
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+    @ApiOperation(value = "rfidmaterial/get", notes = "rfidmaterial/get")
+    @PostMapping("/wms/rfidmaterial/get")
+    public ApiResponse<List<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody AddRfidMaterialRequest addRfidMaterialRequest) {
+        try {
+            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
+            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
+
+            List<RfidmaterialGetResponse> rfidmaterialGetResponses = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction)
+                    .stream()
+                    .map(transaction -> {
+                        RfidmaterialGetResponse rfidmaterialGetResponse = new RfidmaterialGetResponse();
+                        rfidmaterialGetResponse.setRfid(transaction.getRf_id());
+                        rfidmaterialGetResponse.setMaterialId(transaction.getMaterial_id());
+                        rfidmaterialGetResponse.setQuantity(transaction.getQuantity());
+
+                        WmsMaterial materialTemp= new WmsMaterial();
+                        materialTemp.setId(transaction.getMaterial_id());
+                        WmsMaterial wmsMaterial = wmsMaterialServiceImpl.selectAll(materialTemp).stream().findFirst().orElse(null);
+                        if (wmsMaterial != null) {
+                            rfidmaterialGetResponse.setMaterialName(wmsMaterial.getName());
+                        }
+                        rfidmaterialGetResponse.setCreateTime(transaction.getCreate_time());
+                        rfidmaterialGetResponse.setUpdateTime(transaction.getUpdate_time());
+                        return rfidmaterialGetResponse;
+                    })
+                    .collect(Collectors.toList());
+
+            return new ApiResponse<>(rfidmaterialGetResponses);
+        } catch (Exception e) {
+            log.info("Error occurred while processing the request: " + e.getMessage(), e);
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
 
 }
