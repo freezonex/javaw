@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Openiot Configuration Board</title>
-    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">
-<!--    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">-->
-<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
+    <!--    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">-->
+    <!--    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
@@ -56,40 +56,40 @@
     <div id="sidebar" class="w-20 bg-gray-50 shadow-md relative transition-width duration-300 ease-in-out">
         <div class="flex flex-col items-start justify-start h-screen">
             <!-- Vertical navigation menu -->
-                <!-- Home icon -->
+            <!-- Home icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-home text-lg"></i>
+                <i class="fas fa-home"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
 
             <!-- Settings icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-cog text-lg"></i>
+                <i class="fas fa-cog"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
             <!-- Looping arrows icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-sync-alt text-lg"></i>
+                <i class="fas fa-sync-alt"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
             <!-- Printer icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-print text-lg"></i>
+                <i class="fas fa-print"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
             <!-- Clipboard icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-clipboard-list text-lg"></i>
+                <i class="fas fa-clipboard-list"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
             <!-- Box icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-box-open text-lg"></i>
+                <i class="fas fa-box-open"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
             <!-- Ellipsis icon -->
             <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
-                <i class="fas fa-ellipsis-h text-lg"></i>
+                <i class="fas fa-ellipsis-h"></i>
                 <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
             </button>
 
@@ -97,48 +97,45 @@
     </div>
 
     <!-- Sidebar -->
-    <div id="sidebar1" class="w-64 bg-gray-50 shadow-md relative transition-width duration-300 ease-in-out hidden">
-        <div class="p-6">
-            <h1 id="sidebarTitle" class="text-2xl font-semibold transition-opacity duration-300 ease-in-out opacity-100">Configuration Board</h1>
-        </div>
-        <nav id="sidebarNav" class="text-sm transition-opacity duration-300 ease-in-out opacity-100">
+    <div id="sidebar1" class="bg-gray-50 shadow-md h-full overflow-hidden transition-all duration-300 ease-in-out" style="width: 0;">
+        <nav id="sidebarNav" class="text-sm opacity-0 transition-opacity duration-200 ease-out">
             <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200" onclick="toggleSubMenu(event)">
-                <i class="fas fa-users mr-3 w-[1rem]"></i>
+                <i class="fas fa-home mr-3 w-[1rem]"></i>
                 User Management
                 <i class="fas fa-chevron-down ml-auto"></i>
             </a>
             <!-- 子菜单项 -->
             <ul id="userSubMenu" class="pl-9">
                 <li>
-                    <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                    <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                         <i class="fas fa-user mr-3 w-[1rem]"></i>
                         Manage Users
                     </a>
                 </li>
                 <li>
-                    <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                    <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                         <i class="fas fa-user-plus mr-3 w-[1rem]"></i>
                         Add User
                     </a>
                 </li>
             </ul>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-network-wired mr-3 w-[1rem]"></i>
                 Lotto Management
             </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-microchip mr-3 w-[1rem]"></i>
                 Core Management
             </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-th-large mr-3 w-[1rem]"></i>
                 App Management
             </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-random mr-3 w-[1rem]"></i>
                 Flow Management
             </a>
-            <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
                 <i class="fas fa-sign-out-alt mr-3 w-[1rem]"></i>
                 Logout
             </a>
@@ -149,7 +146,7 @@
     </div>
 
 
-    <div class="flex-grow bg-gray-100 p-8">
+    <div id="mainContent" class="flex-grow bg-gray-100 p-8">
         <div class="flex justify-between items-center mb-4">
             <div>
                 <div class="text-sm text-gray-600">Home /</div>
@@ -445,9 +442,9 @@
                 <div class="full-width">
                     <ul id="directory" class="list-none">
                     </ul>
-<!--                    <button onclick="addDirectory()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
-<!--                        Add Directory-->
-<!--                    </button>-->
+                    <!--                    <button onclick="addDirectory()" class="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">-->
+                    <!--                        Add Directory-->
+                    <!--                    </button>-->
                 </div>
             </div>
         </div>
@@ -497,40 +494,42 @@
         });
     });
 
-
-    // 获取导航栏图标和sidebar 2号
     const navIcon = document.getElementById('navIcon');
-    const sidebar = document.getElementById('sidebar');
+    const sidebar = document.getElementById('sidebar'); // 获取原始sidebar
     const sidebar1 = document.getElementById('sidebar1');
+    const sidebarNav = document.getElementById('sidebarNav');
+    let isSidebarVisible = sidebar1.offsetWidth > 0;
 
-    // 定义一个变量来跟踪sidebar的显示状态
-    let isSidebarVisible = true;
+    updateNavIcon(isSidebarVisible);
 
-    // 添加点击事件监听器
-    navIcon.addEventListener('click', function() {
-        // 切换图标
+    navIcon.addEventListener('click', toggleSidebar);
+
+    function toggleSidebar() {
         if (isSidebarVisible) {
-            navIcon.classList.remove('fa-bars');
-            navIcon.classList.add('fa-times');
+            // 开始收缩sidebar1
+            sidebar1.style.width = '0';
+            // 立即开始透明度过渡
+            sidebarNav.style.opacity = '0';
+            // 延迟显示原始sidebar以保持平滑过渡
+            setTimeout(() => {
+                sidebar.classList.remove('hidden');
+            }, 200); // 适当调整时间以匹配透明度过渡
         } else {
-            navIcon.classList.remove('fa-times');
-            navIcon.classList.add('fa-bars');
-        }
-
-        // 切换sidebar和sidebar1的显示状态
-        if (isSidebarVisible) {
-            // 隐藏sidebar并显示sidebar1
+            // 展开sidebar1
             sidebar.classList.add('hidden');
-            sidebar1.classList.remove('hidden');
-        } else {
-            // 显示sidebar并隐藏sidebar1
-            sidebar.classList.remove('hidden');
-            sidebar1.classList.add('hidden');
+            sidebar1.style.width = '16rem';
+            // 在sidebar1完全展开后显示内容
+            sidebar1.addEventListener('transitionend', () => sidebarNav.style.opacity = '1', { once: true });
         }
-
-        // 更新状态变量
         isSidebarVisible = !isSidebarVisible;
-    });
+        updateNavIcon(isSidebarVisible);
+    }
+
+    function updateNavIcon(visible) {
+        navIcon.classList.toggle('fa-bars', !visible);
+        navIcon.classList.toggle('fa-times', visible);
+    }
+
 
     function toggleSubMenu(event) {
         // 阻止默认链接行为

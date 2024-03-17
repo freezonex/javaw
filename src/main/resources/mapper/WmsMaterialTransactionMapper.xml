@@ -430,7 +430,7 @@
             <if test="id != null">
                 AND id = #{id}
             </if>
-            <if test="material_id != null">
+            <if test="material_id != null and material_id > 0">
                 AND material_id = #{material_id}
             </if>
             <if test="type != null">
@@ -499,7 +499,7 @@
             <if test="warehouse_id != null">
                 AND warehouse_id = #{warehouse_id}
             </if>
-            <if test="stock_location_id != null and quantity > 0">
+            <if test="stock_location_id != null and stock_location_id > 0">
                 AND stock_location_id = #{stock_location_id}
             </if>
             <if test="rf_id != null">
