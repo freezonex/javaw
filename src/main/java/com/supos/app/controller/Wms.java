@@ -569,6 +569,7 @@ public class Wms {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
+            wmsMaterialTransaction.setInbound_id(inboundRecordDetailRequest.getInboundId());
 
             List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction)
                     .stream()
