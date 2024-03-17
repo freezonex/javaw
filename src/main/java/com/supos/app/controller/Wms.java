@@ -1,6 +1,8 @@
 package com.supos.app.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.supos.app.config.ApiResponse;
 import com.supos.app.entity.*;
 import com.supos.app.service.WmsMaterialTransactionService;
@@ -9,10 +11,12 @@ import com.supos.app.utils.HttpUtils;
 import com.supos.app.vo.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -80,9 +84,11 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/get", notes = "warehouse/get")
     @PostMapping("/wms/warehouse/get")
-    public ApiResponse<List<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
+    public ApiResponse<PageInfo<WarehouseSelectAllResponse>> warehouseSelectAll(@RequestBody(required = false) WmsWarehouse wmsWarehouse, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            List<WmsWarehouse> wmsWarehouseList = wmsWarehouseServiceImpl.selectAll(wmsWarehouse);
+            PageInfo<WmsWarehouse> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsWarehouseServiceImpl.selectAll(wmsWarehouse));
+
+            List<WmsWarehouse> wmsWarehouseList = pageInfo.getList();
             List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
                     .map(warehouse -> {
                         WmsStorageLocation query = new WmsStorageLocation();
@@ -121,7 +127,9 @@ public class Wms {
                     })
                     .collect(Collectors.toList());
 
-            return new ApiResponse<>(warehouseSelectAllResponses);
+            PageInfo<WarehouseSelectAllResponse> responsePageInfo = new PageInfo<>(warehouseSelectAllResponses);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
         } catch (Exception e) {
             log.info(e.getMessage());
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
