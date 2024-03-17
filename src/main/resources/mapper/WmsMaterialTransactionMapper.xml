@@ -112,6 +112,16 @@
         </set>
         WHERE inbound_id = #{id} and del_flag IS NULL
     </update>
+    <update id="updateByOutboundId" parameterType="com.supos.app.vo.UpdateInboundRequest">
+        UPDATE wms_material_transaction
+        <set>
+            <if test="type != null">type = #{type},</if>
+            <if test="source != null">source = #{source},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="note != null">note = #{note},</if>
+        </set>
+        WHERE outbound_id = #{id} and del_flag IS NULL
+    </update>
     <update id="deleteByRfid" parameterType="com.supos.app.vo.UpdateInboundRequest">
         UPDATE wms_material_transaction
         set del_flag = true

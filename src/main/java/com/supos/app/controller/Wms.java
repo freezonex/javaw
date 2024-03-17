@@ -426,7 +426,7 @@ public class Wms {
     public ApiResponse<Map<String, String>> outboundUpdate(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByInboundId(updateInboundRequest)));
+            responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByOutboundId(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());

@@ -46,6 +46,10 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.updateByInboundId(updateInboundRequest);
     }
 
+    public int updateByOutboundId(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.updateByOutboundId(updateInboundRequest);
+    }
+
     public int deleteByRfid(UpdateInboundRequest updateInboundRequest) {
         return wmsMaterialTransactionMapper.deleteByRfid(updateInboundRequest);
     }

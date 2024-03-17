@@ -26,6 +26,8 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int updateByInboundId(UpdateInboundRequest updateInboundRequest);
 
+    int updateByOutboundId(UpdateInboundRequest updateInboundRequest);
+
     int deleteByRfid(UpdateInboundRequest updateInboundRequest);
 
     int deleteForOutbound(UpdateInboundRequest updateInboundRequest);
