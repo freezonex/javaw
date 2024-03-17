@@ -1,0 +1,934 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+    <title>Openiot Configuration Board</title>
+<!--    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">-->
+<!--    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">-->
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+
+        .flex-container {
+            height: 100vh; /* 视口高度 */
+        }
+
+    </style>
+</head>
+<body class="bg-gray-100 flex flex-col h-screen">
+
+<nav class="flex items-center justify-between px-4 py-2 bg-gray-50 text-gray-700 border-b border-gray-200">
+    <div class="flex items-center">
+        <a href="#" class="text-lg mr-4"><i id="navIcon" class="fas fa-bars fa-lg ml-3"></i></a>
+        <a href="#" class="flex items-center">
+            <img alt="Your Logo" src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png" class="logo mr-2 h-12 w-12"/>
+            <span class="text-xl font-semibold">Vegetable</span>
+        </a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Home</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Products</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">Services</a>
+        <a href="#" class="ml-6 text-sm font-medium text-gray-700 hover:text-gray-900">About Us</a>
+    </div>
+    <div class="relative">
+        <input class="bg-gray-100 text-sm text-gray-700 rounded-md pl-10 py-1 focus:outline-none focus:ring-2 focus:ring-gray-200 w-96" placeholder="Search" type="text"/>
+        <span class="absolute left-2 top-0 mt-1 ml-2 text-gray-400">
+            <i class="fas fa-search"></i>
+        </span>
+    </div>
+    <div class="flex items-center">
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-bell"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-clipboard-list"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-comment-alt"></i></button>
+        <button class="text-gray-400 text-sm mx-2"><i class="fas fa-cog"></i></button>
+        <button class="mx-2 text-gray-400 text-sm"><i class="fas fa-search"></i></button>
+        <button class="mx-2 text-gray-400 text-sm"><i class="far fa-user-circle"></i></button>
+    </div>
+</nav>
+
+
+<div class="flex flex-1 overflow-hidden">
+    <!-- Sidebar -->
+    <div id="sidebar" class="w-20 bg-gray-50 shadow-md relative transition-width duration-300 ease-in-out">
+        <div class="flex flex-col items-start justify-start h-screen">
+            <!-- Vertical navigation menu -->
+                <!-- Home icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-home"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+
+            <!-- Settings icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-cog"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+            <!-- Looping arrows icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-sync-alt"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+            <!-- Printer icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-print"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+            <!-- Clipboard icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-clipboard-list"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+            <!-- Box icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-box-open"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+            <!-- Ellipsis icon -->
+            <button class="relative icon-button w-full h-12 bg-gray-50 rounded-lg flex items-center justify-center text-black hover:bg-gray-200 focus:outline-none focus:bg-gray-200">
+                <i class="fas fa-ellipsis-h"></i>
+                <span class="line-indicator absolute left-0 h-full bg-blue-500 w-1 opacity-0 transition-opacity duration-300"></span>
+            </button>
+
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div id="sidebar1" class="bg-gray-50 shadow-md h-full overflow-hidden transition-all duration-300 ease-in-out" style="width: 0;">
+        <nav id="sidebarNav" class="text-sm opacity-0 transition-opacity duration-200 ease-out">
+        <a href="#" class="flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200" onclick="toggleSubMenu(event)">
+                <i class="fas fa-home mr-3 w-[1rem]"></i>
+                User Management
+                <i class="fas fa-chevron-down ml-auto"></i>
+            </a>
+            <!-- 子菜单项 -->
+            <ul id="userSubMenu" class="pl-9">
+                <li>
+                    <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-user mr-3 w-[1rem]"></i>
+                        Manage Users
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                        <i class="fas fa-user-plus mr-3 w-[1rem]"></i>
+                        Add User
+                    </a>
+                </li>
+            </ul>
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-network-wired mr-3 w-[1rem]"></i>
+                Lotto Management
+            </a>
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-microchip mr-3 w-[1rem]"></i>
+                Core Management
+            </a>
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-th-large mr-3 w-[1rem]"></i>
+                App Management
+            </a>
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-random mr-3 w-[1rem]"></i>
+                Flow Management
+            </a>
+            <a href="#" class="h-12 flex items-center px-6 py-3 text-gray-700 hover:bg-gray-200">
+                <i class="fas fa-sign-out-alt mr-3 w-[1rem]"></i>
+                Logout
+            </a>
+        </nav>
+        <div id="tooltip" class="hidden absolute z-10 p-2 bg-gray-800 text-white text-xs rounded-lg shadow-md">
+            <!-- 工具提示文本将通过 JavaScript 动态设置 -->
+        </div>
+    </div>
+
+
+    <div id="mainContent" class="flex-grow bg-gray-100 p-8 overflow-y-auto">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <div class="text-sm text-gray-600">Home /</div>
+                <div class="text-2xl font-semibold">Dashboard</div>
+                <div class="text-sm text-gray-600">Description of dashboard view goes here.</div>
+            </div>
+            <div>
+                <button class="text-sm bg-white border border-gray-300 px-3 py-1 text-gray-600">Last week <i class="fas fa-chevron-down"></i></button>
+            </div>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <div class="bg-white p-6 shadow">
+                <div class="flex items-center justify-between">
+                    <div class="text-gray-600">Raw Material</div>
+                    <i class="fas fa-chart-line text-green-500"></i>
+                </div>
+                <div class="mt-2">
+                    <div class="text-3xl font-semibold">$16,500</div>
+                    <div class="text-sm text-gray-600">2% Decrease from last month <i class="fas fa-arrow-down text-red-500"></i></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 shadow">
+                <div class="flex items-center justify-between">
+                    <div class="text-gray-600">Manufacturing Cost</div>
+                    <i class="fas fa-industry text-green-500"></i>
+                </div>
+                <div class="mt-2">
+                    <div class="text-3xl font-semibold">$48,670</div>
+                    <div class="text-sm text-gray-600">6% Increase from last month <i class="fas fa-arrow-up text-green-500"></i></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 shadow">
+                <div class="flex items-center justify-between">
+                    <div class="text-gray-600">Outbounds</div>
+                    <i class="fas fa-shipping-fast text-green-500"></i>
+                </div>
+                <div class="mt-2">
+                    <div class="text-3xl font-semibold">$74,330</div>
+                    <div class="text-sm text-gray-600">1% Increase from target <i class="fas fa-arrow-up text-green-500"></i></div>
+                </div>
+            </div>
+            <div class="bg-white p-6 shadow">
+                <div class="flex items-center justify-between">
+                    <div class="text-gray-600">Inbounds</div>
+                    <i class="fas fa-warehouse text-green-500"></i>
+                </div>
+                <div class="mt-2">
+                    <div class="text-3xl font-semibold">$120,000</div>
+                    <div class="text-sm text-gray-600">12% Increase from last month <i class="fas fa-arrow-up text-green-500"></i></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col py-8 w-full overflow-auto">
+            <!-- Left section -->
+            <div class="flex flex-col bg-white shadow  w-full" >
+                <div class="border-b px-6 py-4 flex items-center justify-between">
+                    <div class="flex items-center">
+                        <h1 class="text-lg font-semibold">Warehouse</h1>
+                    </div>
+                    <div class="flex items-center">
+                        <div class="bg-gray-200 p-2 mr-2">
+                            <i class="fas fa-search text-gray-600"></i>
+                        </div>
+                        <div class="bg-gray-200 p-2 mr-2">
+                            <i class="fas fa-filter text-gray-600"></i>
+                        </div>
+                        <button class="bg-blue-500 text-white px-4 py-2">
+                            Button
+                        </button>
+                    </div>
+                </div>
+                <div class="overflow-auto">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Name
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                ID
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Type
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Manager
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Project Group
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Department
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Email
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
+                                Shelf Location
+                            </th>
+                            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider w-32">
+                                Operation
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody class="bg-white divide-y divide-gray-200"></tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="flex justify-end mt-3">
+                <div id="Pagination">Pagination Content</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Logo Click Modal -->
+<div id="logoModal"
+     class="hidden fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full flex justify-center items-center">
+    <div class="relative p-5 border w-96 shadow-lg rounded-md bg-white">
+        <!-- 放大的 Logo 图片 -->
+        <img id="enlargedLogo"
+             src="http://office.unibutton.com:59000/wenhao/2024-02/22/1ac8effc-c054-434a-9167-e00f4cdc3725.png"
+             alt="Enlarged Logo" class="rounded-lg"/>
+    </div>
+</div>
+
+<!-- Modal -->
+<div id="modal" class="fixed z-10 inset-0 overflow-y-auto hidden" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+    <div class="flex items-center justify-center min-h-screen">
+        <div class="bg-gray-500 bg-opacity-75 fixed inset-0 transition-opacity" aria-hidden="true"></div>
+
+        <div class="bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full">
+            <!-- Modal header -->
+            <div class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse">
+                <button type="button" class="mt-3 w-full inline-flex justify-center border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm" onclick="closeModal()">
+                    Close
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div id="modal-body" class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+                <!-- Dynamic content will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- New Warehouse Modal Background -->
+<div id="newWarehouseModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto flex justify-center items-center hidden">
+    <!-- New Warehouse Modal Content -->
+    <div class="p-5 border w-96 shadow-lg rounded-md bg-white hidden" id="newWarehouseModalContent">
+    <div class="mt-3 text-center">
+        <h3 class="text-lg leading-6 font-medium text-gray-900">Create a New Warehouse</h3>
+        <div class="mt-2 px-7 py-3">
+            <form id="newWarehouseForm" class="space-y-4">
+                <div class="flex justify-between">
+                    <input type="text" name="name" placeholder="Name" class="border rounded py-2 px-3 text-grey-darkest w-full mr-2">
+                    <input type="text" name="id" placeholder="ID" class="border rounded py-2 px-3 text-grey-darkest w-full">
+                </div>
+                <div class="flex justify-between">
+                    <input type="text" name="type" placeholder="Type" class="border rounded py-2 px-3 text-grey-darkest w-full mr-2">
+                    <input type="text" name="manager" placeholder="Manager" class="border rounded py-2 px-3 text-grey-darkest w-full">
+                </div>
+                <div class="flex justify-between">
+                    <input type="text" name="department" placeholder="Department" class="border rounded py-2 px-3 text-grey-darkest w-full mr-2">
+                    <input type="text" name="email" placeholder="Email" class="border rounded py-2 px-3 text-grey-darkest w-full">
+                </div>
+                <div class="flex justify-between">
+                    <input type="text" name="project_group" placeholder="Business Group" class="border rounded py-2 px-3 text-grey-darkest w-full mr-2">
+                    <input type="text" name="note" placeholder="Note" class="border rounded py-2 px-3 text-grey-darkest w-full">
+                </div>
+                <div class="flex justify-end mt-4">
+                    <button type="button" onclick="closeNewWarehouseModal()" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">
+                        Cancel
+                    </button>
+                    <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                        Save
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    //npx tailwindcss -i ./src/main/resources/static/apps/wenhao-javaw/input.css -o ./src/main/resources/static/apps/wenhao-javaw/output.css --watch
+    // 获取所有的图标按钮
+    const iconButtons = document.querySelectorAll('.icon-button');
+    globalData={}
+
+
+    document.addEventListener('DOMContentLoaded', function() {
+
+        const showModalButton = document.querySelector('.bg-blue-500.text-white.px-4.py-2'); // 修改选择器以匹配你的按钮
+        const newWarehouseModal = document.getElementById('newWarehouseModal');
+        const newWarehouseModalContent = document.getElementById('newWarehouseModalContent');
+
+        // 显示新模态框
+        showModalButton.addEventListener('click', () => {
+            newWarehouseModal.classList.remove('hidden');
+            newWarehouseModalContent.classList.remove('hidden');
+        });
+
+        // 关闭新模态框函数
+        window.closeNewWarehouseModal = () => {
+            newWarehouseModal.classList.add('hidden');
+            newWarehouseModalContent.classList.add('hidden');
+        };
+
+        // 新仓库表单提交
+        document.getElementById('newWarehouseForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const formData = new FormData(e.target);
+            const formProps = Object.fromEntries(formData);
+            // 生成 6 位随机数字
+            const warehouseId = Math.floor(100000 + Math.random() * 900000);
+
+            // 将 warehouse_id 添加到表单数据中
+            formProps['warehouse_id'] = warehouseId;
+            // 将表单数据转换为JSON字符串
+            const jsonData = JSON.stringify(formProps);
+
+            try {
+                const response = await fetch('http://localhost:8080/wms/warehouse/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        // 如果需要，这里添加其他必要的头部信息，如认证令牌
+                    },
+                    body: jsonData
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const responseData = await response.json();
+                console.log('Success:', responseData);
+                closeNewWarehouseModal(); // 提交成功后关闭模态框
+                // 可能需要其他操作，如更新页面数据或显示成功消息
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+
+        async function fetchData() {
+            const url = 'http://localhost:8080/wms/warehouse/get';
+            const options = {
+                method: 'POST', // 请求方法
+                headers: {
+                    'Content-Type': 'application/json', // 设置内容类型为JSON
+                },
+                body: JSON.stringify({ /* 如果POST请求需要包体，这里填入请求的包体 */ }),
+            };
+
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                updatePaginationControls(data.data)
+                warehouseTable(data)
+                globalData = data; // 将 data 赋值给全局变量 globalData
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+            }
+        }
+        fetchData();
+
+        function updatePaginationControls(data) {
+            const paginationContainer = document.getElementById('Pagination');
+            paginationContainer.innerHTML = ''; // Clear existing pagination controls
+
+            // Calculate dynamic range of pages to display
+            let startPage = Math.max(data.pageNum - Math.floor(data.navigatePages / 2), 1);
+            let endPage = Math.min(startPage + data.navigatePages - 1, data.pages);
+
+            if (endPage - startPage < data.navigatePages - 1) {
+                startPage = Math.max(endPage - data.navigatePages + 1, 1);
+            }
+
+            // Previous Button
+            if (data.hasPreviousPage) {
+                const prevButton = createPaginationButton(data.prePage, 'Previous');
+                paginationContainer.appendChild(prevButton);
+            }
+
+            // First Page Button if needed
+            if (startPage > 1) {
+                const firstPageButton = createPaginationButton(1, '1', false);
+                paginationContainer.appendChild(firstPageButton);
+                if (startPage > 2) {
+                    // Add ellipsis for a large gap
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'px-4 py-2';
+                    paginationContainer.appendChild(ellipsis);
+                }
+            }
+
+            // Page Numbers
+            for (let pageNum = startPage; pageNum <= endPage; pageNum++) {
+                const pageButton = createPaginationButton(pageNum, pageNum, data.pageNum === pageNum);
+                paginationContainer.appendChild(pageButton);
+            }
+
+            // Last Page Button if needed
+            if (endPage < data.pages) {
+                if (endPage < data.pages - 1) {
+                    // Add ellipsis for a large gap
+                    const ellipsis = document.createElement('span');
+                    ellipsis.textContent = '...';
+                    ellipsis.className = 'px-4 py-2';
+                    paginationContainer.appendChild(ellipsis);
+                }
+                const lastPageButton = createPaginationButton(data.pages, data.pages, false);
+                paginationContainer.appendChild(lastPageButton);
+            }
+
+            // Next Button
+            if (data.hasNextPage) {
+                const nextButton = createPaginationButton(data.nextPage, 'Next');
+                paginationContainer.appendChild(nextButton);
+            }
+        }
+        // Create and return a pagination button element
+        function createPaginationButton(pageNum, text, isActive = false) {
+            const button = document.createElement('a');
+            button.href = '#';
+            button.textContent = text;
+            button.className = `inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md shadow-sm ${isActive ? 'bg-blue-500 text-white' : 'text-blue-700 bg-white hover:bg-blue-50'} transition duration-150 ease-in-out`;
+            button.addEventListener('click', function(event) {
+                event.preventDefault();
+                console.log(pageNum)
+                fetchPaginationData(pageNum);
+            });
+            return button;
+        }
+
+        async function fetchPaginationData(pageNum) {
+            const url = 'http://localhost:8080/wms/warehouse/get?pageNum='+pageNum;
+            const options = {
+                method: 'POST', // 请求方法
+                headers: {
+                    'Content-Type': 'application/json', // 设置内容类型为JSON
+                },
+                body: JSON.stringify({}),
+            };
+            try {
+                const response = await fetch(url, options);
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                const data = await response.json();
+                updatePaginationControls(data.data)
+                warehouseTable(data)
+                globalData = data; // 将 data 赋值给全局变量 globalData
+            } catch (error) {
+                console.error('Failed to fetch data:', error);
+            }
+        }
+
+        const tbody = document.querySelector('table tbody');
+        function warehouseTable(data){
+            // 清空表格内容
+            tbody.innerHTML = '';
+            data.data.list.forEach(item => {
+                const row = document.createElement('tr');
+                // 设置行的id为item的id
+                row.id = `${item.id}`;
+                // 使用innerHTML设置大部分单元格内容
+                row.innerHTML = `
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.name}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.id}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.type}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.manager}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.project_group}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.department}</td>
+            <td class="px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle">${item.email}</td>
+        `;
+
+                // 创建一个单独的单元格用于放置“全部货架”按钮
+                const shelfCell = document.createElement('td');
+                shelfCell.className = "px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle";
+                const shelfButton = document.createElement('button');
+                shelfButton.textContent = 'All Shelves';
+                shelfButton.className = 'bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 mr-2';
+                shelfButton.onclick = () => showModal(item.store_locations);
+                shelfCell.appendChild(shelfButton);
+
+                // 创建编辑和删除按钮，并放置在同一单元格内
+                const actionCell = document.createElement('td');
+                actionCell.className = "px-6 py-2 whitespace-nowrap text-sm text-gray-500 text-center align-middle";
+
+                const editButton = document.createElement('button');
+                editButton.innerHTML = '<i class="fas fa-edit"></i>';
+                editButton.className = 'mr-2';
+                // 添加编辑按钮的点击事件处理函数
+                editButton.onclick = () => {/* 编辑项的函数 */};
+
+                const deleteButton = document.createElement('button');
+                deleteButton.innerHTML = '<i class="fas fa-trash"></i>';
+                // 添加删除按钮的点击事件处理函数
+                // 修改前：deleteButton.onclick = () => {/* 删除项的函数 */};
+
+                // 修改后：
+                deleteButton.onclick = () => {
+                    // 构造请求体
+                    const requestData = { id: item.id };
+
+                    fetch('http://localhost:8080/wms/warehouse/delete', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(requestData)
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                console.log('Delete successful');
+                                document.getElementById(`${item.id}`).remove();
+                            } else {
+                                console.error('Delete failed');
+                            }
+                        })
+                        .catch(error => console.error('Error:', error));
+                };
+
+                actionCell.appendChild(editButton);
+                actionCell.appendChild(deleteButton);
+
+                // 将“全部货架”按钮和操作按钮单元格添加到行
+                row.appendChild(shelfCell);
+                row.appendChild(actionCell);
+
+                // 将行添加到表格的tbody
+                tbody.appendChild(row);
+            });
+        }
+
+
+        fetchDirectoryData();
+        renderDirectory(directoryData, document.getElementById('directory'));
+    });
+
+    function showModal(storeLocations) {
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modal-body');
+
+        // Clear previous content
+        modalBody.innerHTML = '';
+
+        // Create and populate the table
+        const table = document.createElement('table');
+        table.className = 'min-w-full divide-y divide-gray-200';
+        table.innerHTML = `
+        <thead class="bg-gray-50">
+            <tr>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Name</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Occupied</th>
+                <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            ${storeLocations.map(loc => `
+                <tr>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${loc.name}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${loc.occupied}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                        ${loc.materials && loc.materials.length > 0 ? `<button class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-2 text-xs" onclick="showMaterials(${loc.id})">More</button>` : ''}
+                    </td>
+                </tr>
+            `).join('')}
+        </tbody>
+    `;
+
+        modalBody.appendChild(table);
+        modal.classList.remove('hidden');
+    }
+
+    function showMaterials(locationId) {
+        const storeLocation = globalData.data.list.flatMap(item => item.store_locations).find(loc => loc.id === locationId);
+        if (!storeLocation) {
+            console.error('Store location not found');
+            return;
+        }
+
+        const materials = storeLocation.materials;
+        const modal = document.getElementById('modal');
+        const modalBody = document.getElementById('modal-body');
+
+        // 清除之前的内容
+        modalBody.innerHTML = '';
+
+        // 创建并填充包含材料信息的表格
+        const materialsTable = document.createElement('table');
+        materialsTable.className = 'min-w-full divide-y divide-gray-200';
+        materialsTable.innerHTML = `
+    <thead class="bg-gray-50">
+        <tr>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material ID</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Material Name</th>
+            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Quantity</th>
+        </tr>
+    </thead>
+    <tbody class="bg-white divide-y divide-gray-200">
+        ${materials.map(mat => `
+        <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${mat.material_id}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${mat.material_name || 'N/A'}</td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">${mat.quantity}</td>
+        </tr>
+        `).join('')}
+    </tbody>
+    `;
+
+        modalBody.appendChild(materialsTable);
+        // 显示模态框
+        modal.classList.remove('hidden');
+    }
+
+
+
+    // Function to close the modal
+    function closeModal() {
+        document.getElementById('modal').classList.add('hidden');
+    }
+
+    // 为每个图标按钮添加点击事件监听
+    iconButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            // 先移除所有按钮的 'active' 类
+            iconButtons.forEach(button => {
+                button.classList.remove('active');
+                // 隐藏所有按钮下的竖线元素
+                const lineIndicator = button.querySelector('.line-indicator');
+                lineIndicator.classList.remove('opacity-100');
+            });
+            // 添加 'active' 类到当前点击的按钮
+            this.classList.add('active');
+
+            // 找到当前按钮下的竖线元素并显示
+            const lineIndicator = this.querySelector('.line-indicator');
+            lineIndicator.classList.add('opacity-100');
+        });
+    });
+
+    const navIcon = document.getElementById('navIcon');
+    const sidebar = document.getElementById('sidebar'); // 获取原始sidebar
+    const sidebar1 = document.getElementById('sidebar1');
+    const sidebarNav = document.getElementById('sidebarNav');
+    let isSidebarVisible = sidebar1.offsetWidth > 0;
+
+    updateNavIcon(isSidebarVisible);
+
+    navIcon.addEventListener('click', toggleSidebar);
+
+    function toggleSidebar() {
+        if (isSidebarVisible) {
+            // 开始收缩sidebar1
+            sidebar1.style.width = '0';
+            // 立即开始透明度过渡
+            sidebarNav.style.opacity = '0';
+            // 延迟显示原始sidebar以保持平滑过渡
+            setTimeout(() => {
+                sidebar.classList.remove('hidden');
+            }, 200); // 适当调整时间以匹配透明度过渡
+        } else {
+            // 展开sidebar1
+            sidebar.classList.add('hidden');
+            sidebar1.style.width = '16rem';
+            // 在sidebar1完全展开后显示内容
+            sidebar1.addEventListener('transitionend', () => sidebarNav.style.opacity = '1', { once: true });
+        }
+        isSidebarVisible = !isSidebarVisible;
+        updateNavIcon(isSidebarVisible);
+    }
+
+    function updateNavIcon(visible) {
+        navIcon.classList.toggle('fa-bars', !visible);
+        navIcon.classList.toggle('fa-times', visible);
+    }
+
+
+    function toggleSubMenu(event) {
+        // 阻止默认链接行为
+        event.preventDefault();
+        // 切换子菜单的显示状态
+        const subMenu = document.getElementById('userSubMenu');
+        subMenu.classList.toggle('hidden');
+
+        // 切换子菜单图标方向
+        const icon = event.currentTarget.querySelector('.fa-chevron-down');
+        icon.classList.toggle('fa-chevron-up');
+    }
+
+    const logo = document.querySelector('.logo'); // Logo 的选择器，确保它唯一对应你的 Logo
+    const logoModal = document.getElementById('logoModal');
+
+    logo.addEventListener('click', (e) => {
+        e.preventDefault(); // 防止链接的默认行为
+        logoModal.classList.remove('hidden'); // 显示模态窗口
+    });
+
+    // 点击模态窗口背景也能关闭模态窗口
+    logoModal.addEventListener('click', (e) => {
+        if (e.target === logoModal) {
+            logoModal.classList.add('hidden');
+        }
+    });
+
+
+    function fetchDirectoryData() {
+        fetch('/apps/wenhao-javaw/directory/current')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                renderDirectory(data, document.getElementById('directory'));
+            })
+            .catch(error => {
+                console.error('There has been a problem with your fetch operation:', error);
+            });
+    }
+
+    function renderDirectory(data, parentElement, level = 0, path = '') {
+        data.forEach((directory, index) => {
+            let currentPath = `${path}/${directory.name}`;
+            let li = document.createElement('li');
+
+            let div = document.createElement('div');
+            div.setAttribute('data-path', currentPath);
+            div.classList.add('cursor-pointer', 'py-2', 'px-4', 'flex', 'justify-between', 'items-center', 'hover:bg-gray-100', 'transition-colors', 'duration-150', 'border-b', 'border-gray-200');
+
+            // 创建一个新的容器用于存放图标和目录名称，确保它们靠左对齐
+            let nameContainer = document.createElement('div');
+            nameContainer.classList.add('flex', 'items-center'); // 使图标和文字在同一行内并靠左对齐
+
+            // 创建并添加图标
+            let icon = document.createElement('i');
+            icon.classList.add('fas', level === 0 ? 'fa-folder' : level === 1 ? 'fa-folder-open' : 'fa-file', 'mr-2');
+            nameContainer.appendChild(icon);
+
+            // 创建并添加目录名称文本
+            let textNode = document.createTextNode(directory.name);
+            nameContainer.appendChild(textNode);
+
+            // 将nameContainer添加到div
+            div.appendChild(nameContainer);
+
+
+            // Create a container for the buttons to group them together
+            let buttonContainer = document.createElement('div');
+            buttonContainer.classList.add('flex', 'items-center');
+
+            // Add "+" Button
+            let addButton = document.createElement('button');
+            addButton.textContent = '+';
+            addButton.classList.add(
+                'bg-gray-200', // 更柔和的背景色
+                'text-gray-800', // 深灰色文字，保持可读性
+                'px-2', // 减少内边距，使按钮更紧凑
+                'py-1', // 减少垂直内边距
+                'rounded', // 简化圆角
+                'hover:bg-gray-300', // 细微的悬停效果
+                'focus:outline-none',
+                'focus:ring-2',
+                'focus:ring-gray-400', // 焦点环使用更接近按钮背景色的颜色
+                'focus:ring-opacity-50',
+                'mr-2',
+                'w-6', // 设置固定宽度以匹配 addButton
+                'h-8' // 设置固定高度以匹配 addButton
+            );
+            addButton.onclick = function(event) {
+                console.log('Add at:', currentPath);
+                // Implement the logic to add a new directory or item at this level
+                event.stopPropagation(); // Prevent click event from bubbling up to parent elements
+
+                // Prompt user for new directory name
+                let newDirectoryName = prompt('Enter the name for the new directory:');
+                if (newDirectoryName) { // Check if the user entered a name
+                    let payload = {
+                        currentPath: currentPath,
+                        newName: newDirectoryName
+                    };
+
+                    // Send the payload to the backend
+                    fetch('/apps/wenhao-javaw/directory/insert', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(payload)
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            console.log('Success:', data);
+                            // Optionally, refresh the directory structure here
+                            window.location.reload(); // Reload the page to reflect changes
+                        })
+                        .catch((error) => {
+                            console.error('Error:', error);
+                        });
+                } else {
+                    // User cancelled the prompt or entered an empty string
+                    console.log('Directory creation cancelled or no name entered.');
+                }
+            };
+
+            // Add "-" Button
+            let removeButton = document.createElement('button');
+            removeButton.textContent = '-';
+            removeButton.classList.add(
+                'bg-gray-200', // 同上
+                'text-gray-800', // 深灰色文字
+                'px-2', // 减少内边距
+                'py-1', // 减少垂直内边距
+                'rounded', // 简化圆角
+                'hover:bg-gray-300', // 细微的悬停效果
+                'focus:outline-none',
+                'focus:ring-2',
+                'focus:ring-gray-400', // 焦点环颜色
+                'focus:ring-opacity-50',
+                'w-6', // 设置固定宽度以匹配 addButton
+                'h-8' // 设置固定高度以匹配 addButton
+            );
+            removeButton.onclick = function(event) {
+                event.stopPropagation();
+                console.log('Remove:', currentPath);
+                // Implement the logic to remove this directory or item
+                if (parentElement && parentElement.removeChild) {
+                    parentElement.removeChild(li);
+                }
+            };
+
+            // Add buttons to the container
+            buttonContainer.appendChild(addButton);
+            buttonContainer.appendChild(removeButton);
+
+            // Add the container to the div, aligning it to the right
+            div.style.display = 'flex';
+            div.style.justifyContent = 'space-between';
+            div.style.alignItems = 'center';
+            div.appendChild(buttonContainer);
+
+
+            li.appendChild(div);
+
+            if (directory.subdirectories && directory.subdirectories.length > 0) {
+                let ul = document.createElement('ul');
+                ul.classList.add('hidden', 'ml-4', 'list-none'); // Apply Tailwind styling
+                renderDirectory(directory.subdirectories, ul, level + 1, currentPath);
+                li.appendChild(ul);
+            }
+
+            div.addEventListener('click', function(event) {
+                event.stopPropagation();
+                let isExpanded = this.nextSibling && !this.nextSibling.classList.contains('hidden');
+                console.log(isExpanded ? 'Collapsed: ' : 'Expanded: ', directory.name);
+                if (this.nextSibling) {
+                    this.nextSibling.classList.toggle('hidden');
+                }
+            });
+
+            parentElement.appendChild(li);
+        });
+    }
+
+
+
+</script>
+</body>
+</html>

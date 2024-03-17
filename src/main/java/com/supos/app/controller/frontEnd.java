@@ -66,7 +66,11 @@ public class frontEnd {
         model.addAttribute("pathExample1", pathExample1);
         return "example.html";
     }
-
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/wmsWarehouse")
+    public String view28() {
+        return "wmsWarehouse.html";
+    }
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/inventory")
     public String view12() {
