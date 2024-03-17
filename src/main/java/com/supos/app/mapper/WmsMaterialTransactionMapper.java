@@ -1,10 +1,7 @@
 package com.supos.app.mapper;
-import org.apache.ibatis.annotations.Param;
 
-import cn.hutool.core.lang.UUID;
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.supos.app.vo.SelectInboundResponse;
 import com.supos.app.vo.UpdateInboundRequest;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -35,7 +32,7 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int deleteForInbound(UpdateInboundRequest updateInboundRequest);
 
-    List<WmsMaterialTransaction> selectByInboundRfidType(String rfid,String type);
+    List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, long inboundId);
 
     int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
 

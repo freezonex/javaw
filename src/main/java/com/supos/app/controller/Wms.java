@@ -364,7 +364,7 @@ public class Wms {
     @PostMapping("/wms/inbound/get")
     public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         try {
-            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()).stream()
                     .map(SelectInboundResponse::new)
                     .collect(Collectors.toList());
             return new ApiResponse<>(response);

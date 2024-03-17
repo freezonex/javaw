@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UpdateInboundRequest {
     @JsonProperty("id")
-    private String id;
+    private long id;
 
     @JsonProperty("ref_id")
     private String refId;
@@ -21,11 +21,11 @@ public class UpdateInboundRequest {
     @JsonProperty("status")
     private String status;
 
-    public String getId() {
+    public long getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(long id) {
         this.id = id;
     }
 

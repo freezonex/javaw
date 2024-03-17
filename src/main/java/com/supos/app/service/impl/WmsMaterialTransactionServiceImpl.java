@@ -8,7 +8,6 @@ import com.supos.app.vo.UpdateInboundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -59,8 +58,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.deleteForInbound(updateInboundRequest);
     }
 
-    public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type) {
-        return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type);
+    public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, long inboundId) {
+        return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type,inboundId);
     }
 
     public int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialId, int quantity) {

@@ -280,6 +280,9 @@
             <if test="rfid != null">
                 AND rf_id = #{rfid}
             </if>
+            <if test="inboundId != null">
+                AND inbound_id = #{inboundId}
+            </if>
         </where>
     </select>
     <update id="updateForTopNTransactionsOutboundPDA">
