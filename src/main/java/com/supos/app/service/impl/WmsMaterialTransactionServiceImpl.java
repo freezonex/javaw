@@ -62,7 +62,7 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.deleteForInbound(updateInboundRequest);
     }
 
-    public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, long inboundId) {
+    public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId) {
         return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type,inboundId);
     }
 
@@ -74,8 +74,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialId,  quantity);
     }
 
-    public List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type) {
-        return wmsMaterialTransactionMapper.selectByOutboundRfidType( rfid, type);
+    public List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId) {
+        return wmsMaterialTransactionMapper.selectByOutboundRfidType( rfid, type,outboundId);
 
     }
 

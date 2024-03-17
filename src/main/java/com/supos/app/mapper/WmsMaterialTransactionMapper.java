@@ -34,13 +34,13 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int deleteForInbound(UpdateInboundRequest updateInboundRequest);
 
-    List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, long inboundId);
+    List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId);
 
     int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
 
     int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
 
-    List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type);
+    List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId);
 
     int insertSelective(WmsMaterialTransaction wmsMaterialTransaction);
 

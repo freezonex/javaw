@@ -5,7 +5,7 @@ import io.swagger.annotations.ApiModelProperty;
 
 public class UpdateInboundRequest {
     @JsonProperty("id")
-    private long id;
+    private Long id;
 
     @JsonProperty("ref_id")
     private String refId;
@@ -22,11 +22,11 @@ public class UpdateInboundRequest {
     @JsonProperty("status")
     private String status;
 
-    public long getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 

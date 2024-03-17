@@ -377,6 +377,9 @@
             <if test="rfid != null">
                 AND rf_id = #{rfid}
             </if>
+            <if test="outboundId != null">
+                AND outbound_id = #{outboundId}
+            </if>
         </where>
     </select>
     <insert id="insertSelective">

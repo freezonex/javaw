@@ -451,7 +451,7 @@ public class Wms {
     @PostMapping("/wms/outbound/get")
     public ApiResponse<List<SelectOutboundResponse>> outboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         try {
-            List<SelectOutboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType()).stream()
+            List<SelectOutboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()).stream()
                     .map(SelectOutboundResponse::new)
                     .collect(Collectors.toList());
             return new ApiResponse<>(response);
@@ -621,10 +621,11 @@ public class Wms {
 
     @ApiOperation(value = "outbound/detail", notes = "outbound/detail")
     @PostMapping("/wms/outbound/detail")
-    public ApiResponse<List<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest) {
+    public ApiResponse<List<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) OutboundRecordDetailRequest outboundRecordDetailRequest) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
+            wmsMaterialTransaction.setRf_id(outboundRecordDetailRequest.getRfid());
+            wmsMaterialTransaction.setOutbound_id(outboundRecordDetailRequest.getOutboundId());
 
             List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction)
                     .stream()
