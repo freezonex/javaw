@@ -102,7 +102,7 @@
                             LIMIT
                             #{quantity}) AS subquery)
     </update>
-    <update id="updateByRfid" parameterType="com.supos.app.vo.UpdateInboundRequest">
+    <update id="updateByInboundId" parameterType="com.supos.app.vo.UpdateInboundRequest">
         UPDATE wms_material_transaction
         <set>
             <if test="type != null">type = #{type},</if>
@@ -110,7 +110,7 @@
             <if test="status != null">status = #{status},</if>
             <if test="note != null">note = #{note},</if>
         </set>
-        WHERE rf_id = #{refId} and del_flag IS NULL
+        WHERE inbound_id = #{id} and del_flag IS NULL
     </update>
     <update id="deleteByRfid" parameterType="com.supos.app.vo.UpdateInboundRequest">
         UPDATE wms_material_transaction

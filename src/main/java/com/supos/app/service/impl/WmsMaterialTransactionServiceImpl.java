@@ -42,8 +42,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
     }
 
-    public int updateByRfid(UpdateInboundRequest updateInboundRequest) {
-        return wmsMaterialTransactionMapper.updateByRfid(updateInboundRequest);
+    public int updateByInboundId(UpdateInboundRequest updateInboundRequest) {
+        return wmsMaterialTransactionMapper.updateByInboundId(updateInboundRequest);
     }
 
     public int deleteByRfid(UpdateInboundRequest updateInboundRequest) {

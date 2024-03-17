@@ -24,7 +24,7 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
 
-    int updateByRfid(UpdateInboundRequest updateInboundRequest);
+    int updateByInboundId(UpdateInboundRequest updateInboundRequest);
 
     int deleteByRfid(UpdateInboundRequest updateInboundRequest);
 
