@@ -89,7 +89,7 @@ public class Wms {
             PageInfo<WmsWarehouse> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsWarehouseServiceImpl.selectAll(wmsWarehouse));
 
             List<WmsWarehouse> wmsWarehouseList = pageInfo.getList();
-            List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
+                List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
                     .map(warehouse -> {
                         WmsStorageLocation query = new WmsStorageLocation();
                         query.setWarehouse_id(warehouse.getId());
@@ -177,9 +177,12 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/get", notes = "storagelocation/get")
     @PostMapping("/wms/storagelocation/get")
-    public ApiResponse<List<StorageLocationSelectAllResponse>> storagelocationSelectAll(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<PageInfo<StorageLocationSelectAllResponse>> storagelocationSelectAll(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+
         try {
-            List<StorageLocationSelectAllResponse> StorageLocationSelectAllResponses = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation).stream().map(
+            PageInfo<WmsStorageLocation> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation));
+
+            List<StorageLocationSelectAllResponse> StorageLocationSelectAllResponses = pageInfo.getList().stream().map(
                     storageLocation -> {
                         StorageLocationSelectAllResponse storageLocationSelectAllResponse = new StorageLocationSelectAllResponse(storageLocation);
 
@@ -206,7 +209,10 @@ public class Wms {
                         return storageLocationSelectAllResponse;
                     }
             ).collect(Collectors.toList());
-            return new ApiResponse<>(StorageLocationSelectAllResponses);
+            PageInfo<StorageLocationSelectAllResponse> responsePageInfo = new PageInfo<>(StorageLocationSelectAllResponses);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
+
         } catch (Exception e) {
             log.info(e.getMessage());
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -254,9 +260,10 @@ public class Wms {
 
     @ApiOperation(value = "material/get", notes = "material/get")
     @PostMapping("/wms/material/get")
-    public ApiResponse<List<MaterialSelectAllResponse>> materialSelectAll(@RequestBody(required = false) WmsMaterial wmsMaterial) {
+    public ApiResponse<PageInfo<MaterialSelectAllResponse>> materialSelectAll(@RequestBody(required = false) WmsMaterial wmsMaterial, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            List<MaterialSelectAllResponse> materialSelectAllResponses = wmsMaterialServiceImpl.selectAll(wmsMaterial).stream().map(material -> {
+            PageInfo<WmsMaterial> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialServiceImpl.selectAll(wmsMaterial));
+            List<MaterialSelectAllResponse> materialSelectAllResponses = pageInfo.getList().stream().map(material -> {
                 WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
                 wmsMaterialTransactionQuery.setMaterial_id(material.getId());
                 List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransactionQuery);
@@ -279,7 +286,10 @@ public class Wms {
                 response.setStorage_location(names);
                 return response;
             }).collect(Collectors.toList());
-            return new ApiResponse<>(materialSelectAllResponses);
+            PageInfo<MaterialSelectAllResponse> responsePageInfo = new PageInfo<>(materialSelectAllResponses);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
+
         } catch (Exception e) {
             log.info(e.getMessage());
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -362,12 +372,17 @@ public class Wms {
 
     @ApiOperation(value = "inbound/get", notes = "inbound/get")
     @PostMapping("/wms/inbound/get")
-    public ApiResponse<List<SelectInboundResponse>> inboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<PageInfo<SelectInboundResponse>> inboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            List<SelectInboundResponse> response= wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()).stream()
+
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()));
+            List<SelectInboundResponse> response= pageInfo.getList().stream()
                     .map(SelectInboundResponse::new)
                     .collect(Collectors.toList());
-            return new ApiResponse<>(response);
+            PageInfo<SelectInboundResponse> responsePageInfo = new PageInfo<>(response);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
+
         }catch (Exception e){
             log.info(e.getMessage());
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
@@ -449,15 +464,20 @@ public class Wms {
 
     @ApiOperation(value = "outbound/get", notes = "outbound/get")
     @PostMapping("/wms/outbound/get")
-    public ApiResponse<List<SelectOutboundResponse>> outboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<PageInfo<SelectOutboundResponse>> outboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            List<SelectOutboundResponse> response= wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()).stream()
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(), updateInboundRequest.getType(), updateInboundRequest.getId()));
+
+            List<SelectOutboundResponse> response = pageInfo.getList().stream()
                     .map(SelectOutboundResponse::new)
                     .collect(Collectors.toList());
-            return new ApiResponse<>(response);
-        }catch (Exception e){
+
+            PageInfo<SelectOutboundResponse> responsePageInfo = new PageInfo<>(response);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
+        } catch (Exception e) {
             log.info(e.getMessage());
-            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
 
@@ -530,13 +550,15 @@ public class Wms {
     }
     @ApiOperation(value = "rfidmaterial/get", notes = "rfidmaterial/get")
     @PostMapping("/wms/rfidmaterial/get")
-    public ApiResponse<List<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<PageInfo<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
             wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
 
-            List<RfidmaterialGetResponse> rfidmaterialGetResponses = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction)
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction));
+
+            List<RfidmaterialGetResponse> rfidmaterialGetResponses = pageInfo.getList()
                     .stream()
                     .map(transaction -> {
                         RfidmaterialGetResponse rfidmaterialGetResponse = new RfidmaterialGetResponse();
@@ -555,8 +577,10 @@ public class Wms {
                         return rfidmaterialGetResponse;
                     })
                     .collect(Collectors.toList());
+            PageInfo<RfidmaterialGetResponse> responsePageInfo = new PageInfo<>(rfidmaterialGetResponses);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
 
-            return new ApiResponse<>(rfidmaterialGetResponses);
         } catch (Exception e) {
             log.info("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -565,13 +589,15 @@ public class Wms {
 
     @ApiOperation(value = "inbound/detail", notes = "inbound/detail")
     @PostMapping("/wms/inbound/detail")
-    public ApiResponse<List<ShelfInventory>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest) {
+    public ApiResponse<PageInfo<ShelfInventory>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
             wmsMaterialTransaction.setInbound_id(inboundRecordDetailRequest.getInboundId());
 
-            List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction)
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+
+            List<ShelfInventory> shelfInventoryList =pageInfo.getList()
                     .stream()
                     .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
                     .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
@@ -611,8 +637,9 @@ public class Wms {
                         return shelfInventory;
                     })
                     .collect(Collectors.toList());
-
-            return new ApiResponse<>(shelfInventoryList);
+            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -621,13 +648,15 @@ public class Wms {
 
     @ApiOperation(value = "outbound/detail", notes = "outbound/detail")
     @PostMapping("/wms/outbound/detail")
-    public ApiResponse<List<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) OutboundRecordDetailRequest outboundRecordDetailRequest) {
+    public ApiResponse<PageInfo<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) OutboundRecordDetailRequest outboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setRf_id(outboundRecordDetailRequest.getRfid());
             wmsMaterialTransaction.setOutbound_id(outboundRecordDetailRequest.getOutboundId());
 
-            List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction)
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+
+            List<ShelfInventory> shelfInventoryList = pageInfo.getList()
                     .stream()
                     .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
                     .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
@@ -667,8 +696,9 @@ public class Wms {
                         return shelfInventory;
                     })
                     .collect(Collectors.toList());
-
-            return new ApiResponse<>(shelfInventoryList);
+            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -737,7 +767,7 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/get", notes = "stocktaking/get")
     @PostMapping("/wms/stocktaking/get")
-    public ApiResponse<List<StocktakingRequest>> stocktakingGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest) {
+    public ApiResponse<PageInfo<StocktakingRequest>> stocktakingGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
 
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
@@ -745,9 +775,13 @@ public class Wms {
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
             wmsMaterialTransaction.setType(getStocktakingRequest.getType());
 
-            List<StocktakingRequest> stocktakingRequestList = wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction).stream().map(StocktakingRequest::new).collect(Collectors.toList());
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction));
 
-            return new ApiResponse<>(stocktakingRequestList);
+            List<StocktakingRequest> stocktakingRequestList = pageInfo.getList().stream().map(StocktakingRequest::new).collect(Collectors.toList());
+
+            PageInfo<StocktakingRequest> responsePageInfo = new PageInfo<>(stocktakingRequestList);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -756,14 +790,16 @@ public class Wms {
 
     @ApiOperation(value = "stocktaking/get/detail", notes = "stocktaking/get/detail")
     @PostMapping("/wms/stocktaking/detail")
-    public ApiResponse<List<ShelfInventory>> stocktakingDetailGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest) {
+    public ApiResponse<PageInfo<ShelfInventory>> stocktakingDetailGet(@RequestBody(required = false) GetStocktakingRequest getStocktakingRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
 
             WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
             wmsMaterialTransaction.setStocktaking_id(getStocktakingRequest.getID());
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
 
-            List<ShelfInventory> shelfInventoryList = wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction)
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+
+            List<ShelfInventory> shelfInventoryList = pageInfo.getList()
                     .stream()
                     .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
                     .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
@@ -787,8 +823,8 @@ public class Wms {
                                     inventory.setRfid(transaction.getRf_id());
                                     inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
                                     inventory.setQuantity(transaction.getQuantity());
-                                    inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(),inventory.getMaterialId(), String.valueOf(entry.getKey())));
-                                    inventory.setDiscrepancy(transaction.getQuantity()-wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(),inventory.getMaterialId(), String.valueOf(entry.getKey())));
+                                    inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialId(), String.valueOf(entry.getKey())));
+                                    inventory.setDiscrepancy(transaction.getQuantity() - wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialId(), String.valueOf(entry.getKey())));
 
                                     WmsMaterial wmsMaterial = new WmsMaterial();
                                     wmsMaterial.setId(transaction.getMaterial_id());
@@ -806,7 +842,9 @@ public class Wms {
                     })
                     .collect(Collectors.toList());
 
-            return new ApiResponse<>(shelfInventoryList);
+            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
