@@ -1,12 +1,8 @@
 package com.supos.app.controller;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.supos.app.dto.sampleMailDto;
 import com.supos.app.entity.Packinfo;
-import com.supos.app.impl.emailSender;
 import com.supos.app.service.impl.PackinfoServiceImpl;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
