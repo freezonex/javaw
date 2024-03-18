@@ -12,6 +12,7 @@ public class WarehouseSelectAllResponse {
      */
     public WarehouseSelectAllResponse(WmsWarehouse warehouse) {
         this.id = warehouse.getId();
+        this.warehouse_id = warehouse.getWarehouse_id();
         this.name = warehouse.getName();
         this.type = warehouse.getType();
         this.manager = warehouse.getManager();
