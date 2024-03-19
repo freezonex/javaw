@@ -315,23 +315,30 @@ public class Wms {
                 long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundPDA(
-                                addInboundRequest.getType(),
-                                addInboundRequest.getSource(),
-                                addInboundRequest.getStatus(),
-                                inventory.getRfid(),
-                                newInboundId,
-                                shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialCode(),
-                                inventory.getQuantity()
-                        );
-                        responseData.put("id", String.valueOf(updated));
+
+                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                        wmsMaterialTransaction.setType(addInboundRequest.getType());
+                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
+                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
+                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
+                        wmsMaterialTransaction.setInbound_id(newInboundId);
+                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
+
+                        WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
+                        wmsRfidMaterial.setRf_id(inventory.getRfid());
+
+                        wmsMaterialTransaction.setMaterial_code(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
+                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+
+                        IntStream.range(0, inventory.getQuantity())
+                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
                     });
                 });
             } else if ("manual".equals(addInboundRequest.getSource())) {
                 long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
+
                         WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
                         wmsMaterialTransaction.setType(addInboundRequest.getType());
                         wmsMaterialTransaction.setSource(addInboundRequest.getSource());
