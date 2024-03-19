@@ -802,7 +802,6 @@ public class Wms {
                         List<Inventory> inventoryList = entry.getValue().stream()
                                 .map(transaction -> {
                                     Inventory inventory = new Inventory();
-                                    inventory.setRfid(transaction.getRf_id());
                                     inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
                                     inventory.setQuantity(wmsMaterialTransactionServiceImpl.getQuantityForInbound(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())));
                                     inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())));
@@ -815,6 +814,7 @@ public class Wms {
                                         WmsMaterial material = wmsMaterialList.get(0);
                                         inventory.setMaterialName(material.getName());
                                     }
+                                    inventory.setRfid(transaction.getRf_id());
                                     return inventory;
                                 })
                                 .collect(Collectors.toList());
