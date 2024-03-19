@@ -71,6 +71,24 @@ public class frontEnd {
     public String view28() {
         return "wmsWarehouse.html";
     }
+
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/warehouse/material")
+    public String view30() {
+        return "material.html";
+    }
+
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/operation/inbound")
+    public String view31() {
+        return "inbound.html";
+    }
+
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/warehouse")
+    public String view29() {
+        return "warehouse.html";
+    }
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/inventory")
     public String view12() {
