@@ -85,7 +85,7 @@ public class frontEnd {
     }
 
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/warehouse")
+    @GetMapping("/apps/wenhao-javaw/warehouse")
     public String view29() {
         return "warehouse.html";
     }
