@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.supos.app.mapper.WmsRfidMaterialMapper">
+
+    <resultMap id="BaseResultMap" type="com.supos.app.entity.WmsRfidMaterial">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="rf_id" column="rf_id" jdbcType="VARCHAR"/>
+            <result property="material_code" column="material_code" jdbcType="VARCHAR"/>
+            <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
+            <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,rf_id,material_code,del_flag,
+        update_time,create_time
+    </sql>
+    <insert id="insertSelective">
+        insert into wms_rfid_material
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="rf_id != null">rf_id,</if>
+            <if test="material_code != null">material_code,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="rf_id != null">#{rf_id,jdbcType=VARCHAR},</if>
+            <if test="material_code != null">#{material_code,jdbcType=VARCHAR},</if>
+            <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
+            <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
+    <update id="updateSelective">
+        update wms_rfid_material
+        <set>
+            <if test="rf_id != null">rf_id=#{rf_id,jdbcType=VARCHAR},</if>
+            <if test="material_code != null">material_code=#{material_code,jdbcType=VARCHAR},</if>
+            <if test="update_time != null">update_time=#{update_time,jdbcType=TIMESTAMP},</if>
+            <if test="create_time != null">create_time=#{create_time,jdbcType=TIMESTAMP},</if>
+        </set>
+        where id = #{id,jdbcType=NUMERIC} AND del_flag is NULL
+    </update>
+    <update id="deleteSelective">
+        update wms_rfid_material
+        set del_flag = true
+        where id = #{id,jdbcType=NUMERIC}
+    </update>
+    <select id="selectall" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from wms_rfid_material
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="rf_id != null">
+                and rf_id = #{rf_id}
+            </if>
+            <if test="material_code != null">
+                and material_code = #{material_code}
+            </if>
+            <if test="update_time != null">
+                and update_time = #{update_time}
+            </if>
+            <if test="create_time != null">
+                and create_time = #{create_time}
+            </if>
+            AND del_flag is NULL
+        </where>
+    </select>
+</mapper>

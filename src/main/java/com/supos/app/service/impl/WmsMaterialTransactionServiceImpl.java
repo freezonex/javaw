@@ -26,20 +26,20 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.insertSelective(wmsMaterialTransaction);
     }
 
-    public List<WmsMaterialTransaction> selectAllGroupByMaterialID(WmsMaterialTransaction wmsMaterialTransaction){
-        return wmsMaterialTransactionMapper.selectAllGroupByMaterialID(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllGroupByMaterialCode(WmsMaterialTransaction wmsMaterialTransaction){
+        return wmsMaterialTransactionMapper.selectAllGroupByMaterialCode(wmsMaterialTransaction);
     }
 
-    public List<WmsMaterialTransaction> selectAllGroupByMaterialIDStockLocationId(WmsMaterialTransaction wmsMaterialTransaction){
-        return wmsMaterialTransactionMapper.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllGroupByMaterialCodeStockLocationId(WmsMaterialTransaction wmsMaterialTransaction){
+        return wmsMaterialTransactionMapper.selectAllGroupByMaterialCodeStockLocationId(wmsMaterialTransaction);
     }
 
-    public int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundManual( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundManual( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialCode,  quantity);
     }
 
-    public int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsInboundPDA( type,  source,  status,  rfid,  inboundId,  storageLocationId,  materialCode,  quantity);
     }
 
     public int updateByInboundId(UpdateInboundRequest updateInboundRequest) {
@@ -66,12 +66,12 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type,inboundId);
     }
 
-    public int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundPDA( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundPDA( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
     }
 
-    public int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialId, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialId,  quantity);
+    public int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
     }
 
     public List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId) {
@@ -79,35 +79,44 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
 
     }
 
-    public List<WmsMaterialTransaction> selectAllGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
-        return wmsMaterialTransactionMapper.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllGroupByMaterialCodeRfid(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAllGroupByMaterialCodeRfid(wmsMaterialTransaction);
     }
 
-    public int deleteByRfidMaterialIDLimitOne(WmsMaterialTransaction wmsMaterialTransaction) {
-        return wmsMaterialTransactionMapper.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction);
+    public int deleteByRfidMaterialCodeLimitOne(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.deleteByRfidMaterialCodeLimitOne(wmsMaterialTransaction);
     }
     public List<WmsMaterialTransaction> selectAll(WmsMaterialTransaction wmsMaterialTransaction) {
         return wmsMaterialTransactionMapper.selectAll(wmsMaterialTransaction);
     }
 
-    public List<WmsMaterialTransaction> selectAllInboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
-        return wmsMaterialTransactionMapper.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllInboundGroupByMaterialCode(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAllInboundGroupByMaterialCode(wmsMaterialTransaction);
     }
 
-    public List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction) {
-        return wmsMaterialTransactionMapper.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialCodeRfid(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAllOutboundGroupByMaterialCodeRfid(wmsMaterialTransaction);
     }
-    public int updateForTopNTransactionsStocktaking(long stocktakingId, String materialId, int quantity, String storageLocationId) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsStocktaking(stocktakingId,  materialId,  quantity,storageLocationId);
+    public int updateForTopNTransactionsStocktaking(long stocktakingId, String materialCode, int quantity, String storageLocationId) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsStocktaking(stocktakingId,  materialCode,  quantity,storageLocationId);
     }
 
     public int deleteForTopNTransactionsStocktaking(long id) {
         return wmsMaterialTransactionMapper.deleteForTopNTransactionsStocktaking(id);
     }
 
-    public int getQuantityForStocktaking(String Rfid, String MaterialId,String StringStorageLocationId) {
-        return wmsMaterialTransactionMapper.getQuantityForStocktaking( Rfid,  MaterialId, StringStorageLocationId);
+    public int getQuantityForStocktaking(String Rfid, String materialCode,String StringStorageLocationId) {
+        return wmsMaterialTransactionMapper.getQuantityForStocktaking( Rfid,  materialCode, StringStorageLocationId);
     }
+
+    public int getQuantityForInbound(String Rfid, String materialCode,String StringStorageLocationId) {
+        return wmsMaterialTransactionMapper.getQuantityForInbound( Rfid,  materialCode, StringStorageLocationId);
+    }
+
+    public List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction) {
+        return wmsMaterialTransactionMapper.selectAllGroupByStocktakingId(wmsMaterialTransaction);
+    }
+
 }
 
 

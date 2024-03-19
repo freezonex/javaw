@@ -8,8 +8,8 @@ public class RfidmaterialGetResponse {
     @JsonProperty("rfid")
     private String rfid;
 
-    @JsonProperty("material_id")
-    private long materialId;
+    @JsonProperty("material_code")
+    private String materialCode;
 
     @JsonProperty("quantity")
     private int quantity;
@@ -33,12 +33,11 @@ public class RfidmaterialGetResponse {
         this.rfid = rfid;
     }
 
-    public long getMaterialId() {
-        return materialId;
+    public String getMaterialCode() {
+        return materialCode;
     }
-
-    public void setMaterialId(long materialId) {
-        this.materialId = materialId;
+    public void setMaterialCode(String materialCode) {
+        this.materialCode = materialCode;
     }
 
     public int getQuantity() {

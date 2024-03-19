@@ -35,6 +35,9 @@ public class Wms {
     WmsWarehouseServiceImpl wmsWarehouseServiceImpl;
 
     @Autowired
+    WmsRfidMaterialServiceImpl wmsRfidMaterialServiceImpl;
+
+    @Autowired
     WmsStorageLocationServiceImpl wmsStorageLocationServiceImpl;
 
     @Autowired
@@ -71,9 +74,11 @@ public class Wms {
 
     @ApiOperation(value = "warehouse/delete",notes = "warehouse/delete")
     @PostMapping("/wms/warehouse/delete")
-    public ApiResponse<Map<String, String>> warehouseDelete(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
+    public ApiResponse<Map<String, String>> warehouseDelete(@RequestBody(required = false) ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            WmsWarehouse wmsWarehouse = new WmsWarehouse();
+            wmsWarehouse.setId(id.getID());
             responseData.put("id", String.valueOf(wmsWarehouseServiceImpl.deleteWarehouseById(wmsWarehouse)));
         }catch (Exception e){
             log.info(e.getMessage());
@@ -100,13 +105,13 @@ public class Wms {
                                     materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
                                     materialTransactionquery.setStock_location_id(storageLocation.getId());
 
-                                    List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialID(materialTransactionquery);
+                                    List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCode(materialTransactionquery);
 
                                     List<WarehouseSelectAllMaterial> warehouseMaterials = MaterialTransactions.stream()
                                             .map(transaction -> {
                                                 WarehouseSelectAllMaterial warehouseMaterial = new WarehouseSelectAllMaterial(transaction);
                                                 WmsMaterial wmsMaterial = new WmsMaterial();
-                                                wmsMaterial.setId(transaction.getMaterial_id());
+                                                wmsMaterial.setProduct_code(transaction.getMaterial_code());
                                                 List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                                 if (!materials.isEmpty()) {
                                                     warehouseMaterial.setMaterial_name(materials.get(0).getName());
@@ -164,9 +169,11 @@ public class Wms {
 
     @ApiOperation(value = "storagelocation/delete",notes = "storagelocation/delete")
     @PostMapping("/wms/storagelocation/delete")
-    public ApiResponse<Map<String, String>> storagelocationDelete(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation) {
+    public ApiResponse<Map<String, String>> storagelocationDelete(@RequestBody(required = false) ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
+            wmsStorageLocation.setId(id.getID());
             responseData.put("id", String.valueOf(wmsStorageLocationServiceImpl.deleteStorageLocationById(wmsStorageLocation)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
@@ -190,13 +197,13 @@ public class Wms {
                         materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
                         materialTransactionquery.setStock_location_id(storageLocation.getId());
 
-                        List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialID(materialTransactionquery);
+                        List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCode(materialTransactionquery);
 
                         List<StorageLocationSelectAllMaterial> storageLocationMaterials = MaterialTransactions.stream()
                                 .map(transaction -> {
                                     StorageLocationSelectAllMaterial locationMaterial = new StorageLocationSelectAllMaterial(transaction);
                                     WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
                                     List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                     if (!materials.isEmpty()) {
                                         locationMaterial.setMaterial_name(materials.get(0).getName());
@@ -247,9 +254,11 @@ public class Wms {
 
     @ApiOperation(value = "material/delete",notes = "material/delete")
     @PostMapping("/wms/material/delete")
-    public ApiResponse<Map<String, String>> materialDelete(@RequestBody(required = false) WmsMaterial wmsMaterial) {
+    public ApiResponse<Map<String, String>> materialDelete(@RequestBody(required = false) ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            WmsMaterial wmsMaterial = new WmsMaterial();
+            wmsMaterial.setId(id.getID());
             responseData.put("id", String.valueOf(wmsMaterialServiceImpl.deleteWmsMaterialById(wmsMaterial)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
@@ -265,8 +274,8 @@ public class Wms {
             PageInfo<WmsMaterial> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialServiceImpl.selectAll(wmsMaterial));
             List<MaterialSelectAllResponse> materialSelectAllResponses = pageInfo.getList().stream().map(material -> {
                 WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
-                wmsMaterialTransactionQuery.setMaterial_id(material.getId());
-                List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDStockLocationId(wmsMaterialTransactionQuery);
+                wmsMaterialTransactionQuery.setMaterial_code(material.getProduct_code());
+                List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCodeStockLocationId(wmsMaterialTransactionQuery);
 
                 List<String> ids = new ArrayList<>();
                 List<String> names = new ArrayList<>();
@@ -313,7 +322,7 @@ public class Wms {
                                 inventory.getRfid(),
                                 newInboundId,
                                 shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialId(),
+                                inventory.getMaterialCode(),
                                 inventory.getQuantity()
                         );
                         responseData.put("id", String.valueOf(updated));
@@ -323,17 +332,18 @@ public class Wms {
                 long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
                 addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
                     shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsInboundManual(
-                                addInboundRequest.getType(),
-                                addInboundRequest.getSource(),
-                                addInboundRequest.getStatus(),
-                                inventory.getRfid(),
-                                newInboundId,
-                                shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialId(),
-                                inventory.getQuantity()
-                        );
-                        responseData.put("id", String.valueOf(updated));
+                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                        wmsMaterialTransaction.setType(addInboundRequest.getType());
+                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
+                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
+                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
+                        wmsMaterialTransaction.setInbound_id(newInboundId);
+                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
+                        wmsMaterialTransaction.setMaterial_code(inventory.getMaterialCode());
+                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+
+                        IntStream.range(0, inventory.getQuantity())
+                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
                     });
                 });
             }
@@ -359,9 +369,11 @@ public class Wms {
 
     @ApiOperation(value = "inbound/delete", notes = "inbound/delete")
     @PostMapping("/wms/inbound/delete")
-    public ApiResponse<Map<String, String>> inboundDelete(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> inboundDelete(@RequestBody(required = false)ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            UpdateInboundRequest updateInboundRequest = new UpdateInboundRequest();
+            updateInboundRequest.setId(id.getID());
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForInbound(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
@@ -406,7 +418,7 @@ public class Wms {
                                 inventory.getRfid(),
                                 newOutboundId,
                                 shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialId(),
+                                inventory.getMaterialCode(),
                                 inventory.getQuantity()
                         );
                         responseData.put("id", String.valueOf(updated));
@@ -423,7 +435,7 @@ public class Wms {
                                 inventory.getRfid(),
                                 newOutboundId,
                                 shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialId(),
+                                inventory.getMaterialCode(),
                                 inventory.getQuantity()
                         );
                         responseData.put("id", String.valueOf(updated));
@@ -451,9 +463,11 @@ public class Wms {
 
     @ApiOperation(value = "outbound/delete", notes = "outbound/delete")
     @PostMapping("/wms/outbound/delete")
-    public ApiResponse<Map<String, String>> outboundDelete(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
+    public ApiResponse<Map<String, String>> outboundDelete(@RequestBody(required = false) ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            UpdateInboundRequest updateInboundRequest = new UpdateInboundRequest();
+            updateInboundRequest.setId(id.getID());
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.deleteForOutbound(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
@@ -483,15 +497,10 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/add",notes = "rfidmaterial/add")
     @PostMapping("/wms/rfidmaterial/add")
-    public ApiResponse<Map<String, String>> rfidmaterialInsert(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialInsert(@RequestBody(required = false) WmsRfidMaterial wmsRfidMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
-            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
-            IntStream.range(0, addRfidMaterialRequest.getQuantity())
-                    .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
-            responseData.put("id", "1");
+            responseData.put("id", String.valueOf(wmsRfidMaterialServiceImpl.insertSelective(wmsRfidMaterial)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
@@ -501,30 +510,10 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/update", notes = "rfidmaterial/update")
     @PostMapping("/wms/rfidmaterial/update")
-    public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialUpdate(@RequestBody(required = false) WmsRfidMaterial wmsRfidMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
-            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
-
-            int existingQuantity = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction)
-                    .stream()
-                    .findFirst()
-                    .map(WmsMaterialTransaction::getQuantity)
-                    .orElse(0);
-
-            int difference = addRfidMaterialRequest.getQuantity() - existingQuantity;
-
-            if (difference > 0) {
-                IntStream.range(0, difference)
-                        .forEach(i -> wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction));
-                responseData.put("id", "1");
-            } else {
-                IntStream.range(difference, 0)
-                        .forEach(i -> wmsMaterialTransactionServiceImpl.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction));
-                responseData.put("id", "2");
-            }
+                responseData.put("id",String.valueOf(wmsRfidMaterialServiceImpl.updateSelective(wmsRfidMaterial)));
             return new ApiResponse<>(responseData);
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -534,14 +523,12 @@ public class Wms {
 
     @ApiOperation(value = "rfidmaterial/delete",notes = "rfidmaterial/delete")
     @PostMapping("/wms/rfidmaterial/delete")
-    public ApiResponse<Map<String, String>> rfidmaterialDelete(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest) {
+    public ApiResponse<Map<String, String>> rfidmaterialDelete(@RequestBody(required = false) ID id) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
-            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
-            wmsMaterialTransactionServiceImpl.deleteByRfidMaterialIDLimitOne(wmsMaterialTransaction);
-            responseData.put("id", "1");
+            WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
+            wmsRfidMaterial.setId(id.getID());
+            responseData.put("id", String.valueOf(wmsRfidMaterialServiceImpl.deleteSelective(wmsRfidMaterial)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
@@ -550,37 +537,9 @@ public class Wms {
     }
     @ApiOperation(value = "rfidmaterial/get", notes = "rfidmaterial/get")
     @PostMapping("/wms/rfidmaterial/get")
-    public ApiResponse<PageInfo<RfidmaterialGetResponse>> rfidmaterialGet(@RequestBody(required = false) AddRfidMaterialRequest addRfidMaterialRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ApiResponse<PageInfo<WmsRfidMaterial>> rfidmaterialGet(@RequestBody(required = false) WmsRfidMaterial wmsRfidMaterial,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(addRfidMaterialRequest.getRfid());
-            wmsMaterialTransaction.setMaterial_id(addRfidMaterialRequest.getMaterialId());
-
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialIDRfid(wmsMaterialTransaction));
-
-            List<RfidmaterialGetResponse> rfidmaterialGetResponses = pageInfo.getList()
-                    .stream()
-                    .map(transaction -> {
-                        RfidmaterialGetResponse rfidmaterialGetResponse = new RfidmaterialGetResponse();
-                        rfidmaterialGetResponse.setRfid(transaction.getRf_id());
-                        rfidmaterialGetResponse.setMaterialId(transaction.getMaterial_id());
-                        rfidmaterialGetResponse.setQuantity(transaction.getQuantity());
-
-                        WmsMaterial materialTemp= new WmsMaterial();
-                        materialTemp.setId(transaction.getMaterial_id());
-                        WmsMaterial wmsMaterial = wmsMaterialServiceImpl.selectAll(materialTemp).stream().findFirst().orElse(null);
-                        if (wmsMaterial != null) {
-                            rfidmaterialGetResponse.setMaterialName(wmsMaterial.getName());
-                        }
-                        rfidmaterialGetResponse.setCreateTime(transaction.getCreate_time());
-                        rfidmaterialGetResponse.setUpdateTime(transaction.getUpdate_time());
-                        return rfidmaterialGetResponse;
-                    })
-                    .collect(Collectors.toList());
-            PageInfo<RfidmaterialGetResponse> responsePageInfo = new PageInfo<>(rfidmaterialGetResponses);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
-
+            return new ApiResponse<>(PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial)));
         } catch (Exception e) {
             log.info("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -595,7 +554,7 @@ public class Wms {
             wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
             wmsMaterialTransaction.setInbound_id(inboundRecordDetailRequest.getInboundId());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialCode(wmsMaterialTransaction));
 
             List<ShelfInventory> shelfInventoryList =pageInfo.getList()
                     .stream()
@@ -619,11 +578,11 @@ public class Wms {
                                 .map(transaction -> {
                                     Inventory inventory = new Inventory();
                                     inventory.setRfid(transaction.getRf_id());
-                                    inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
+                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
                                     inventory.setQuantity(transaction.getQuantity());
 
                                     WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
                                     List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                     if (!wmsMaterialList.isEmpty()) {
                                         WmsMaterial material = wmsMaterialList.get(0);
@@ -654,7 +613,7 @@ public class Wms {
             wmsMaterialTransaction.setRf_id(outboundRecordDetailRequest.getRfid());
             wmsMaterialTransaction.setOutbound_id(outboundRecordDetailRequest.getOutboundId());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialCodeRfid(wmsMaterialTransaction));
 
             List<ShelfInventory> shelfInventoryList = pageInfo.getList()
                     .stream()
@@ -678,11 +637,11 @@ public class Wms {
                                 .map(transaction -> {
                                     Inventory inventory = new Inventory();
                                     inventory.setRfid(transaction.getRf_id());
-                                    inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
+                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
                                     inventory.setQuantity(transaction.getQuantity());
 
                                     WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
                                     List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                     if (!wmsMaterialList.isEmpty()) {
                                         WmsMaterial material = wmsMaterialList.get(0);
@@ -712,15 +671,31 @@ public class Wms {
             Map<String, String> responseData = new HashMap<>();
             long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
             addInboundRequest.getShelfRecords().stream().forEach(
-                    i->{
+                    i -> {
                         i.getInventory().stream().forEach(
-                                b->{
-                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialId(),b.getQuantity(),i.getStorageLocationId());
+                                b -> {
+                                    if (b.getQuantity() > 0) {
+                                        int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
+                                        if (b.getQuantity() - tmp == 0) {
+                                            responseData.put("id", String.valueOf(tmp));
+                                        } else {
+                                            IntStream.range(0, b.getQuantity() - tmp)
+                                                    .mapToObj(j -> {
+                                                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                                                        wmsMaterialTransaction.setStocktaking_id(ID);
+                                                        wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
+                                                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(i.getStorageLocationId()));
+                                                        return wmsMaterialTransaction;
+                                                    })
+                                                    .map(wmsMaterialTransactionServiceImpl::insertSelective)
+                                                    .map(id -> responseData.put("id", String.valueOf(b.getQuantity())))
+                                                    .count();
+                                        }
+                                    }
                                 }
                         );
                     }
             );
-            responseData.put("id", "1");
             return new ApiResponse<>(responseData);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
@@ -738,7 +713,7 @@ public class Wms {
                     i->{
                         i.getInventory().stream().forEach(
                                 b->{
-                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialId(),b.getQuantity(),i.getStorageLocationId());
+                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialCode(),b.getQuantity(),i.getStorageLocationId());
                                 }
                         );
                     }
@@ -775,7 +750,7 @@ public class Wms {
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
             wmsMaterialTransaction.setType(getStocktakingRequest.getType());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAll(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction));
 
             List<StocktakingRequest> stocktakingRequestList = pageInfo.getList().stream().map(StocktakingRequest::new).collect(Collectors.toList());
 
@@ -797,7 +772,7 @@ public class Wms {
             wmsMaterialTransaction.setStocktaking_id(getStocktakingRequest.getID());
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialIDRfid(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction));
 
             List<ShelfInventory> shelfInventoryList = pageInfo.getList()
                     .stream()
@@ -821,13 +796,13 @@ public class Wms {
                                 .map(transaction -> {
                                     Inventory inventory = new Inventory();
                                     inventory.setRfid(transaction.getRf_id());
-                                    inventory.setMaterialId(String.valueOf(transaction.getMaterial_id()));
-                                    inventory.setQuantity(transaction.getQuantity());
-                                    inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialId(), String.valueOf(entry.getKey())));
-                                    inventory.setDiscrepancy(transaction.getQuantity() - wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialId(), String.valueOf(entry.getKey())));
+                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
+                                    inventory.setQuantity(wmsMaterialTransactionServiceImpl.getQuantityForInbound(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())));
+                                    inventory.setStockQuantity(wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())));
+                                    inventory.setDiscrepancy(wmsMaterialTransactionServiceImpl.getQuantityForInbound(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())) - wmsMaterialTransactionServiceImpl.getQuantityForStocktaking(inventory.getRfid(), inventory.getMaterialCode(), String.valueOf(entry.getKey())));
 
                                     WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setId(transaction.getMaterial_id());
+                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
                                     List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
                                     if (!wmsMaterialList.isEmpty()) {
                                         WmsMaterial material = wmsMaterialList.get(0);

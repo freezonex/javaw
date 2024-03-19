@@ -6,18 +6,18 @@ import com.supos.app.entity.WmsWarehouse;
 public class WarehouseSelectAllMaterial {
     public WarehouseSelectAllMaterial(WmsMaterialTransaction materialTransactionquery) {
         this.quantity = materialTransactionquery.getQuantity();
-        this.material_id = materialTransactionquery.getMaterial_id();
+        this.material_code = materialTransactionquery.getMaterial_code();
     }
-    long material_id;
+    String material_code;
     String material_name;
     int quantity;
 
-    public long getMaterial_id() {
-        return material_id;
+    public String getMaterial_code() {
+        return material_code;
     }
 
-    public void setMaterial_id(long material_id) {
-        this.material_id = material_id;
+    public void setMaterial_code(String material_code) {
+        this.material_code = material_code;
     }
 
     public String getMaterial_name() {

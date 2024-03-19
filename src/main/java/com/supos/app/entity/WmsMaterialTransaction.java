@@ -24,7 +24,7 @@ public class WmsMaterialTransaction implements Serializable {
     /**
      * 
      */
-    private Long material_id;
+    private String material_code;
 
     /**
      * 
@@ -219,12 +219,13 @@ public class WmsMaterialTransaction implements Serializable {
         this.update_time = update_time;
     }
 
-    public Long getMaterial_id() {
-        return material_id;
+
+    public String getMaterial_code() {
+        return material_code;
     }
 
-    public void setMaterial_id(Long material_id) {
-        this.material_id = material_id;
+    public void setMaterial_code(String material_code) {
+        this.material_code = material_code;
     }
 
     public Long getStocktaking_id() {

@@ -16,13 +16,13 @@ import java.util.List;
 @Mapper
 public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTransaction> {
 
-    List<WmsMaterialTransaction> selectAllGroupByMaterialID(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllGroupByMaterialCode(WmsMaterialTransaction wmsMaterialTransaction);
 
-    List<WmsMaterialTransaction> selectAllGroupByMaterialIDStockLocationId(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllGroupByMaterialCodeStockLocationId(WmsMaterialTransaction wmsMaterialTransaction);
 
-    int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsInboundManual(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialCode, int quantity);
 
-    int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsInboundPDA(String type, String source, String status, String rfid, long inboundId, String storageLocationId, String materialCode, int quantity);
 
     int updateByInboundId(UpdateInboundRequest updateInboundRequest);
 
@@ -36,29 +36,33 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId);
 
-    int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialCode, int quantity);
 
-    int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialId, int quantity);
+    int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialCode, int quantity);
 
     List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId);
 
     int insertSelective(WmsMaterialTransaction wmsMaterialTransaction);
 
-    List<WmsMaterialTransaction> selectAllGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllGroupByMaterialCodeRfid(WmsMaterialTransaction wmsMaterialTransaction);
 
-    int deleteByRfidMaterialIDLimitOne(WmsMaterialTransaction wmsMaterialTransaction);
+    int deleteByRfidMaterialCodeLimitOne(WmsMaterialTransaction wmsMaterialTransaction);
 
     List<WmsMaterialTransaction> selectAll(WmsMaterialTransaction wmsMaterialTransaction);
 
-    List<WmsMaterialTransaction> selectAllInboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllInboundGroupByMaterialCode(WmsMaterialTransaction wmsMaterialTransaction);
 
-    List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialIDRfid(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllOutboundGroupByMaterialCodeRfid(WmsMaterialTransaction wmsMaterialTransaction);
 
-    int updateForTopNTransactionsStocktaking(long stocktakingId, String materialId, int quantity, String storageLocationId);
+    int updateForTopNTransactionsStocktaking(long stocktakingId, String materialCode, int quantity, String storageLocationId);
 
     int deleteForTopNTransactionsStocktaking(long stocktakingId);
 
-    int getQuantityForStocktaking(String Rfid, String MaterialId,String StringStorageLocationId);
+    int getQuantityForStocktaking(String Rfid, String materialCode,String StringStorageLocationId);
+
+    int getQuantityForInbound(String Rfid, String materialCode,String StringStorageLocationId);
+
+    List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction);
 
 }
 

@@ -7,8 +7,8 @@ public class Inventory {
     @JsonProperty("rfid")
     private String rfid;
 
-    @JsonProperty("material_id")
-    private String materialId;
+    @JsonProperty("material_code")
+    private String materialCode;
 
     @JsonProperty("quantity")
     private int quantity;
@@ -32,12 +32,13 @@ public class Inventory {
         this.rfid = rfid;
     }
 
-    public String getMaterialId() {
-        return materialId;
+
+    public String getMaterialCode() {
+        return materialCode;
     }
 
-    public void setMaterialId(String materialId) {
-        this.materialId = materialId;
+    public void setMaterialCode(String materialCode) {
+        this.materialCode = materialCode;
     }
 
     public int getQuantity() {
