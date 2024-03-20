@@ -1,4 +1,5 @@
 package com.supos.app.mapper;
+import com.supos.app.vo.InboundDetail;
 import org.apache.ibatis.annotations.Param;
 
 import com.supos.app.entity.WmsMaterialTransaction;
@@ -36,13 +37,13 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int deleteForInbound(UpdateInboundRequest updateInboundRequest);
 
-    List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId);
+    List<InboundDetail> selectByInboundRfidType(InboundDetail inboundDetail);
 
     int updateForTopNTransactionsOutboundPDA(Date outboundDeliveryDate,String outboundCreator,String outboundPurchaseOrderNo,String outboundSupplier,String type, String source, String status, String rfid, long outboundId, Long storageLocationId, String materialCode, int quantity);
 
     int updateForTopNTransactionsOutboundManual(Date outboundDeliveryDate, String outboundCreator, String outboundPurchaseOrderNo, String outboundSupplier, String type, String source, String status, String rfid, long outboundId, Long storageLocationId, String materialCode, int quantity);
 
-    List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId);
+    List<WmsMaterialTransaction> selectByOutboundRfidType(InboundDetail inboundDetail);
 
     int insertSelective(WmsMaterialTransaction wmsMaterialTransaction);
 

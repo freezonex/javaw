@@ -32,6 +32,46 @@
             <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
+    <resultMap id="InboundDetailResultMap" type="com.supos.app.vo.InboundDetail">
+        <id column="id" property="id" jdbcType="BIGINT"/>
+        <result column="product_code" property="product_code" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="product_type" property="product_type" jdbcType="VARCHAR"/>
+        <result column="unit" property="unit" jdbcType="VARCHAR"/>
+        <result column="specification" property="specification" jdbcType="VARCHAR"/>
+        <result column="max" property="max" jdbcType="BIGINT"/>
+        <result column="min" property="min" jdbcType="BIGINT"/>
+        <result column="status" property="status" jdbcType="VARCHAR"/>
+        <result column="expect_wh_id" property="expect_wh_id" jdbcType="BIGINT"/>
+        <result column="expact_stock_location_id" property="expact_stock_location_id" jdbcType="BIGINT"/>
+        <result column="quantity" property="quantity" jdbcType="INTEGER"/>
+        <result column="material_code" property="material_code" jdbcType="VARCHAR"/>
+        <result column="type" property="type" jdbcType="VARCHAR"/>
+        <result column="source" property="source" jdbcType="VARCHAR"/>
+        <result column="inbound_id" property="inbound_id" jdbcType="BIGINT"/>
+        <result column="stocktaking_id" property="stocktaking_id" jdbcType="BIGINT"/>
+        <result column="outbound_id" property="outbound_id" jdbcType="BIGINT"/>
+        <result column="warehouse_id" property="warehouse_id" jdbcType="BIGINT"/>
+        <result column="stock_location_id" property="stock_location_id" jdbcType="BIGINT"/>
+        <result column="rf_id" property="rf_id" jdbcType="VARCHAR"/>
+        <result column="operator" property="operator" jdbcType="VARCHAR"/>
+        <result column="inbound_status" property="inbound_status" jdbcType="VARCHAR"/>
+        <result column="outbound_status" property="outbound_status" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="inbound_creator" property="inbound_creator" jdbcType="VARCHAR"/>
+        <result column="outbound_creator" property="outbound_creator" jdbcType="VARCHAR"/>
+        <result column="inbound_purchase_order_no" property="inbound_purchase_order_no" jdbcType="VARCHAR"/>
+        <result column="outbound_purchase_order_no" property="outbound_purchase_order_no" jdbcType="VARCHAR"/>
+        <result column="inbound_supplier" property="inbound_supplier" jdbcType="VARCHAR"/>
+        <result column="outbound_supplier" property="outbound_supplier" jdbcType="VARCHAR"/>
+        <result column="inbound_delivery_date" property="inbound_delivery_date" jdbcType="TIMESTAMP"/>
+        <result column="outbound_delivery_date" property="outbound_delivery_date" jdbcType="TIMESTAMP"/>
+        <result column="del_flag" property="del_flag" jdbcType="TINYINT"/>
+        <result column="update_time" property="update_time" jdbcType="TIMESTAMP"/>
+        <result column="create_time" property="create_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+
     <sql id="Base_Column_List">
         id,material_code,type,
         source,inbound_id,stocktaking_id,
@@ -377,7 +417,7 @@
         </where>
         GROUP BY material_code,stock_location_id
     </select>
-    <select id="selectByInboundRfidType" resultMap="BaseResultMap">
+    <select id="selectByInboundRfidTypeBk" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
@@ -419,6 +459,164 @@
             </if>
         </where>
         GROUP BY inbound_id
+    </select>
+    <select id="selectByInboundRfidType" parameterType="com.supos.app.vo.InboundDetail"
+            resultMap="InboundDetailResultMap">
+        SELECT *
+        FROM (
+        SELECT
+        MAX(wmt.id) AS id,
+        MAX(wmt.type) AS type,
+        MAX(wmt.material_code) AS material_code,
+        MAX(wmt.source) AS source,
+        MAX(wmt.inbound_id) AS inbound_id,
+        MAX(wmt.outbound_id) AS outbound_id,
+        MAX(wmt.warehouse_id) AS warehouse_id,
+        MAX(wmt.stock_location_id) AS stock_location_id,
+        MAX(wmt.rf_id) AS rf_id,
+        MAX(wmt.operator) AS operator,
+        MAX(wmt.inbound_status) AS inbound_status,
+        MAX(wmt.outbound_status) AS outbound_status,
+        MAX(wmt.note) AS note,
+        MAX(wmt.del_flag) AS del_flag,
+        MAX(wmt.create_time) AS create_time,
+        MAX(wmt.update_time) AS update_time,
+        MAX(wmt.stocktaking_id) AS stocktaking_id,
+        MAX(wmt.inbound_creator) AS inbound_creator,
+        MAX(wmt.outbound_creator) AS outbound_creator,
+        MAX(wmt.inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(wmt.outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(wmt.inbound_supplier) AS inbound_supplier,
+        MAX(wmt.outbound_supplier) AS outbound_supplier,
+        MAX(wmt.inbound_delivery_date) AS inbound_delivery_date,
+        MAX(wmt.outbound_delivery_date) AS outbound_delivery_date,
+        COUNT(*) AS quantity
+        FROM wms_material_transaction wmt
+        WHERE wmt.del_flag IS NULL
+        AND wmt.inbound_id IS NOT NULL
+        GROUP BY wmt.inbound_id
+        ) tmp
+        LEFT JOIN wms_material wm ON tmp.material_code = wm.product_code
+        <where>
+            wm.del_flag IS NULL
+            <if test="material_code != null">
+                AND tmp.material_code LIKE CONCAT('%', #{material_code}, '%')
+            </if>
+            <if test="type != null">
+                AND tmp.type LIKE CONCAT('%', #{type}, '%')
+            </if>
+            <if test="source != null">
+                AND tmp.source LIKE CONCAT('%', #{source}, '%')
+            </if>
+            <if test="inbound_id != null">
+                AND tmp.inbound_id LIKE CONCAT('%', #{inbound_id}, '%')
+            </if>
+            <if test="stocktaking_id != null">
+                AND tmp.stocktaking_id LIKE CONCAT('%', #{stocktaking_id}, '%')
+            </if>
+            <if test="outbound_id != null">
+                AND tmp.outbound_id LIKE CONCAT('%', #{outbound_id}, '%')
+            </if>
+            <if test="warehouse_id != null">
+                AND tmp.warehouse_id LIKE CONCAT('%', #{warehouse_id}, '%')
+            </if>
+            <if test="stock_location_id != null">
+                AND tmp.stock_location_id LIKE CONCAT('%', #{stock_location_id}, '%')
+            </if>
+            <if test="rf_id != null">
+                AND tmp.rf_id LIKE CONCAT('%', #{rf_id}, '%')
+            </if>
+            <if test="operator != null">
+                AND tmp.operator LIKE CONCAT('%', #{operator}, '%')
+            </if>
+            <if test="inbound_status != null">
+                AND tmp.inbound_status LIKE CONCAT('%', #{inbound_status}, '%')
+            </if>
+            <if test="outbound_status != null">
+                AND tmp.outbound_status LIKE CONCAT('%', #{outbound_status}, '%')
+            </if>
+            <if test="note != null">
+                AND tmp.note LIKE CONCAT('%', #{note}, '%')
+            </if>
+            <if test="inbound_creator != null">
+                AND tmp.inbound_creator LIKE CONCAT('%', #{inbound_creator}, '%')
+            </if>
+            <if test="outbound_creator != null">
+                AND tmp.outbound_creator LIKE CONCAT('%', #{outbound_creator}, '%')
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND tmp.inbound_purchase_order_no LIKE CONCAT('%', #{inbound_purchase_order_no}, '%')
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND tmp.outbound_purchase_order_no LIKE CONCAT('%', #{outbound_purchase_order_no}, '%')
+            </if>
+            <if test="inbound_supplier != null">
+                AND tmp.inbound_supplier LIKE CONCAT('%', #{inbound_supplier}, '%')
+            </if>
+            <if test="outbound_supplier != null">
+                AND tmp.outbound_supplier LIKE CONCAT('%', #{outbound_supplier}, '%')
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND tmp.inbound_delivery_date LIKE CONCAT('%', #{inbound_delivery_date}, '%')
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND tmp.outbound_delivery_date LIKE CONCAT('%', #{outbound_delivery_date}, '%')
+            </if>
+            <if test="del_flag != null">
+                AND tmp.del_flag LIKE CONCAT('%', #{del_flag}, '%')
+            </if>
+            <if test="update_time != null">
+                AND tmp.update_time LIKE CONCAT('%', #{update_time}, '%')
+            </if>
+            <if test="create_time != null">
+                AND tmp.create_time LIKE CONCAT('%', #{create_time}, '%')
+            </if>
+            <if test="id != null">
+                AND wm.id LIKE CONCAT('%', #{id}, '%')
+            </if>
+            <if test="product_code != null">
+                AND wm.product_code LIKE CONCAT('%', #{product_code}, '%')
+            </if>
+            <if test="name != null">
+                AND wm.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="product_type != null">
+                AND wm.product_type LIKE CONCAT('%', #{product_type}, '%')
+            </if>
+            <if test="unit != null">
+                AND wm.unit LIKE CONCAT('%', #{unit}, '%')
+            </if>
+            <if test="note != null">
+                AND wm.note LIKE CONCAT('%', #{note}, '%')
+            </if>
+            <if test="specification != null">
+                AND wm.specification LIKE CONCAT('%', #{specification}, '%')
+            </if>
+            <if test="max != null">
+                AND wm.max = #{max}
+            </if>
+            <if test="min != null">
+                AND wm.min = #{min}
+            </if>
+            <if test="status != null">
+                AND wm.status LIKE CONCAT('%', #{status}, '%')
+            </if>
+            <if test="expect_wh_id != null">
+                AND wm.expect_wh_id = #{expect_wh_id}
+            </if>
+            <if test="expact_stock_location_id != null">
+                AND wm.expact_stock_location_id = #{expact_stock_location_id}
+            </if>
+            <if test="del_flag != null">
+                AND wm.del_flag = #{del_flag}
+            </if>
+            <if test="create_time != null">
+                AND DATE(wm.create_time) = DATE(#{create_time})
+            </if>
+            <if test="update_time != null">
+                AND DATE(wm.update_time) = DATE(#{update_time})
+            </if>
+        </where>
     </select>
     <update id="updateForTopNTransactionsOutboundPDA">
         UPDATE wms_material_transaction
@@ -488,7 +686,7 @@
         ) AS subquery
         )
     </update>
-    <select id="selectByOutboundRfidType" resultMap="BaseResultMap">
+    <select id="selectByOutboundRfidTypeBk" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
@@ -531,7 +729,164 @@
         </where>
         GROUP BY outbound_id
     </select>
-
+    <select id="selectByOutboundRfidType" parameterType="com.supos.app.vo.InboundDetail"
+            resultMap="InboundDetailResultMap">
+        SELECT *
+        FROM (
+        SELECT
+        MAX(wmt.id) AS id,
+        MAX(wmt.type) AS type,
+        MAX(wmt.material_code) AS material_code,
+        MAX(wmt.source) AS source,
+        MAX(wmt.inbound_id) AS inbound_id,
+        MAX(wmt.outbound_id) AS outbound_id,
+        MAX(wmt.warehouse_id) AS warehouse_id,
+        MAX(wmt.stock_location_id) AS stock_location_id,
+        MAX(wmt.rf_id) AS rf_id,
+        MAX(wmt.operator) AS operator,
+        MAX(wmt.inbound_status) AS inbound_status,
+        MAX(wmt.outbound_status) AS outbound_status,
+        MAX(wmt.note) AS note,
+        MAX(wmt.del_flag) AS del_flag,
+        MAX(wmt.create_time) AS create_time,
+        MAX(wmt.update_time) AS update_time,
+        MAX(wmt.stocktaking_id) AS stocktaking_id,
+        MAX(wmt.inbound_creator) AS inbound_creator,
+        MAX(wmt.outbound_creator) AS outbound_creator,
+        MAX(wmt.inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(wmt.outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(wmt.inbound_supplier) AS inbound_supplier,
+        MAX(wmt.outbound_supplier) AS outbound_supplier,
+        MAX(wmt.inbound_delivery_date) AS inbound_delivery_date,
+        MAX(wmt.outbound_delivery_date) AS outbound_delivery_date,
+        COUNT(*) AS quantity
+        FROM wms_material_transaction wmt
+        WHERE wmt.del_flag IS NULL
+        AND wmt.outbound_id IS NOT NULL
+        GROUP BY wmt.outbound_id
+        ) tmp
+        LEFT JOIN wms_material wm ON tmp.material_code = wm.product_code
+        <where>
+            wm.del_flag IS NULL
+            <if test="material_code != null">
+                AND tmp.material_code LIKE CONCAT('%', #{material_code}, '%')
+            </if>
+            <if test="type != null">
+                AND tmp.type LIKE CONCAT('%', #{type}, '%')
+            </if>
+            <if test="source != null">
+                AND tmp.source LIKE CONCAT('%', #{source}, '%')
+            </if>
+            <if test="inbound_id != null">
+                AND tmp.inbound_id LIKE CONCAT('%', #{inbound_id}, '%')
+            </if>
+            <if test="stocktaking_id != null">
+                AND tmp.stocktaking_id LIKE CONCAT('%', #{stocktaking_id}, '%')
+            </if>
+            <if test="outbound_id != null">
+                AND tmp.outbound_id LIKE CONCAT('%', #{outbound_id}, '%')
+            </if>
+            <if test="warehouse_id != null">
+                AND tmp.warehouse_id LIKE CONCAT('%', #{warehouse_id}, '%')
+            </if>
+            <if test="stock_location_id != null">
+                AND tmp.stock_location_id LIKE CONCAT('%', #{stock_location_id}, '%')
+            </if>
+            <if test="rf_id != null">
+                AND tmp.rf_id LIKE CONCAT('%', #{rf_id}, '%')
+            </if>
+            <if test="operator != null">
+                AND tmp.operator LIKE CONCAT('%', #{operator}, '%')
+            </if>
+            <if test="inbound_status != null">
+                AND tmp.inbound_status LIKE CONCAT('%', #{inbound_status}, '%')
+            </if>
+            <if test="outbound_status != null">
+                AND tmp.outbound_status LIKE CONCAT('%', #{outbound_status}, '%')
+            </if>
+            <if test="note != null">
+                AND tmp.note LIKE CONCAT('%', #{note}, '%')
+            </if>
+            <if test="inbound_creator != null">
+                AND tmp.inbound_creator LIKE CONCAT('%', #{inbound_creator}, '%')
+            </if>
+            <if test="outbound_creator != null">
+                AND tmp.outbound_creator LIKE CONCAT('%', #{outbound_creator}, '%')
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND tmp.inbound_purchase_order_no LIKE CONCAT('%', #{inbound_purchase_order_no}, '%')
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND tmp.outbound_purchase_order_no LIKE CONCAT('%', #{outbound_purchase_order_no}, '%')
+            </if>
+            <if test="inbound_supplier != null">
+                AND tmp.inbound_supplier LIKE CONCAT('%', #{inbound_supplier}, '%')
+            </if>
+            <if test="outbound_supplier != null">
+                AND tmp.outbound_supplier LIKE CONCAT('%', #{outbound_supplier}, '%')
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND tmp.inbound_delivery_date LIKE CONCAT('%', #{inbound_delivery_date}, '%')
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND tmp.outbound_delivery_date LIKE CONCAT('%', #{outbound_delivery_date}, '%')
+            </if>
+            <if test="del_flag != null">
+                AND tmp.del_flag LIKE CONCAT('%', #{del_flag}, '%')
+            </if>
+            <if test="update_time != null">
+                AND tmp.update_time LIKE CONCAT('%', #{update_time}, '%')
+            </if>
+            <if test="create_time != null">
+                AND tmp.create_time LIKE CONCAT('%', #{create_time}, '%')
+            </if>
+            <if test="id != null">
+                AND wm.id LIKE CONCAT('%', #{id}, '%')
+            </if>
+            <if test="product_code != null">
+                AND wm.product_code LIKE CONCAT('%', #{product_code}, '%')
+            </if>
+            <if test="name != null">
+                AND wm.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="product_type != null">
+                AND wm.product_type LIKE CONCAT('%', #{product_type}, '%')
+            </if>
+            <if test="unit != null">
+                AND wm.unit LIKE CONCAT('%', #{unit}, '%')
+            </if>
+            <if test="note != null">
+                AND wm.note LIKE CONCAT('%', #{note}, '%')
+            </if>
+            <if test="specification != null">
+                AND wm.specification LIKE CONCAT('%', #{specification}, '%')
+            </if>
+            <if test="max != null">
+                AND wm.max = #{max}
+            </if>
+            <if test="min != null">
+                AND wm.min = #{min}
+            </if>
+            <if test="status != null">
+                AND wm.status LIKE CONCAT('%', #{status}, '%')
+            </if>
+            <if test="expect_wh_id != null">
+                AND wm.expect_wh_id = #{expect_wh_id}
+            </if>
+            <if test="expact_stock_location_id != null">
+                AND wm.expact_stock_location_id = #{expact_stock_location_id}
+            </if>
+            <if test="del_flag != null">
+                AND wm.del_flag = #{del_flag}
+            </if>
+            <if test="create_time != null">
+                AND DATE(wm.create_time) = DATE(#{create_time})
+            </if>
+            <if test="update_time != null">
+                AND DATE(wm.update_time) = DATE(#{update_time})
+            </if>
+        </where>
+    </select>
     <select id="selectAllGroupByMaterialCodeRfid" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,

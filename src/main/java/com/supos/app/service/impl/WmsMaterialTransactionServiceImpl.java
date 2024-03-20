@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.supos.app.service.WmsMaterialTransactionService;
 import com.supos.app.mapper.WmsMaterialTransactionMapper;
+import com.supos.app.vo.InboundDetail;
 import com.supos.app.vo.UpdateInboundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -63,8 +64,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.deleteForInbound(updateInboundRequest);
     }
 
-    public List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId) {
-        return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type,inboundId);
+    public List<InboundDetail> selectByInboundRfidType(InboundDetail inboundDetail) {
+        return wmsMaterialTransactionMapper.selectByInboundRfidType(inboundDetail);
     }
 
     public int updateForTopNTransactionsOutboundPDA(Date outboundDeliveryDate,String outboundCreator,String outboundPurchaseOrderNo,String outboundSupplier,String type, String source, String status, String rfid, long OutboundId, Long storageLocationId, String materialCode, int quantity) {
@@ -75,8 +76,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual(outboundDeliveryDate, outboundCreator, outboundPurchaseOrderNo, outboundSupplier, type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
     }
 
-    public List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId) {
-        return wmsMaterialTransactionMapper.selectByOutboundRfidType( rfid, type,outboundId);
+    public List<WmsMaterialTransaction> selectByOutboundRfidType(InboundDetail inboundDetail) {
+        return wmsMaterialTransactionMapper.selectByOutboundRfidType(inboundDetail);
 
     }
 

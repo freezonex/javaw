@@ -13,6 +13,8 @@ import java.util.Date;
  */
 @Data
 public class InboundDetail implements Serializable {
+    public InboundDetail() {}
+
     public InboundDetail(WmsMaterialTransaction transaction, WmsMaterial material) {
         this.product_code = material.getProduct_code();
         this.name = material.getName();

@@ -459,17 +459,9 @@ public class Wms {
 
     @ApiOperation(value = "inbound/get", notes = "inbound/get")
     @PostMapping("/wms/inbound/get")
-    public ApiResponse<PageInfo<SelectInboundResponse>> inboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ApiResponse<PageInfo<InboundDetail>> inboundGet(@RequestBody(required = false) InboundDetail inboundDetail,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectByInboundRfidType(updateInboundRequest.getRefId(),updateInboundRequest.getType(),updateInboundRequest.getId()));
-            List<SelectInboundResponse> response= pageInfo.getList().stream()
-                    .map(SelectInboundResponse::new)
-                    .collect(Collectors.toList());
-            PageInfo<SelectInboundResponse> responsePageInfo = new PageInfo<>(response);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
-
+            return new ApiResponse<>(PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() ->  wmsMaterialTransactionServiceImpl.selectByInboundRfidType(inboundDetail)));
         }catch (Exception e){
             log.info(e.getMessage());
             return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
@@ -607,20 +599,12 @@ public class Wms {
 
     @ApiOperation(value = "outbound/get", notes = "outbound/get")
     @PostMapping("/wms/outbound/get")
-    public ApiResponse<PageInfo<SelectOutboundResponse>> outboundGet(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ApiResponse<PageInfo<InboundDetail>> outboundGet(@RequestBody(required = false) InboundDetail inboundDetail,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(updateInboundRequest.getRefId(), updateInboundRequest.getType(), updateInboundRequest.getId()));
-
-            List<SelectOutboundResponse> response = pageInfo.getList().stream()
-                    .map(SelectOutboundResponse::new)
-                    .collect(Collectors.toList());
-
-            PageInfo<SelectOutboundResponse> responsePageInfo = new PageInfo<>(response);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
-        } catch (Exception e) {
+            return new ApiResponse<>(PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() ->  wmsMaterialTransactionServiceImpl.selectByOutboundRfidType(inboundDetail)));
+        }catch (Exception e){
             log.info(e.getMessage());
-            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
         }
     }
 
