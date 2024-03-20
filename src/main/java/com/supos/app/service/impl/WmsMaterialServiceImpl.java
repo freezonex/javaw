@@ -27,9 +27,11 @@ public class WmsMaterialServiceImpl extends ServiceImpl<WmsMaterialMapper, WmsMa
     public int updateWmsMaterialById(WmsMaterial wmsMaterial) {
         return wmsMaterialMapper.updateSelective(wmsMaterial);
     }
+
     public int deleteWmsMaterialById(WmsMaterial wmsMaterial) {
         return wmsMaterialMapper.deleteWmsMaterialById(wmsMaterial);
     }
+
     public List<WmsMaterial> selectAll(WmsMaterial wmsMaterial) {
         return wmsMaterialMapper.selectAll(wmsMaterial);
     }
