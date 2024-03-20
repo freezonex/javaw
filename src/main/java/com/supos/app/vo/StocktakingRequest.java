@@ -38,11 +38,11 @@ public class StocktakingRequest {
     public StocktakingRequest(WmsMaterialTransaction transaction) {
         this.id = Optional.ofNullable(transaction.getStocktaking_id()).orElse(0L);
         this.refId = transaction.getRf_id();
-        this.type = transaction.getType();
+        this.type = "Dynamic";
         this.source = transaction.getSource();
         this.note = transaction.getNote();
         this.operator = transaction.getOperator();
-        this.status = "done";
+        this.status = "Done";
         this.createTime = transaction.getCreate_time();
         this.updateTime = transaction.getUpdate_time();
     }
