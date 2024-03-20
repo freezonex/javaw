@@ -1426,7 +1426,7 @@
                 AND tmp.inbound_id = #{wmsMaterialTransaction.inbound_id}
             </if>
             <if test="wmsMaterialTransaction.stocktaking_id != null">
-                AND tmp.stocktaking_id LIKE CONCAT('%', #{swmsMaterialTransaction.tocktaking_id}, '%')
+                AND tmp.stocktaking_id LIKE CONCAT('%', #{wmsMaterialTransaction.stocktaking_id}, '%')
             </if>
             <if test="warehouseName != null">
                 AND ww.name LIKE CONCAT('%', #{warehouseName}, '%')
