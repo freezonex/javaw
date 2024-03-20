@@ -1,6 +1,5 @@
 package com.supos.app.mapper;
 import com.supos.app.vo.InboundDetail;
-import org.apache.ibatis.annotations.Param;
 
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -65,7 +64,7 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     int getQuantityForInbound(String Rfid, String materialCode,String StringStorageLocationId);
 
-    List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction);
+    List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction, String warehouseName);
 
 }
 

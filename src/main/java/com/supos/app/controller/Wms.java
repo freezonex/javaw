@@ -1,30 +1,24 @@
 package com.supos.app.controller;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.supos.app.config.ApiResponse;
 import com.supos.app.entity.*;
-import com.supos.app.service.WmsMaterialTransactionService;
 import com.supos.app.service.impl.*;
-import com.supos.app.utils.HttpUtils;
 import com.supos.app.vo.*;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -916,7 +910,7 @@ public class Wms {
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
             wmsMaterialTransaction.setType(getStocktakingRequest.getType());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction,getStocktakingRequest.getWarehouseName()));
 
             List<StocktakingRequest> stocktakingRequestList = pageInfo.getList().stream().map(StocktakingRequest::new).collect(Collectors.toList());
 
@@ -938,7 +932,7 @@ public class Wms {
             wmsMaterialTransaction.setStocktaking_id(getStocktakingRequest.getID());
             wmsMaterialTransaction.setRf_id(getStocktakingRequest.getRfid());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllGroupByStocktakingId(wmsMaterialTransaction, getStocktakingRequest.getWarehouseName()));
 
             List<ShelfInventory> shelfInventoryList = pageInfo.getList()
                     .stream()

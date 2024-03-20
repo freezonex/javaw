@@ -1373,112 +1373,122 @@
     </select>
     <select id="selectAllGroupByStocktakingId" resultMap="BaseResultMap">
         SELECT
-        MAX(id) AS id,
-        MAX(type) AS type,
-        MAX(material_code) AS material_code,
-        MAX(source) AS source,
-        MAX(inbound_id) AS inbound_id,
-        MAX(outbound_id) AS outbound_id,
-        MAX(warehouse_id) AS warehouse_id,
-        MAX(stock_location_id) AS stock_location_id,
-        MAX(rf_id) AS rf_id,
-        MAX(operator) AS operator,
-        MAX(inbound_status) AS inbound_status,
-        MAX(outbound_status) AS outbound_status,
-        MAX(note) AS note,
-        MAX(del_flag) AS del_flag,
-        MAX(create_time) AS create_time,
-        MAX(update_time) AS update_time,
-        MAX(stocktaking_id) AS stocktaking_id,
-        MAX(inbound_creator) AS inbound_creator,
-        MAX(outbound_creator) AS outbound_creator,
-        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
-        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
-        MAX(inbound_supplier) AS inbound_supplier,
-        MAX(outbound_supplier) AS outbound_supplier,
-        MAX(inbound_delivery_date) AS inbound_delivery_date,
-        MAX(outbound_delivery_date) AS outbound_delivery_date,
+        *
+        FROM (
+        SELECT
+        MAX(wmt.id) AS id,
+        MAX(wmt.type) AS type,
+        MAX(wmt.material_code) AS material_code,
+        MAX(wmt.source) AS source,
+        MAX(wmt.inbound_id) AS inbound_id,
+        MAX(wmt.outbound_id) AS outbound_id,
+        MAX(wmt.warehouse_id) AS warehouse_id,
+        MAX(wmt.stock_location_id) AS stock_location_id,
+        MAX(wmt.rf_id) AS rf_id,
+        MAX(wmt.operator) AS operator,
+        MAX(wmt.inbound_status) AS inbound_status,
+        MAX(wmt.outbound_status) AS outbound_status,
+        MAX(wmt.note) AS note,
+        MAX(wmt.del_flag) AS del_flag,
+        MAX(wmt.create_time) AS create_time,
+        MAX(wmt.update_time) AS update_time,
+        MAX(wmt.stocktaking_id) AS stocktaking_id,
+        MAX(wmt.inbound_creator) AS inbound_creator,
+        MAX(wmt.outbound_creator) AS outbound_creator,
+        MAX(wmt.inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(wmt.outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(wmt.inbound_supplier) AS inbound_supplier,
+        MAX(wmt.outbound_supplier) AS outbound_supplier,
+        MAX(wmt.inbound_delivery_date) AS inbound_delivery_date,
+        MAX(wmt.outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
-        FROM wms_material_transaction
+        FROM wms_material_transaction wmt
+        WHERE wmt.del_flag IS NULL
+        AND wmt.stocktaking_id IS NOT NULL
+        GROUP BY wmt.stocktaking_id
+        ) tmp
+        LEFT JOIN wms_warehouse ww ON tmp.warehouse_id = ww.id
         <where>
-            del_flag IS NULL AND stocktaking_id IS NOT NULL
-            <if test="id != null">
-                AND id = #{id}
+            ww.del_flag IS NULL
+            <if test="wmsMaterialTransaction.id != null">
+                AND tmp.id = #{wmsMaterialTransaction.id}
             </if>
-            <if test="material_code != null">
-                AND material_code = #{material_code}
+            <if test="wmsMaterialTransaction.material_code != null">
+                AND tmp.material_code = #{wmsMaterialTransaction.material_code}
             </if>
-            <if test="type != null">
-                AND type = #{type}
+            <if test="wmsMaterialTransaction.type != null">
+                AND tmp.type = #{wmsMaterialTransaction.type}
             </if>
-            <if test="source != null">
-                AND source = #{source}
+            <if test="wmsMaterialTransaction.source != null">
+                AND tmp.source = #{wmsMaterialTransaction.source}
             </if>
-            <if test="inbound_id != null">
-                AND inbound_id = #{inbound_id}
+            <if test="wmsMaterialTransaction.inbound_id != null">
+                AND tmp.inbound_id = #{wmsMaterialTransaction.inbound_id}
             </if>
-            <if test="stocktaking_id != null">
-                AND stocktaking_id = #{stocktaking_id}
+            <if test="wmsMaterialTransaction.stocktaking_id != null">
+                AND tmp.stocktaking_id LIKE CONCAT('%', #{swmsMaterialTransaction.tocktaking_id}, '%')
             </if>
-            <if test="outbound_id != null">
-                AND outbound_id = #{outbound_id}
+            <if test="warehouseName != null">
+                AND ww.name LIKE CONCAT('%', #{warehouseName}, '%')
             </if>
-            <if test="warehouse_id != null">
-                AND warehouse_id = #{warehouse_id}
+            <if test="wmsMaterialTransaction.outbound_id != null">
+                AND tmp.outbound_id = #{wmsMaterialTransaction.outbound_id}
             </if>
-            <if test="stock_location_id != null">
-                AND stock_location_id = #{stock_location_id}
+            <if test="wmsMaterialTransaction.warehouse_id != null">
+                AND tmp.warehouse_id = #{wmsMaterialTransaction.warehouse_id}
             </if>
-            <if test="rf_id != null">
-                AND rf_id = #{rf_id}
+            <if test="wmsMaterialTransaction.stock_location_id != null">
+                AND tmp.stock_location_id = #{wmsMaterialTransaction.stock_location_id}
             </if>
-            <if test="operator != null">
-                AND operator = #{operator}
+            <if test="wmsMaterialTransaction.rf_id != null">
+                AND tmp.rf_id = #{wmsMaterialTransaction.rf_id}
             </if>
-            <if test="inbound_status != null">
-                AND inbound_status = #{inbound_status}
+            <if test="wmsMaterialTransaction.operator != null">
+                AND tmp.operator = #{wmsMaterialTransaction.operator}
             </if>
-            <if test="outbound_status != null">
-                AND outbound_status = #{outbound_status}
+            <if test="wmsMaterialTransaction.inbound_status != null">
+                AND tmp.inbound_status = #{wmsMaterialTransaction.inbound_status}
             </if>
-            <if test="note != null">
-                AND note = #{note}
+            <if test="wmsMaterialTransaction.outbound_status != null">
+                AND tmp.outbound_status = #{wmsMaterialTransaction.outbound_status}
             </if>
-            <if test="inbound_creator != null">
-                AND inbound_creator = #{inbound_creator}
+            <if test="wmsMaterialTransaction.note != null">
+                AND tmp.note = #{wmsMaterialTransaction.note}
             </if>
-            <if test="outbound_creator != null">
-                AND outbound_creator = #{outbound_creator}
+            <if test="wmsMaterialTransaction.inbound_creator != null">
+                AND tmp.inbound_creator = #{wmsMaterialTransaction.inbound_creator}
             </if>
-            <if test="inbound_purchase_order_no != null">
-                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            <if test="wmsMaterialTransaction.outbound_creator != null">
+                AND tmp.outbound_creator = #{wmsMaterialTransaction.outbound_creator}
             </if>
-            <if test="outbound_purchase_order_no != null">
-                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            <if test="wmsMaterialTransaction.inbound_purchase_order_no != null">
+                AND tmp.inbound_purchase_order_no = #{wmsMaterialTransaction.inbound_purchase_order_no}
             </if>
-            <if test="inbound_supplier != null">
-                AND inbound_supplier = #{inbound_supplier}
+            <if test="wmsMaterialTransaction.outbound_purchase_order_no != null">
+                AND tmp.outbound_purchase_order_no = #{wmsMaterialTransaction.outbound_purchase_order_no}
             </if>
-            <if test="outbound_supplier != null">
-                AND outbound_supplier = #{outbound_supplier}
+            <if test="wmsMaterialTransaction.inbound_supplier != null">
+                AND tmp.inbound_supplier = #{wmsMaterialTransaction.inbound_supplier}
             </if>
-            <if test="inbound_delivery_date != null">
-                AND inbound_delivery_date = #{inbound_delivery_date}
+            <if test="wmsMaterialTransaction.outbound_supplier != null">
+                AND tmp.outbound_supplier = #{wmsMaterialTransaction.outbound_supplier}
             </if>
-            <if test="outbound_delivery_date != null">
-                AND outbound_delivery_date = #{outbound_delivery_date}
+            <if test="wmsMaterialTransaction.inbound_delivery_date != null">
+                AND tmp.inbound_delivery_date = #{wmsMaterialTransaction.inbound_delivery_date}
             </if>
-            <if test="del_flag != null">
-                AND del_flag = #{del_flag}
+            <if test="wmsMaterialTransaction.outbound_delivery_date != null">
+                AND tmp.outbound_delivery_date = #{wmsMaterialTransaction.outbound_delivery_date}
             </if>
-            <if test="update_time != null">
-                AND update_time = #{update_time}
+            <if test="wmsMaterialTransaction.del_flag != null">
+                AND tmp.del_flag = #{wmsMaterialTransaction.del_flag}
             </if>
-            <if test="create_time != null">
-                AND create_time = #{create_time}
+            <if test="wmsMaterialTransaction.update_time != null">
+                AND tmp.update_time = #{wmsMaterialTransaction.update_time}
+            </if>
+            <if test="wmsMaterialTransaction.create_time != null">
+                AND tmp.create_time = #{wmsMaterialTransaction.create_time}
             </if>
         </where>
-        GROUP BY stocktaking_id
     </select>
     <insert id="insertSelective">
         insert into wms_material_transaction

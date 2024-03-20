@@ -12,6 +12,9 @@ public class GetStocktakingRequest {
     @JsonProperty("type")
     private String Type;
 
+    @JsonProperty("warehouse_name")
+    private String warehouseName;
+
     public Long getID() {
         return ID;
     }
@@ -34,5 +37,13 @@ public class GetStocktakingRequest {
 
     public void setType(String type) {
         Type = type;
+    }
+
+    public String getWarehouseName() {
+        return warehouseName;
+    }
+
+    public void setWarehouseName(String warehouseName) {
+        this.warehouseName = warehouseName;
     }
 }

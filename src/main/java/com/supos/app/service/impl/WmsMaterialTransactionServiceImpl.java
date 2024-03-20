@@ -115,8 +115,8 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.getQuantityForInbound( Rfid,  materialCode, StringStorageLocationId);
     }
 
-    public List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction) {
-        return wmsMaterialTransactionMapper.selectAllGroupByStocktakingId(wmsMaterialTransaction);
+    public List<WmsMaterialTransaction> selectAllGroupByStocktakingId(WmsMaterialTransaction wmsMaterialTransaction, String warehouseName) {
+        return wmsMaterialTransactionMapper.selectAllGroupByStocktakingId(wmsMaterialTransaction,warehouseName);
     }
 
 }
