@@ -42,7 +42,7 @@ public class StocktakingRequest {
         this.source = transaction.getSource();
         this.note = transaction.getNote();
         this.operator = transaction.getOperator();
-        this.status = transaction.getStatus();
+        this.status = "done";
         this.createTime = transaction.getCreate_time();
         this.updateTime = transaction.getUpdate_time();
     }

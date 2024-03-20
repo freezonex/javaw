@@ -1,18 +1,20 @@
 package com.supos.app.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import com.supos.app.entity.WmsMaterialTransaction;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.supos.app.vo.UpdateInboundRequest;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.Date;
 import java.util.List;
 
 /**
-* @author Wenhao
-* @description 针对表【wms_material_transaction】的数据库操作Mapper
-* @createDate 2024-03-16 09:06:46
-* @Entity com.supos.app.entity.WmsMaterialTransaction
-*/
+ * @author Wenhao
+ * @description 针对表【wms_material_transaction】的数据库操作Mapper
+ * @createDate 2024-03-16 09:06:46
+ * @Entity com.supos.app.entity.WmsMaterialTransaction
+ */
 @Mapper
 public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTransaction> {
 
@@ -36,9 +38,9 @@ public interface WmsMaterialTransactionMapper extends BaseMapper<WmsMaterialTran
 
     List<WmsMaterialTransaction> selectByInboundRfidType(String rfid, String type, Long inboundId);
 
-    int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialCode, int quantity);
+    int updateForTopNTransactionsOutboundPDA(Date outboundDeliveryDate,String outboundCreator,String outboundPurchaseOrderNo,String outboundSupplier,String type, String source, String status, String rfid, long outboundId, Long storageLocationId, String materialCode, int quantity);
 
-    int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long outboundId, String storageLocationId, String materialCode, int quantity);
+    int updateForTopNTransactionsOutboundManual(Date outboundDeliveryDate, String outboundCreator, String outboundPurchaseOrderNo, String outboundSupplier, String type, String source, String status, String rfid, long outboundId, Long storageLocationId, String materialCode, int quantity);
 
     List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId);
 

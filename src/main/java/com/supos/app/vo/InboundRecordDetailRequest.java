@@ -4,8 +4,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class InboundRecordDetailRequest {
 
-    @JsonProperty("inbound_id")
-    private Long inboundId;
+    @JsonProperty("id")
+    private Long id;
     @JsonProperty("ref_id")
     private String rfid;
 
@@ -17,11 +17,11 @@ public class InboundRecordDetailRequest {
         this.rfid = rfid;
     }
 
-    public Long getInboundId() {
-        return inboundId;
+    public Long getId() {
+        return id;
     }
 
-    public void setInboundId(Long inboundId) {
-        this.inboundId = inboundId;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

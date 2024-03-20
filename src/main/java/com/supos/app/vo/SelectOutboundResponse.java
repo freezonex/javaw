@@ -7,13 +7,13 @@ import java.util.Date;
 
 public class SelectOutboundResponse {
     @JsonProperty("id")
-    private long id;
+    private Long id;
 
-    @JsonProperty("ref_id")
-    private String refId; // 注意JSON属性名与proto中一致
+    @JsonProperty("purchase_order_no")
+    private String purchase_order_no;
 
-    @JsonProperty("type")
-    private String type;
+    @JsonProperty("supplier")
+    private String supplier;
 
     @JsonProperty("source")
     private String source;
@@ -37,38 +37,39 @@ public class SelectOutboundResponse {
 
     public SelectOutboundResponse(WmsMaterialTransaction wmsMaterialTransaction) {
         this.id = wmsMaterialTransaction.getOutbound_id();
-        this.refId = wmsMaterialTransaction.getRf_id();
-        this.type = wmsMaterialTransaction.getType();
+        this.purchase_order_no = wmsMaterialTransaction.getOutbound_purchase_order_no();
+        this.supplier = wmsMaterialTransaction.getOutbound_supplier();
         this.source = wmsMaterialTransaction.getSource();
         this.note = wmsMaterialTransaction.getNote();
-        this.operator = wmsMaterialTransaction.getOperator();
-        this.status = wmsMaterialTransaction.getStatus();
+        this.operator = wmsMaterialTransaction.getOutbound_creator();
+        this.status = wmsMaterialTransaction.getOutbound_status();
         this.createTime = wmsMaterialTransaction.getCreate_time();
         this.updateTime = wmsMaterialTransaction.getUpdate_time();
     }
 
-    public long getId() {
+
+    public Long getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(Long id) {
         this.id = id;
     }
 
-    public String getRefId() {
-        return refId;
+    public String getPurchase_order_no() {
+        return purchase_order_no;
     }
 
-    public void setRefId(String refId) {
-        this.refId = refId;
+    public void setPurchase_order_no(String purchase_order_no) {
+        this.purchase_order_no = purchase_order_no;
     }
 
-    public String getType() {
-        return type;
+    public String getSupplier() {
+        return supplier;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setSupplier(String supplier) {
+        this.supplier = supplier;
     }
 
     public String getSource() {

@@ -1,5 +1,6 @@
 package com.supos.app.controller;
 
+import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -267,37 +268,49 @@ public class Wms {
         }
     }
 
+//    @ApiOperation(value = "material/get", notes = "material/get")
+//    @PostMapping("/wms/material/get")
+//    public ApiResponse<PageInfo<MaterialSelectAllResponse>> materialSelectAll(@RequestBody(required = false) WmsMaterial wmsMaterial, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+//        try {
+//            PageInfo<WmsMaterial> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialServiceImpl.selectAll(wmsMaterial));
+//            List<MaterialSelectAllResponse> materialSelectAllResponses = pageInfo.getList().stream().map(material -> {
+//                WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
+//                wmsMaterialTransactionQuery.setMaterial_code(material.getProduct_code());
+//                List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCodeStockLocationId(wmsMaterialTransactionQuery);
+//
+//                List<String> ids = new ArrayList<>();
+//                List<String> names = new ArrayList<>();
+//
+//                transactions.forEach(transaction -> {
+//                    ids.add(String.valueOf(transaction.getId()));
+//                    WmsStorageLocation wmsStorageLocationQuery = new WmsStorageLocation();
+//                    wmsStorageLocationQuery.setId(transaction.getStock_location_id());
+//                    List<WmsStorageLocation> locations = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocationQuery);
+//                    if (!locations.isEmpty()) {
+//                        names.add(locations.get(0).getName());
+//                    }
+//                });
+//
+//                MaterialSelectAllResponse response = new MaterialSelectAllResponse(material);
+//                response.setStorage_location_id(ids);
+//                response.setStorage_location(names);
+//                return response;
+//            }).collect(Collectors.toList());
+//            PageInfo<MaterialSelectAllResponse> responsePageInfo = new PageInfo<>(materialSelectAllResponses);
+//            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+//            return new ApiResponse<>(responsePageInfo);
+//
+//        } catch (Exception e) {
+//            log.info(e.getMessage());
+//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+//        }
+//    }
+
     @ApiOperation(value = "material/get", notes = "material/get")
     @PostMapping("/wms/material/get")
     public ApiResponse<PageInfo<MaterialSelectAllResponse>> materialSelectAll(@RequestBody(required = false) WmsMaterial wmsMaterial, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            PageInfo<WmsMaterial> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialServiceImpl.selectAll(wmsMaterial));
-            List<MaterialSelectAllResponse> materialSelectAllResponses = pageInfo.getList().stream().map(material -> {
-                WmsMaterialTransaction wmsMaterialTransactionQuery = new WmsMaterialTransaction();
-                wmsMaterialTransactionQuery.setMaterial_code(material.getProduct_code());
-                List<WmsMaterialTransaction> transactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCodeStockLocationId(wmsMaterialTransactionQuery);
-
-                List<String> ids = new ArrayList<>();
-                List<String> names = new ArrayList<>();
-
-                transactions.forEach(transaction -> {
-                    ids.add(String.valueOf(transaction.getId()));
-                    WmsStorageLocation wmsStorageLocationQuery = new WmsStorageLocation();
-                    wmsStorageLocationQuery.setId(transaction.getStock_location_id());
-                    List<WmsStorageLocation> locations = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocationQuery);
-                    if (!locations.isEmpty()) {
-                        names.add(locations.get(0).getName());
-                    }
-                });
-
-                MaterialSelectAllResponse response = new MaterialSelectAllResponse(material);
-                response.setStorage_location_id(ids);
-                response.setStorage_location(names);
-                return response;
-            }).collect(Collectors.toList());
-            PageInfo<MaterialSelectAllResponse> responsePageInfo = new PageInfo<>(materialSelectAllResponses);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
+            return new ApiResponse<>(PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialServiceImpl.selectAll(wmsMaterial)));
 
         } catch (Exception e) {
             log.info(e.getMessage());
@@ -305,53 +318,108 @@ public class Wms {
         }
     }
 
+//    @ApiOperation(value = "inbound/add", notes = "inbound/add")
+//    @PostMapping("/wms/inbound/add")
+//    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
+//        try {
+//            Map<String, String> responseData = new HashMap<>();
+//
+//            if ("PDA".equals(addInboundRequest.getSource())) {
+//                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+//                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+//                    shelfInventory.getInventory().forEach(inventory -> {
+//
+//                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+//                        wmsMaterialTransaction.setType(addInboundRequest.getType());
+//                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
+//                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
+//                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
+//                        wmsMaterialTransaction.setInbound_id(newInboundId);
+//                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
+//
+//                        WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
+//                        wmsRfidMaterial.setRf_id(inventory.getRfid());
+//
+//                        wmsMaterialTransaction.setMaterial_code(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
+//                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+//
+//                        IntStream.range(0, inventory.getQuantity())
+//                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
+//                    });
+//                });
+//            } else if ("manual".equals(addInboundRequest.getSource())) {
+//                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+//                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+//                    shelfInventory.getInventory().forEach(inventory -> {
+//
+//                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+//                        wmsMaterialTransaction.setType(addInboundRequest.getType());
+//                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
+//                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
+//                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
+//                        wmsMaterialTransaction.setInbound_id(newInboundId);
+//                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
+//                        wmsMaterialTransaction.setMaterial_code(inventory.getMaterialCode());
+//                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+//
+//                        IntStream.range(0, inventory.getQuantity())
+//                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
+//                    });
+//                });
+//            }
+//            return new ApiResponse<>(responseData);
+//        } catch (Exception e) {
+//            log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
+//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+//        }
+//    }
+
     @ApiOperation(value = "inbound/add", notes = "inbound/add")
     @PostMapping("/wms/inbound/add")
-    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> inboundInsert(@RequestBody(required = false) AddInboundRequestNew addInboundRequestNew) {
         try {
             Map<String, String> responseData = new HashMap<>();
+            if ("PDA".equals(addInboundRequestNew.getSource())) {
 
-            if ("PDA".equals(addInboundRequest.getSource())) {
-                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
-                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
-                    shelfInventory.getInventory().forEach(inventory -> {
+                addInboundRequestNew.getAddInboundRequestDetail().forEach(addInboundRequestDetail -> {
 
-                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-                        wmsMaterialTransaction.setType(addInboundRequest.getType());
-                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
-                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
-                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
-                        wmsMaterialTransaction.setInbound_id(newInboundId);
-                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
+                    WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                    wmsMaterialTransaction.setInbound_creator(addInboundRequestNew.getCreator());
+                    wmsMaterialTransaction.setInbound_purchase_order_no(addInboundRequestNew.getPurchase_order_no());
+                    wmsMaterialTransaction.setInbound_supplier(addInboundRequestNew.getSupplier());
+                    wmsMaterialTransaction.setInbound_delivery_date(addInboundRequestNew.getDelivery_date());
 
-                        WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
-                        wmsRfidMaterial.setRf_id(inventory.getRfid());
+                    WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
+                    wmsRfidMaterial.setRf_id(addInboundRequestDetail.getRf_id());
+                    wmsMaterialTransaction.setMaterial_code(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
 
-                        wmsMaterialTransaction.setMaterial_code(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
-                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+                    wmsMaterialTransaction.setWarehouse_id(addInboundRequestDetail.getWh_id());
+                    wmsMaterialTransaction.setStock_location_id(addInboundRequestDetail.getStock_location_id());
+                    wmsMaterialTransaction.setInbound_id(IdWorker.getId());
+                    wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
+                    wmsMaterialTransaction.setInbound_status("pending");
 
-                        IntStream.range(0, inventory.getQuantity())
-                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
-                    });
+                    IntStream.range(0, addInboundRequestDetail.getQuantity())
+                            .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
                 });
-            } else if ("manual".equals(addInboundRequest.getSource())) {
-                long newInboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
-                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
-                    shelfInventory.getInventory().forEach(inventory -> {
 
-                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-                        wmsMaterialTransaction.setType(addInboundRequest.getType());
-                        wmsMaterialTransaction.setSource(addInboundRequest.getSource());
-                        wmsMaterialTransaction.setStatus(addInboundRequest.getStatus());
-                        wmsMaterialTransaction.setRf_id(inventory.getRfid());
-                        wmsMaterialTransaction.setInbound_id(newInboundId);
-                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(shelfInventory.getStorageLocationId()));
-                        wmsMaterialTransaction.setMaterial_code(inventory.getMaterialCode());
-                        wmsMaterialTransaction.setQuantity(inventory.getQuantity());
+            } else if ("manual".equals(addInboundRequestNew.getSource())) {
+                addInboundRequestNew.getAddInboundRequestDetail().forEach(addInboundRequestDetail -> {
 
-                        IntStream.range(0, inventory.getQuantity())
-                                .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
-                    });
+                    WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                    wmsMaterialTransaction.setInbound_creator(addInboundRequestNew.getCreator());
+                    wmsMaterialTransaction.setInbound_purchase_order_no(addInboundRequestNew.getPurchase_order_no());
+                    wmsMaterialTransaction.setInbound_supplier(addInboundRequestNew.getSupplier());
+                    wmsMaterialTransaction.setInbound_delivery_date(addInboundRequestNew.getDelivery_date());
+                    wmsMaterialTransaction.setMaterial_code(addInboundRequestDetail.getMaterial_code());
+                    wmsMaterialTransaction.setWarehouse_id(addInboundRequestDetail.getWh_id());
+                    wmsMaterialTransaction.setStock_location_id(addInboundRequestDetail.getStock_location_id());
+                    wmsMaterialTransaction.setInbound_id(IdWorker.getId());
+                    wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
+                    wmsMaterialTransaction.setInbound_status("pending");
+
+                    IntStream.range(0, addInboundRequestDetail.getQuantity())
+                            .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
                 });
             }
             return new ApiResponse<>(responseData);
@@ -408,45 +476,99 @@ public class Wms {
         }
     }
 
+//    @ApiOperation(value = "outbound/add", notes = "outbound/add")
+//    @PostMapping("/wms/outbound/add")
+//    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
+//        try {
+//            Map<String, String> responseData = new HashMap<>();
+//
+//            if ("PDA".equals(addInboundRequest.getSource())) {
+//                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+//                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+//                    shelfInventory.getInventory().forEach(inventory -> {
+//                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundPDA(
+//                                addInboundRequest.getType(),
+//                                addInboundRequest.getSource(),
+//                                addInboundRequest.getStatus(),
+//                                inventory.getRfid(),
+//                                newOutboundId,
+//                                shelfInventory.getStorageLocationId(),
+//                                inventory.getMaterialCode(),
+//                                inventory.getQuantity()
+//                        );
+//                        responseData.put("id", String.valueOf(updated));
+//                    });
+//                });
+//            } else if ("manual".equals(addInboundRequest.getSource())) {
+//                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+//                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
+//                    shelfInventory.getInventory().forEach(inventory -> {
+//                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundManual(
+//                                addInboundRequest.getType(),
+//                                addInboundRequest.getSource(),
+//                                addInboundRequest.getStatus(),
+//                                inventory.getRfid(),
+//                                newOutboundId,
+//                                shelfInventory.getStorageLocationId(),
+//                                inventory.getMaterialCode(),
+//                                inventory.getQuantity()
+//                        );
+//                        responseData.put("id", String.valueOf(updated));
+//                    });
+//                });
+//            }
+//            return new ApiResponse<>(responseData);
+//        } catch (Exception e) {
+//            log.info("Error occurred while processing the request: " + e.getMessage(), e); // 使用日志记录异常堆栈
+//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+//        }
+//    }
+
     @ApiOperation(value = "outbound/add", notes = "outbound/add")
     @PostMapping("/wms/outbound/add")
-    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
+    public ApiResponse<Map<String, String>> outboundInsert(@RequestBody(required = false) AddInboundRequestNew addInboundRequestNew) {
         try {
             Map<String, String> responseData = new HashMap<>();
 
-            if ("PDA".equals(addInboundRequest.getSource())) {
-                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
-                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
-                    shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundPDA(
-                                addInboundRequest.getType(),
-                                addInboundRequest.getSource(),
-                                addInboundRequest.getStatus(),
-                                inventory.getRfid(),
-                                newOutboundId,
-                                shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialCode(),
-                                inventory.getQuantity()
-                        );
-                        responseData.put("id", String.valueOf(updated));
-                    });
+            if ("PDA".equals(addInboundRequestNew.getSource())) {
+                addInboundRequestNew.getAddInboundRequestDetail().forEach(addInboundRequestDetail -> {
+
+                    WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
+                    wmsRfidMaterial.setRf_id(addInboundRequestDetail.getRf_id());
+
+                    int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundPDA(
+                            addInboundRequestNew.getDelivery_date(),
+                            addInboundRequestNew.getCreator(),
+                            addInboundRequestNew.getPurchase_order_no(),
+                            addInboundRequestNew.getSupplier(),
+                            null,
+                            addInboundRequestNew.getSource(),
+                            "pending",
+                            addInboundRequestDetail.getRf_id(),
+                            IdWorker.getId(),
+                            addInboundRequestDetail.getStock_location_id(),
+                            wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code(),
+                            addInboundRequestDetail.getQuantity()
+                    );
+                    responseData.put("id", String.valueOf(updated));
                 });
-            } else if ("manual".equals(addInboundRequest.getSource())) {
-                long newOutboundId = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
-                addInboundRequest.getShelfRecords().forEach(shelfInventory -> {
-                    shelfInventory.getInventory().forEach(inventory -> {
-                        int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundManual(
-                                addInboundRequest.getType(),
-                                addInboundRequest.getSource(),
-                                addInboundRequest.getStatus(),
-                                inventory.getRfid(),
-                                newOutboundId,
-                                shelfInventory.getStorageLocationId(),
-                                inventory.getMaterialCode(),
-                                inventory.getQuantity()
-                        );
-                        responseData.put("id", String.valueOf(updated));
-                    });
+            } else if ("manual".equals(addInboundRequestNew.getSource())) {
+                addInboundRequestNew.getAddInboundRequestDetail().forEach(addInboundRequestDetail -> {
+                    int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundManual(
+                            addInboundRequestNew.getDelivery_date(),
+                            addInboundRequestNew.getCreator(),
+                            addInboundRequestNew.getPurchase_order_no(),
+                            addInboundRequestNew.getSupplier(),
+                            null,
+                            addInboundRequestNew.getSource(),
+                            "pending",
+                            addInboundRequestDetail.getRf_id(),
+                            IdWorker.getId(),
+                            addInboundRequestDetail.getStock_location_id(),
+                            addInboundRequestDetail.getMaterial_code(),
+                            addInboundRequestDetail.getQuantity()
+                    );
+                    responseData.put("id", String.valueOf(updated));
                 });
             }
             return new ApiResponse<>(responseData);
@@ -553,118 +675,172 @@ public class Wms {
         }
     }
 
+//    @ApiOperation(value = "inbound/detail", notes = "inbound/detail")
+//    @PostMapping("/wms/inbound/detail")
+//    public ApiResponse<PageInfo<ShelfInventory>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+//        try {
+//            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+//            wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
+//            wmsMaterialTransaction.setInbound_id(inboundRecordDetailRequest.getInboundId());
+//
+//            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialCode(wmsMaterialTransaction));
+//
+//            List<ShelfInventory> shelfInventoryList =pageInfo.getList()
+//                    .stream()
+//                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
+//                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
+//                    .entrySet().stream()
+//                    .map(entry -> {
+//                        ShelfInventory shelfInventory = new ShelfInventory();
+//                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
+//
+//                        // 获取对应的storage location名称
+//                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
+//                        wmsStorageLocation.setId(entry.getKey());
+//                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+//                        if (!wmsStorageLocationList.isEmpty()) {
+//                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
+//                        }
+//
+//                        // 将分组内的每个物料数据转换为Inventory对象
+//                        List<Inventory> inventoryList = entry.getValue().stream()
+//                                .map(transaction -> {
+//                                    Inventory inventory = new Inventory();
+//                                    inventory.setRfid(transaction.getRf_id());
+//                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
+//                                    inventory.setQuantity(transaction.getQuantity());
+//
+//                                    WmsMaterial wmsMaterial = new WmsMaterial();
+//                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
+//                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+//                                    if (!wmsMaterialList.isEmpty()) {
+//                                        WmsMaterial material = wmsMaterialList.get(0);
+//                                        inventory.setMaterialName(material.getName());
+//                                    }
+//                                    return inventory;
+//                                })
+//                                .collect(Collectors.toList());
+//
+//                        shelfInventory.setInventory(inventoryList);
+//                        return shelfInventory;
+//                    })
+//                    .collect(Collectors.toList());
+//            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
+//            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+//            return new ApiResponse<>(responsePageInfo);
+//        } catch (Exception e) {
+//            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+//        }
+//    }
+
     @ApiOperation(value = "inbound/detail", notes = "inbound/detail")
     @PostMapping("/wms/inbound/detail")
-    public ApiResponse<PageInfo<ShelfInventory>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ApiResponse<PageInfo<InboundDetail>> inboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(inboundRecordDetailRequest.getRfid());
-            wmsMaterialTransaction.setInbound_id(inboundRecordDetailRequest.getInboundId());
+            WmsMaterialTransaction queryCondition = new WmsMaterialTransaction();
+            queryCondition.setRf_id(inboundRecordDetailRequest.getRfid());
+            queryCondition.setInbound_id(inboundRecordDetailRequest.getId());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialCode(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                    .doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllInboundGroupByMaterialCode(queryCondition));
 
-            List<ShelfInventory> shelfInventoryList =pageInfo.getList()
-                    .stream()
-                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
-                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
-                    .entrySet().stream()
-                    .map(entry -> {
-                        ShelfInventory shelfInventory = new ShelfInventory();
-                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
+            List<InboundDetail> details = pageInfo.getList().stream().map(transaction -> {
+                WmsMaterial wmsMaterial = new WmsMaterial();
+                wmsMaterial.setProduct_code(transaction.getMaterial_code());
+                WmsMaterial material = wmsMaterialServiceImpl.selectAll(wmsMaterial).get(0);
+                return new InboundDetail(transaction, material);
+            }).collect(Collectors.toList());
 
-                        // 获取对应的storage location名称
-                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
-                        wmsStorageLocation.setId(entry.getKey());
-                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
-                        if (!wmsStorageLocationList.isEmpty()) {
-                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
-                        }
-
-                        // 将分组内的每个物料数据转换为Inventory对象
-                        List<Inventory> inventoryList = entry.getValue().stream()
-                                .map(transaction -> {
-                                    Inventory inventory = new Inventory();
-                                    inventory.setRfid(transaction.getRf_id());
-                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
-                                    inventory.setQuantity(transaction.getQuantity());
-
-                                    WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
-                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
-                                    if (!wmsMaterialList.isEmpty()) {
-                                        WmsMaterial material = wmsMaterialList.get(0);
-                                        inventory.setMaterialName(material.getName());
-                                    }
-                                    return inventory;
-                                })
-                                .collect(Collectors.toList());
-
-                        shelfInventory.setInventory(inventoryList);
-                        return shelfInventory;
-                    })
-                    .collect(Collectors.toList());
-            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
+            PageInfo<InboundDetail> resultPageInfo = new PageInfo<>(details);
+            BeanUtils.copyProperties(pageInfo, resultPageInfo, "list");
+            return new ApiResponse<>(resultPageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
         }
     }
 
+//    @ApiOperation(value = "outbound/detail", notes = "outbound/detail")
+//    @PostMapping("/wms/outbound/detail")
+//    public ApiResponse<PageInfo<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) OutboundRecordDetailRequest outboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+//        try {
+//            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+//            wmsMaterialTransaction.setRf_id(outboundRecordDetailRequest.getRfid());
+//            wmsMaterialTransaction.setOutbound_id(outboundRecordDetailRequest.getOutboundId());
+//
+//            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialCodeRfid(wmsMaterialTransaction));
+//
+//            List<ShelfInventory> shelfInventoryList = pageInfo.getList()
+//                    .stream()
+//                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
+//                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
+//                    .entrySet().stream()
+//                    .map(entry -> {
+//                        ShelfInventory shelfInventory = new ShelfInventory();
+//                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
+//
+//                        // 获取对应的storage location名称
+//                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
+//                        wmsStorageLocation.setId(entry.getKey());
+//                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+//                        if (!wmsStorageLocationList.isEmpty()) {
+//                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
+//                        }
+//
+//                        // 将分组内的每个物料数据转换为Inventory对象
+//                        List<Inventory> inventoryList = entry.getValue().stream()
+//                                .map(transaction -> {
+//                                    Inventory inventory = new Inventory();
+//                                    inventory.setRfid(transaction.getRf_id());
+//                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
+//                                    inventory.setQuantity(transaction.getQuantity());
+//
+//                                    WmsMaterial wmsMaterial = new WmsMaterial();
+//                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
+//                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+//                                    if (!wmsMaterialList.isEmpty()) {
+//                                        WmsMaterial material = wmsMaterialList.get(0);
+//                                        inventory.setMaterialName(material.getName());
+//                                    }
+//                                    return inventory;
+//                                })
+//                                .collect(Collectors.toList());
+//
+//                        shelfInventory.setInventory(inventoryList);
+//                        return shelfInventory;
+//                    })
+//                    .collect(Collectors.toList());
+//            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
+//            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+//            return new ApiResponse<>(responsePageInfo);
+//        } catch (Exception e) {
+//            log.error("Error occurred while processing the request: " + e.getMessage(), e);
+//            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+//        }
+//    }
+
     @ApiOperation(value = "outbound/detail", notes = "outbound/detail")
     @PostMapping("/wms/outbound/detail")
-    public ApiResponse<PageInfo<ShelfInventory>> outboundDetailGet(@RequestBody(required = false) OutboundRecordDetailRequest outboundRecordDetailRequest,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+    public ApiResponse<PageInfo<InboundDetail>> outboundDetailGet(@RequestBody(required = false) InboundRecordDetailRequest inboundRecordDetailRequest, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
         try {
-            WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-            wmsMaterialTransaction.setRf_id(outboundRecordDetailRequest.getRfid());
-            wmsMaterialTransaction.setOutbound_id(outboundRecordDetailRequest.getOutboundId());
+            WmsMaterialTransaction queryCondition = new WmsMaterialTransaction();
+            queryCondition.setRf_id(inboundRecordDetailRequest.getRfid());
+            queryCondition.setOutbound_id(inboundRecordDetailRequest.getId());
 
-            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize).doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialCodeRfid(wmsMaterialTransaction));
+            PageInfo<WmsMaterialTransaction> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                    .doSelectPageInfo(() -> wmsMaterialTransactionServiceImpl.selectAllOutboundGroupByMaterialCodeRfid(queryCondition));
 
-            List<ShelfInventory> shelfInventoryList = pageInfo.getList()
-                    .stream()
-                    .filter(transaction -> transaction.getStock_location_id() != null) // 过滤掉stock_location_id为null的记录
-                    .collect(Collectors.groupingBy(WmsMaterialTransaction::getStock_location_id)) // 根据stock_location_id进行分组
-                    .entrySet().stream()
-                    .map(entry -> {
-                        ShelfInventory shelfInventory = new ShelfInventory();
-                        shelfInventory.setStorageLocationId(String.valueOf(entry.getKey())); // 设置storage_location_id
+            List<InboundDetail> details = pageInfo.getList().stream().map(transaction -> {
+                WmsMaterial wmsMaterial = new WmsMaterial();
+                wmsMaterial.setProduct_code(transaction.getMaterial_code());
+                WmsMaterial material = wmsMaterialServiceImpl.selectAll(wmsMaterial).get(0);
+                return new InboundDetail(transaction, material);
+            }).collect(Collectors.toList());
 
-                        // 获取对应的storage location名称
-                        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
-                        wmsStorageLocation.setId(entry.getKey());
-                        List<WmsStorageLocation> wmsStorageLocationList = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
-                        if (!wmsStorageLocationList.isEmpty()) {
-                            shelfInventory.setStorageLocation(wmsStorageLocationList.get(0).getName());
-                        }
-
-                        // 将分组内的每个物料数据转换为Inventory对象
-                        List<Inventory> inventoryList = entry.getValue().stream()
-                                .map(transaction -> {
-                                    Inventory inventory = new Inventory();
-                                    inventory.setRfid(transaction.getRf_id());
-                                    inventory.setMaterialCode(String.valueOf(transaction.getMaterial_code()));
-                                    inventory.setQuantity(transaction.getQuantity());
-
-                                    WmsMaterial wmsMaterial = new WmsMaterial();
-                                    wmsMaterial.setProduct_code(transaction.getMaterial_code());
-                                    List<WmsMaterial> wmsMaterialList = wmsMaterialServiceImpl.selectAll(wmsMaterial);
-                                    if (!wmsMaterialList.isEmpty()) {
-                                        WmsMaterial material = wmsMaterialList.get(0);
-                                        inventory.setMaterialName(material.getName());
-                                    }
-                                    return inventory;
-                                })
-                                .collect(Collectors.toList());
-
-                        shelfInventory.setInventory(inventoryList);
-                        return shelfInventory;
-                    })
-                    .collect(Collectors.toList());
-            PageInfo<ShelfInventory> responsePageInfo = new PageInfo<>(shelfInventoryList);
-            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
-            return new ApiResponse<>(responsePageInfo);
+            PageInfo<InboundDetail> resultPageInfo = new PageInfo<>(details);
+            BeanUtils.copyProperties(pageInfo, resultPageInfo, "list");
+            return new ApiResponse<>(resultPageInfo);
         } catch (Exception e) {
             log.error("Error occurred while processing the request: " + e.getMessage(), e);
             return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
@@ -676,7 +852,7 @@ public class Wms {
     public ApiResponse<Map<String, String>> stocktakingInsert(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
-            long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
+            long ID = IdWorker.getId();
             addInboundRequest.getShelfRecords().stream().forEach(
                     i -> {
                         i.getInventory().stream().forEach(
@@ -715,12 +891,11 @@ public class Wms {
     public ApiResponse<Map<String, String>> stocktakingUpdate(@RequestBody(required = false) AddInboundRequest addInboundRequest) {
         try {
             Map<String, String> responseData = new HashMap<>();
-            long ID = System.nanoTime() + ThreadLocalRandom.current().nextLong(1_000_000L, 10_000_000L);
             addInboundRequest.getShelfRecords().stream().forEach(
                     i->{
                         i.getInventory().stream().forEach(
                                 b->{
-                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID,b.getMaterialCode(),b.getQuantity(),i.getStorageLocationId());
+                                    wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(IdWorker.getId(),b.getMaterialCode(),b.getQuantity(),i.getStorageLocationId());
                                 }
                         );
                     }

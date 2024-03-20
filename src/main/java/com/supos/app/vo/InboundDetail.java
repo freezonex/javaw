@@ -1,15 +1,109 @@
-package com.supos.app.entity;
+package com.supos.app.vo;
+
+import com.supos.app.entity.WmsMaterial;
+import com.supos.app.entity.WmsMaterialTransaction;
+import lombok.Data;
 
 import java.io.Serializable;
 import java.util.Date;
-import lombok.Data;
 
 /**
  * 
  * @TableName wms_material_transaction
  */
 @Data
-public class WmsMaterialTransaction implements Serializable {
+public class InboundDetail implements Serializable {
+    public InboundDetail(WmsMaterialTransaction transaction, WmsMaterial material) {
+        this.product_code = material.getProduct_code();
+        this.name = material.getName();
+        this.product_type = material.getProduct_type();
+        this.unit = material.getUnit();
+        this.note = material.getNote();
+        this.specification = material.getSpecification();
+        this.max = material.getMax();
+        this.min = material.getMin();
+        this.status = material.getStatus();
+        this.expect_wh_id = material.getExpect_wh_id();
+        this.expact_stock_location_id = material.getExpact_stock_location_id();
+        this.quantity = transaction.getQuantity();
+        this.id = transaction.getId();
+        this.material_code = transaction.getMaterial_code();
+        this.type = material.getProduct_type();
+        this.source = transaction.getSource();
+        this.inbound_id = transaction.getInbound_id();
+        this.stocktaking_id = transaction.getStocktaking_id();
+        this.outbound_id = transaction.getOutbound_id();
+        this.warehouse_id = transaction.getWarehouse_id();
+        this.stock_location_id = transaction.getStock_location_id();
+        this.rf_id = transaction.getRf_id();
+        this.operator = transaction.getOperator();
+        this.inbound_status = transaction.getInbound_status();
+        this.outbound_status = transaction.getOutbound_status();
+        this.inbound_creator = transaction.getInbound_creator();
+        this.outbound_creator = transaction.getOutbound_creator();
+        this.inbound_purchase_order_no = transaction.getInbound_purchase_order_no();
+        this.outbound_purchase_order_no = transaction.getOutbound_purchase_order_no();
+        this.inbound_supplier = transaction.getInbound_supplier();
+        this.outbound_supplier = transaction.getOutbound_supplier();
+        this.inbound_delivery_date = transaction.getInbound_delivery_date();
+        this.outbound_delivery_date = transaction.getOutbound_delivery_date();
+        this.del_flag = transaction.getDel_flag();
+        this.update_time = transaction.getUpdate_time();
+        this.create_time = transaction.getCreate_time();
+    }
+
+    private String product_code;
+
+
+    /**
+     *
+     */
+    private String name;
+
+    /**
+     *
+     */
+    private String product_type;
+
+    /**
+     *
+     */
+    private String unit;
+
+    /**
+     *
+     */
+
+    /**
+     *
+     */
+    private String specification;
+
+    /**
+     *
+     */
+    private Long max;
+
+    /**
+     *
+     */
+    private Long min;
+
+    /**
+     *
+     */
+    private String status;
+
+    /**
+     *
+     */
+    private Long expect_wh_id;
+
+    /**
+     *
+     */
+    private Long expact_stock_location_id;
+
     private int quantity;
 
     /**
@@ -21,6 +115,7 @@ public class WmsMaterialTransaction implements Serializable {
      * 
      */
     private String material_code;
+
 
     /**
      * 
@@ -343,5 +438,85 @@ public class WmsMaterialTransaction implements Serializable {
 
     public void setCreate_time(Date create_time) {
         this.create_time = create_time;
+    }
+
+    public String getProduct_code() {
+        return product_code;
+    }
+
+    public void setProduct_code(String product_code) {
+        this.product_code = product_code;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProduct_type() {
+        return product_type;
+    }
+
+    public void setProduct_type(String product_type) {
+        this.product_type = product_type;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
+    }
+
+    public String getSpecification() {
+        return specification;
+    }
+
+    public void setSpecification(String specification) {
+        this.specification = specification;
+    }
+
+    public Long getMax() {
+        return max;
+    }
+
+    public void setMax(Long max) {
+        this.max = max;
+    }
+
+    public Long getMin() {
+        return min;
+    }
+
+    public void setMin(Long min) {
+        this.min = min;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Long getExpect_wh_id() {
+        return expect_wh_id;
+    }
+
+    public void setExpect_wh_id(Long expect_wh_id) {
+        this.expect_wh_id = expect_wh_id;
+    }
+
+    public Long getExpact_stock_location_id() {
+        return expact_stock_location_id;
+    }
+
+    public void setExpact_stock_location_id(Long expact_stock_location_id) {
+        this.expact_stock_location_id = expact_stock_location_id;
     }
 }

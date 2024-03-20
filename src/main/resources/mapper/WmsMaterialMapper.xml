@@ -11,6 +11,12 @@
             <result property="product_type" column="product_type" jdbcType="VARCHAR"/>
             <result property="unit" column="unit" jdbcType="VARCHAR"/>
             <result property="note" column="note" jdbcType="VARCHAR"/>
+            <result property="specification" column="specification" jdbcType="VARCHAR"/>
+            <result property="max" column="max" jdbcType="BIGINT"/>
+            <result property="min" column="min" jdbcType="BIGINT"/>
+            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="expect_wh_id" column="expect_wh_id" jdbcType="BIGINT"/>
+            <result property="expact_stock_location_id" column="expact_stock_location_id" jdbcType="BIGINT"/>
             <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
             <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
@@ -19,8 +25,15 @@
     <sql id="Base_Column_List">
         id,product_code,name,
         product_type,unit,note,
+        specification,max,min,
+        status,expect_wh_id,expact_stock_location_id,
         del_flag,create_time,update_time
     </sql>
+    <update id="deleteWmsMaterialById" parameterType="com.supos.app.entity.WmsMaterial">
+        UPDATE wms_material
+        set del_flag= true
+        WHERE id = #{id}
+    </update>
     <insert id="insertSelective">
         insert into wms_material
         <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -30,6 +43,12 @@
             <if test="product_type != null">product_type,</if>
             <if test="unit != null">unit,</if>
             <if test="note != null">note,</if>
+            <if test="specification != null">specification,</if>
+            <if test="max != null">max,</if>
+            <if test="min != null">min,</if>
+            <if test="status != null">status,</if>
+            <if test="expect_wh_id != null">expect_wh_id,</if>
+            <if test="expact_stock_location_id != null">expact_stock_location_id,</if>
             <if test="del_flag != null">del_flag,</if>
             <if test="create_time != null">create_time,</if>
             <if test="update_time != null">update_time,</if>
@@ -42,65 +61,89 @@
             <if test="product_type != null">#{product_type,jdbcType=VARCHAR},</if>
             <if test="unit != null">#{unit,jdbcType=VARCHAR},</if>
             <if test="note != null">#{note,jdbcType=VARCHAR},</if>
+            <if test="specification != null">#{specification,jdbcType=VARCHAR},</if>
+            <if test="max != null">#{max,jdbcType=BIGINT},</if>
+            <if test="min != null">#{min,jdbcType=BIGINT},</if>
+            <if test="status != null">#{status,jdbcType=VARCHAR},</if>
+            <if test="expect_wh_id != null">#{expect_wh_id,jdbcType=BIGINT},</if>
+            <if test="expact_stock_location_id != null">#{expact_stock_location_id,jdbcType=BIGINT},</if>
             <if test="del_flag != null">#{del_flag,jdbcType=TINYINT},</if>
             <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
             <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
         </trim>
     </insert>
-    <update id="updateWmsMaterialById" parameterType="com.supos.app.entity.WmsMaterial">
-        UPDATE wms_material
+    <update id="updateSelective">
+        update wms_material
         <set>
-            <if test="product_code != null">product_code = #{product_code},</if>
-            <if test="name != null">name = #{name},</if>
-            <if test="product_type != null">product_type = #{product_type},</if>
-            <if test="unit != null">unit = #{unit},</if>
-            <if test="note != null">note = #{note},</if>
-            <if test="del_flag != null">del_flag = #{del_flag},</if>
-            <if test="update_time != null">update_time = #{update_time},</if>
-            <if test="create_time != null">create_time = #{create_time}</if>
+            <if test="product_code != null">product_code=#{product_code,jdbcType=VARCHAR},</if>
+            <if test="name != null">name=#{name,jdbcType=VARCHAR},</if>
+            <if test="product_type != null">product_type=#{product_type,jdbcType=VARCHAR},</if>
+            <if test="unit != null">unit=#{unit,jdbcType=VARCHAR},</if>
+            <if test="note != null">note=#{note,jdbcType=VARCHAR},</if>
+            <if test="specification != null">specification=#{specification,jdbcType=VARCHAR},</if>
+            <if test="max != null">max=#{max,jdbcType=NUMERIC},</if>
+            <if test="min != null">min=#{min,jdbcType=NUMERIC},</if>
+            <if test="status != null">status=#{status,jdbcType=VARCHAR},</if>
+            <if test="expect_wh_id != null">expect_wh_id=#{expect_wh_id,jdbcType=NUMERIC},</if>
+            <if test="expact_stock_location_id != null">
+                expact_stock_location_id=#{expact_stock_location_id,jdbcType=NUMERIC},
+            </if>
+            <if test="del_flag != null">del_flag=#{del_flag,jdbcType=NUMERIC},</if>
+            <if test="create_time != null">create_time=#{create_time,jdbcType=TIMESTAMP},</if>
+            <if test="update_time != null">update_time=#{update_time,jdbcType=TIMESTAMP},</if>
         </set>
-        WHERE id = #{id}
-    </update>
-    <update id="deleteWmsMaterialById" parameterType="com.supos.app.entity.WmsMaterial">
-        UPDATE wms_material
-        set del_flag= true
-        WHERE id = #{id}
+        where id = #{id,jdbcType=NUMERIC} and del_flag IS NULL
     </update>
     <select id="selectAll" resultMap="BaseResultMap">
-        SELECT *
-        FROM wms_material
+        select
+        <include refid="Base_Column_List"/>
+        from wms_material
         <where>
             del_flag IS NULL
-            <if test="id != null and id != ''">
+            <if test="id != null">
                 AND id = #{id}
             </if>
-            <!-- Product Code condition -->
-            <if test="product_code != null and product_code != ''">
+            <if test="product_code != null">
                 AND product_code = #{product_code}
             </if>
-            <!-- Name condition -->
-            <if test="name != null and name != ''">
+            <if test="name != null">
                 AND name = #{name}
             </if>
-            <!-- Product Type condition -->
-            <if test="product_type != null and product_type != ''">
+            <if test="product_type != null">
                 AND product_type = #{product_type}
             </if>
-            <!-- Unit condition -->
-            <if test="unit != null and unit != ''">
+            <if test="unit != null">
                 AND unit = #{unit}
             </if>
-            <!-- Note condition -->
-            <if test="note != null and note != ''">
+            <if test="note != null">
                 AND note = #{note}
             </if>
-            <!-- Update Time condition -->
-            <if test="update_time != null">
-                AND update_time = #{update_time}
+            <if test="specification != null">
+                AND specification = #{specification}
             </if>
-            <!-- Create Time condition -->
+            <if test="max != null">
+                AND max = #{max}
+            </if>
+            <if test="min != null">
+                AND min = #{min}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+            <if test="expect_wh_id != null">
+                AND expect_wh_id = #{expect_wh_id}
+            </if>
+            <if test="expact_stock_location_id != null">
+                AND expact_stock_location_id = #{expact_stock_location_id}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
+            </if>
             <if test="create_time != null">
                 AND create_time = #{create_time}
+            </if>
+            <if test="update_time != null">
+                AND update_time = #{update_time}
             </if>
         </where>
     </select>

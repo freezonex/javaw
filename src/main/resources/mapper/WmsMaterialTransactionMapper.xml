@@ -10,25 +10,38 @@
             <result property="type" column="type" jdbcType="VARCHAR"/>
             <result property="source" column="source" jdbcType="VARCHAR"/>
             <result property="inbound_id" column="inbound_id" jdbcType="BIGINT"/>
+            <result property="stocktaking_id" column="stocktaking_id" jdbcType="BIGINT"/>
             <result property="outbound_id" column="outbound_id" jdbcType="BIGINT"/>
             <result property="warehouse_id" column="warehouse_id" jdbcType="BIGINT"/>
-            <result property="stocktaking_id" column="stocktaking_id" jdbcType="BIGINT"/>
             <result property="stock_location_id" column="stock_location_id" jdbcType="BIGINT"/>
             <result property="rf_id" column="rf_id" jdbcType="VARCHAR"/>
             <result property="operator" column="operator" jdbcType="VARCHAR"/>
-            <result property="status" column="status" jdbcType="VARCHAR"/>
+            <result property="inbound_status" column="inbound_status" jdbcType="VARCHAR"/>
+            <result property="outbound_status" column="outbound_status" jdbcType="VARCHAR"/>
             <result property="note" column="note" jdbcType="VARCHAR"/>
+            <result property="inbound_creator" column="inbound_creator" jdbcType="VARCHAR"/>
+            <result property="outbound_creator" column="outbound_creator" jdbcType="VARCHAR"/>
+            <result property="inbound_purchase_order_no" column="inbound_purchase_order_no" jdbcType="VARCHAR"/>
+            <result property="outbound_purchase_order_no" column="outbound_purchase_order_no" jdbcType="VARCHAR"/>
+            <result property="inbound_supplier" column="inbound_supplier" jdbcType="VARCHAR"/>
+            <result property="outbound_supplier" column="outbound_supplier" jdbcType="VARCHAR"/>
+            <result property="inbound_delivery_date" column="inbound_delivery_date" jdbcType="TIMESTAMP"/>
+            <result property="outbound_delivery_date" column="outbound_delivery_date" jdbcType="TIMESTAMP"/>
             <result property="del_flag" column="del_flag" jdbcType="TINYINT"/>
-            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
             <result property="update_time" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="create_time" column="create_time" jdbcType="TIMESTAMP"/>
     </resultMap>
 
     <sql id="Base_Column_List">
         id,material_code,type,
-        source,inbound_id,outbound_id,
-        warehouse_id,stock_location_id,rf_id,
-        operator,status,note,
-        del_flag,create_time,update_time
+        source,inbound_id,stocktaking_id,
+        outbound_id,warehouse_id,stock_location_id,
+        rf_id,operator,status,
+        note,inbound_creator,outbound_creator,
+        inbound_purchase_order_no,outbound_purchase_order_no,inbound_supplier,
+        outbound_supplier,inbound_delivery_date,outbound_delivery_date,
+        del_flag,update_time,
+        create_time
     </sql>
     <update id="updateForTopNTransactionsInboundManual">
         UPDATE
@@ -107,7 +120,7 @@
         <set>
             <if test="type != null">type = #{type},</if>
             <if test="source != null">source = #{source},</if>
-            <if test="status != null">status = #{status},</if>
+            <if test="status != null">inbound_status = #{status},</if>
             <if test="note != null">note = #{note},</if>
         </set>
         WHERE inbound_id = #{id} and del_flag IS NULL
@@ -117,7 +130,7 @@
         <set>
             <if test="type != null">type = #{type},</if>
             <if test="source != null">source = #{source},</if>
-            <if test="status != null">status = #{status},</if>
+            <if test="status != null">outbound_status = #{status},</if>
             <if test="note != null">note = #{note},</if>
         </set>
         WHERE outbound_id = #{id} and del_flag IS NULL
@@ -150,7 +163,7 @@
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
-        material_code,
+        MAX(material_code) AS material_code,
         MAX(source) AS source,
         MAX(inbound_id) AS inbound_id,
         MAX(outbound_id) AS outbound_id,
@@ -158,11 +171,21 @@
         MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -182,6 +205,9 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
+            </if>
             <if test="outbound_id != null">
                 AND outbound_id = #{outbound_id}
             </if>
@@ -197,11 +223,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -216,19 +272,29 @@
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
-        material_code,
+        MAX(material_code) AS material_code,
         MAX(source) AS source,
         MAX(inbound_id) AS inbound_id,
         MAX(outbound_id) AS outbound_id,
         MAX(warehouse_id) AS warehouse_id,
-        stock_location_id,
+        MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -248,6 +314,9 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
+            </if>
             <if test="outbound_id != null">
                 AND outbound_id = #{outbound_id}
             </if>
@@ -263,11 +332,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -290,11 +389,21 @@
         MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -313,7 +422,12 @@
     </select>
     <update id="updateForTopNTransactionsOutboundPDA">
         UPDATE wms_material_transaction
-        SET outbound_id = #{outboundId}
+        SET outbound_id = #{outboundId},
+        outbound_delivery_date = #{outboundDeliveryDate},
+        outbound_creator = #{outboundCreator},
+        outbound_purchase_order_no = #{outboundPurchaseOrderNo},
+        outbound_supplier = #{outboundSupplier},
+        outbound_status = #{status}
         WHERE id IN (
         SELECT id
         FROM (
@@ -325,9 +439,6 @@
         </if>
         <if test="source != null">
             AND source = #{source}
-        </if>
-        <if test="status != null">
-            AND status = #{status}
         </if>
         <if test="rfid != null">
             AND rf_id = #{rfid}
@@ -345,7 +456,12 @@
     </update>
     <update id="updateForTopNTransactionsOutboundManual">
         UPDATE wms_material_transaction
-        SET outbound_id = #{outboundId}
+        SET outbound_id = #{outboundId},
+        outbound_delivery_date = #{outboundDeliveryDate},
+        outbound_creator = #{outboundCreator},
+        outbound_purchase_order_no = #{outboundPurchaseOrderNo},
+        outbound_supplier = #{outboundSupplier},
+        outbound_status = #{status}
         WHERE id IN (
         SELECT id
         FROM (
@@ -357,9 +473,6 @@
         </if>
         <if test="source != null">
             AND source = #{source}
-        </if>
-        <if test="status != null">
-            AND status = #{status}
         </if>
         <if test="materialCode != null">
             AND material_code = #{materialCode}
@@ -387,11 +500,21 @@
         MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -408,53 +531,12 @@
         </where>
         GROUP BY outbound_id
     </select>
-    <insert id="insertSelective">
-        insert into wms_material_transaction
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">id,</if>
-            <if test="material_code != null">material_code,</if>
-            <if test="type != null">type,</if>
-            <if test="source != null">source,</if>
-            <if test="inbound_id != null">inbound_id,</if>
-            <if test="outbound_id != null">outbound_id,</if>
-            <if test="stocktaking_id != null">stocktaking_id,</if>
-            <if test="warehouse_id != null">warehouse_id,</if>
-            <if test="stock_location_id != null">stock_location_id,</if>
-            <if test="rf_id != null">rf_id,</if>
-            <if test="operator != null">operator,</if>
-            <if test="status != null">status,</if>
-            <if test="note != null">note,</if>
-            <if test="del_flag != null">del_flag,</if>
-            <if test="create_time != null">create_time,</if>
-            <if test="update_time != null">update_time,</if>
-            <if test="Materials != null">materials,</if>
-        </trim>
-        values
-        <trim prefix="(" suffix=")" suffixOverrides=",">
-            <if test="id != null">#{id,jdbcType=BIGINT},</if>
-            <if test="material_code != null">#{material_code,jdbcType=BIGINT},</if>
-            <if test="type != null">#{type,jdbcType=VARCHAR},</if>
-            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
-            <if test="inbound_id != null">#{inbound_id,jdbcType=BIGINT},</if>
-            <if test="outbound_id != null">#{outbound_id,jdbcType=BIGINT},</if>
-            <if test="stocktaking_id != null">#{stocktaking_id,jdbcType=BIGINT},</if>
-            <if test="warehouse_id != null">#{warehouse_id,jdbcType=BIGINT},</if>
-            <if test="stock_location_id != null">#{stock_location_id,jdbcType=BIGINT},</if>
-            <if test="rf_id != null">#{rf_id,jdbcType=VARCHAR},</if>
-            <if test="operator != null">#{operator,jdbcType=VARCHAR},</if>
-            <if test="status != null">#{status,jdbcType=VARCHAR},</if>
-            <if test="note != null">#{note,jdbcType=VARCHAR},</if>
-            <if test="del_flag != null">#{del_flag,jdbcType=TINYINT},</if>
-            <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
-            <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
-            <if test="Materials != null">#{Materials},</if>
-        </trim>
-    </insert>
+
     <select id="selectAllGroupByMaterialCodeRfid" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
-        material_code,
+        MAX(material_code) AS material_code,
         MAX(source) AS source,
         MAX(inbound_id) AS inbound_id,
         MAX(outbound_id) AS outbound_id,
@@ -462,11 +544,21 @@
         MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -486,6 +578,9 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
+            </if>
             <if test="outbound_id != null">
                 AND outbound_id = #{outbound_id}
             </if>
@@ -501,11 +596,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -537,73 +662,8 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
-            <if test="outbound_id != null">
-                AND outbound_id = #{outbound_id}
-            </if>
-            <if test="warehouse_id != null">
-                AND warehouse_id = #{warehouse_id}
-            </if>
-            <if test="stock_location_id != null and stock_location_id > 0">
-                AND stock_location_id = #{stock_location_id}
-            </if>
-            <if test="rf_id != null">
-                AND rf_id = #{rf_id}
-            </if>
-            <if test="operator != null">
-                AND operator = #{operator}
-            </if>
-            <if test="status != null">
-                AND status = #{status}
-            </if>
-            <if test="note != null">
-                AND note = #{note}
-            </if>
-            <if test="update_time != null">
-                AND update_time = #{update_time}
-            </if>
-            <if test="create_time != null">
-                AND create_time = #{create_time}
-            </if>
-        </where>
-        <if test="quantity != null and quantity > 0">
-            LIMIT #{quantity}
-        </if>
-    </select>
-    <select id="selectAllInboundGroupByMaterialCode" resultMap="BaseResultMap">
-        SELECT
-        MAX(id) AS id,
-        MAX(type) AS type,
-        material_code,
-        MAX(source) AS source,
-        MAX(inbound_id) AS inbound_id,
-        MAX(outbound_id) AS outbound_id,
-        MAX(warehouse_id) AS warehouse_id,
-        MAX(stock_location_id) AS stock_location_id,
-        MAX(rf_id) AS rf_id,
-        MAX(operator) AS operator,
-        MAX(status) AS status,
-        MAX(note) AS note,
-        MAX(del_flag) AS del_flag,
-        MAX(create_time) AS create_time,
-        MAX(update_time) AS update_time,
-        COUNT(*) AS quantity
-        FROM wms_material_transaction
-        <where>
-            del_flag IS NULL AND inbound_id IS NOT NULL
-            <if test="id != null">
-                AND id = #{id}
-            </if>
-            <if test="material_code != null">
-                AND material_code = #{material_code}
-            </if>
-            <if test="type != null">
-                AND type = #{type}
-            </if>
-            <if test="source != null">
-                AND source = #{source}
-            </if>
-            <if test="inbound_id != null">
-                AND inbound_id = #{inbound_id}
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
             </if>
             <if test="outbound_id != null">
                 AND outbound_id = #{outbound_id}
@@ -620,11 +680,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -633,13 +723,15 @@
                 AND create_time = #{create_time}
             </if>
         </where>
-        GROUP BY material_code,stock_location_id
+        <if test="quantity != null and quantity > 0">
+            LIMIT #{quantity}
+        </if>
     </select>
-    <select id="selectAllOutboundGroupByMaterialCodeRfid" resultMap="BaseResultMap">
+    <select id="selectAllInboundGroupByMaterialCode" resultMap="BaseResultMap">
         SELECT
         MAX(id) AS id,
         MAX(type) AS type,
-        material_code,
+        MAX(material_code) AS material_code,
         MAX(source) AS source,
         MAX(inbound_id) AS inbound_id,
         MAX(outbound_id) AS outbound_id,
@@ -647,11 +739,130 @@
         MAX(stock_location_id) AS stock_location_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
+        COUNT(*) AS quantity
+        FROM wms_material_transaction
+        <where>
+            del_flag IS NULL AND inbound_id IS NOT NULL AND outbound_id IS NULL
+            <if test="id != null">
+                AND id = #{id}
+            </if>
+            <if test="material_code != null">
+                AND material_code = #{material_code}
+            </if>
+            <if test="type != null">
+                AND type = #{type}
+            </if>
+            <if test="source != null">
+                AND source = #{source}
+            </if>
+            <if test="inbound_id != null">
+                AND inbound_id = #{inbound_id}
+            </if>
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
+            </if>
+            <if test="outbound_id != null">
+                AND outbound_id = #{outbound_id}
+            </if>
+            <if test="warehouse_id != null">
+                AND warehouse_id = #{warehouse_id}
+            </if>
+            <if test="stock_location_id != null">
+                AND stock_location_id = #{stock_location_id}
+            </if>
+            <if test="rf_id != null">
+                AND rf_id = #{rf_id}
+            </if>
+            <if test="operator != null">
+                AND operator = #{operator}
+            </if>
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
+            </if>
+            <if test="note != null">
+                AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
+            </if>
+            <if test="update_time != null">
+                AND update_time = #{update_time}
+            </if>
+            <if test="create_time != null">
+                AND create_time = #{create_time}
+            </if>
+        </where>
+        GROUP BY material_code,stock_location_id,warehouse_id
+    </select>
+    <select id="selectAllOutboundGroupByMaterialCodeRfid" resultMap="BaseResultMap">
+        SELECT
+        MAX(id) AS id,
+        MAX(type) AS type,
+        MAX(material_code) AS material_code,
+        MAX(source) AS source,
+        MAX(inbound_id) AS inbound_id,
+        MAX(outbound_id) AS outbound_id,
+        MAX(warehouse_id) AS warehouse_id,
+        MAX(stock_location_id) AS stock_location_id,
+        MAX(rf_id) AS rf_id,
+        MAX(operator) AS operator,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
+        MAX(note) AS note,
+        MAX(del_flag) AS del_flag,
+        MAX(create_time) AS create_time,
+        MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -671,6 +882,9 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
+            <if test="stocktaking_id != null">
+                AND stocktaking_id = #{stocktaking_id}
+            </if>
             <if test="outbound_id != null">
                 AND outbound_id = #{outbound_id}
             </if>
@@ -686,11 +900,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -699,7 +943,7 @@
                 AND create_time = #{create_time}
             </if>
         </where>
-        GROUP BY material_code,stock_location_id
+        GROUP BY material_code,stock_location_id,warehouse_id
     </select>
     <update id="updateForTopNTransactionsStocktaking">
         UPDATE
@@ -782,14 +1026,23 @@
         MAX(outbound_id) AS outbound_id,
         MAX(warehouse_id) AS warehouse_id,
         MAX(stock_location_id) AS stock_location_id,
-        MAX(stocktaking_id) AS stocktaking_id,
         MAX(rf_id) AS rf_id,
         MAX(operator) AS operator,
-        MAX(status) AS status,
+        MAX(inbound_status) AS inbound_status,
+        MAX(outbound_status) AS outbound_status,
         MAX(note) AS note,
         MAX(del_flag) AS del_flag,
         MAX(create_time) AS create_time,
         MAX(update_time) AS update_time,
+        MAX(stocktaking_id) AS stocktaking_id,
+        MAX(inbound_creator) AS inbound_creator,
+        MAX(outbound_creator) AS outbound_creator,
+        MAX(inbound_purchase_order_no) AS inbound_purchase_order_no,
+        MAX(outbound_purchase_order_no) AS outbound_purchase_order_no,
+        MAX(inbound_supplier) AS inbound_supplier,
+        MAX(outbound_supplier) AS outbound_supplier,
+        MAX(inbound_delivery_date) AS inbound_delivery_date,
+        MAX(outbound_delivery_date) AS outbound_delivery_date,
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
@@ -809,11 +1062,11 @@
             <if test="inbound_id != null">
                 AND inbound_id = #{inbound_id}
             </if>
-            <if test="outbound_id != null">
-                AND outbound_id = #{outbound_id}
-            </if>
             <if test="stocktaking_id != null">
                 AND stocktaking_id = #{stocktaking_id}
+            </if>
+            <if test="outbound_id != null">
+                AND outbound_id = #{outbound_id}
             </if>
             <if test="warehouse_id != null">
                 AND warehouse_id = #{warehouse_id}
@@ -827,11 +1080,41 @@
             <if test="operator != null">
                 AND operator = #{operator}
             </if>
-            <if test="status != null">
-                AND status = #{status}
+            <if test="inbound_status != null">
+                AND inbound_status = #{inbound_status}
+            </if>
+            <if test="outbound_status != null">
+                AND outbound_status = #{outbound_status}
             </if>
             <if test="note != null">
                 AND note = #{note}
+            </if>
+            <if test="inbound_creator != null">
+                AND inbound_creator = #{inbound_creator}
+            </if>
+            <if test="outbound_creator != null">
+                AND outbound_creator = #{outbound_creator}
+            </if>
+            <if test="inbound_purchase_order_no != null">
+                AND inbound_purchase_order_no = #{inbound_purchase_order_no}
+            </if>
+            <if test="outbound_purchase_order_no != null">
+                AND outbound_purchase_order_no = #{outbound_purchase_order_no}
+            </if>
+            <if test="inbound_supplier != null">
+                AND inbound_supplier = #{inbound_supplier}
+            </if>
+            <if test="outbound_supplier != null">
+                AND outbound_supplier = #{outbound_supplier}
+            </if>
+            <if test="inbound_delivery_date != null">
+                AND inbound_delivery_date = #{inbound_delivery_date}
+            </if>
+            <if test="outbound_delivery_date != null">
+                AND outbound_delivery_date = #{outbound_delivery_date}
+            </if>
+            <if test="del_flag != null">
+                AND del_flag = #{del_flag}
             </if>
             <if test="update_time != null">
                 AND update_time = #{update_time}
@@ -842,4 +1125,63 @@
         </where>
         GROUP BY stocktaking_id
     </select>
+    <insert id="insertSelective">
+        insert into wms_material_transaction
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">id,</if>
+            <if test="material_code != null">material_code,</if>
+            <if test="type != null">type,</if>
+            <if test="source != null">source,</if>
+            <if test="inbound_id != null">inbound_id,</if>
+            <if test="stocktaking_id != null">stocktaking_id,</if>
+            <if test="outbound_id != null">outbound_id,</if>
+            <if test="warehouse_id != null">warehouse_id,</if>
+            <if test="stock_location_id != null">stock_location_id,</if>
+            <if test="rf_id != null">rf_id,</if>
+            <if test="operator != null">operator,</if>
+            <if test="inbound_status != null">inbound_status,</if>
+            <if test="outbound_status != null">inbound_status,</if>
+            <if test="note != null">note,</if>
+            <if test="inbound_creator != null">inbound_creator,</if>
+            <if test="outbound_creator != null">outbound_creator,</if>
+            <if test="inbound_purchase_order_no != null">inbound_purchase_order_no,</if>
+            <if test="outbound_purchase_order_no != null">outbound_purchase_order_no,</if>
+            <if test="inbound_supplier != null">inbound_supplier,</if>
+            <if test="outbound_supplier != null">outbound_supplier,</if>
+            <if test="inbound_delivery_date != null">inbound_delivery_date,</if>
+            <if test="outbound_delivery_date != null">outbound_delivery_date,</if>
+            <if test="del_flag != null">del_flag,</if>
+            <if test="update_time != null">update_time,</if>
+            <if test="create_time != null">create_time,</if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">#{id,jdbcType=BIGINT},</if>
+            <if test="material_code != null">#{material_code,jdbcType=VARCHAR},</if>
+            <if test="type != null">#{type,jdbcType=VARCHAR},</if>
+            <if test="source != null">#{source,jdbcType=VARCHAR},</if>
+            <if test="inbound_id != null">#{inbound_id,jdbcType=BIGINT},</if>
+            <if test="stocktaking_id != null">#{stocktaking_id,jdbcType=BIGINT},</if>
+            <if test="outbound_id != null">#{outbound_id,jdbcType=BIGINT},</if>
+            <if test="warehouse_id != null">#{warehouse_id,jdbcType=BIGINT},</if>
+            <if test="stock_location_id != null">#{stock_location_id,jdbcType=BIGINT},</if>
+            <if test="rf_id != null">#{rf_id,jdbcType=VARCHAR},</if>
+            <if test="operator != null">#{operator,jdbcType=VARCHAR},</if>
+            <if test="inbound_status != null">#{inbound_status,jdbcType=VARCHAR},</if>
+            <if test="outbound_status != null">#{outbound_status,jdbcType=VARCHAR},</if>
+            <if test="note != null">#{note,jdbcType=VARCHAR},</if>
+            <if test="inbound_creator != null">#{inbound_creator,jdbcType=VARCHAR},</if>
+            <if test="outbound_creator != null">#{outbound_creator,jdbcType=VARCHAR},</if>
+            <if test="inbound_purchase_order_no != null">#{inbound_purchase_order_no,jdbcType=VARCHAR},</if>
+            <if test="outbound_purchase_order_no != null">#{outbound_purchase_order_no,jdbcType=VARCHAR},</if>
+            <if test="inbound_supplier != null">#{inbound_supplier,jdbcType=VARCHAR},</if>
+            <if test="outbound_supplier != null">#{outbound_supplier,jdbcType=VARCHAR},</if>
+            <if test="inbound_delivery_date != null">#{inbound_delivery_date,jdbcType=TIMESTAMP},</if>
+            <if test="outbound_delivery_date != null">#{outbound_delivery_date,jdbcType=TIMESTAMP},</if>
+            <if test="del_flag != null">#{del_flag,jdbcType=TINYINT},</if>
+            <if test="update_time != null">#{update_time,jdbcType=TIMESTAMP},</if>
+            <if test="create_time != null">#{create_time,jdbcType=TIMESTAMP},</if>
+        </trim>
+    </insert>
 </mapper>
+

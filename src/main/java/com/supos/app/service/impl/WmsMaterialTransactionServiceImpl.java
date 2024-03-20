@@ -8,16 +8,17 @@ import com.supos.app.vo.UpdateInboundRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
-* @author Wenhao
-* @description 针对表【wms_material_transaction】的数据库操作Service实现
-* @createDate 2024-03-16 09:06:46
-*/
+ * @author Wenhao
+ * @description 针对表【wms_material_transaction】的数据库操作Service实现
+ * @createDate 2024-03-16 09:06:46
+ */
 @Service
 public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTransactionMapper, WmsMaterialTransaction>
-    implements WmsMaterialTransactionService{
+        implements WmsMaterialTransactionService{
 
     @Autowired
     private WmsMaterialTransactionMapper wmsMaterialTransactionMapper;
@@ -66,12 +67,12 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectByInboundRfidType( rfid, type,inboundId);
     }
 
-    public int updateForTopNTransactionsOutboundPDA(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialCode, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundPDA( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
+    public int updateForTopNTransactionsOutboundPDA(Date outboundDeliveryDate,String outboundCreator,String outboundPurchaseOrderNo,String outboundSupplier,String type, String source, String status, String rfid, long OutboundId, Long storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundPDA( outboundDeliveryDate,  outboundCreator, outboundPurchaseOrderNo, outboundSupplier,type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
     }
 
-    public int updateForTopNTransactionsOutboundManual(String type, String source, String status, String rfid, long OutboundId, String storageLocationId, String materialCode, int quantity) {
-        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual( type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
+    public int updateForTopNTransactionsOutboundManual(Date outboundDeliveryDate,String outboundCreator, String outboundPurchaseOrderNo, String outboundSupplier, String type, String source, String status, String rfid, long OutboundId, Long storageLocationId, String materialCode, int quantity) {
+        return wmsMaterialTransactionMapper.updateForTopNTransactionsOutboundManual(outboundDeliveryDate, outboundCreator, outboundPurchaseOrderNo, outboundSupplier, type,  source,  status,  rfid,  OutboundId,  storageLocationId,  materialCode,  quantity);
     }
 
     public List<WmsMaterialTransaction> selectByOutboundRfidType(String rfid, String type, Long outboundId) {
