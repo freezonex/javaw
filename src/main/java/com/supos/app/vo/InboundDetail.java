@@ -1,5 +1,6 @@
 package com.supos.app.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.supos.app.entity.WmsMaterial;
 import com.supos.app.entity.WmsMaterialTransaction;
 import lombok.Data;
@@ -111,6 +112,7 @@ public class InboundDetail implements Serializable {
     /**
      * 
      */
+    @JsonIgnore
     private Long id;
 
     /**
