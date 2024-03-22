@@ -41,6 +41,97 @@ public class Wms {
     @Autowired
     WmsMaterialTransactionServiceImpl wmsMaterialTransactionServiceImpl;
 
+    @ApiOperation(value = "warehouse/namemap", notes = "warehouse/namemap")
+    @PostMapping("/wms/warehouse/namemap")
+    public ApiResponse<PageInfo<WarehouseNamemap>> warehouseNamemap(@RequestBody(required = false) WmsWarehouse wmsWarehouse, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        try {
+            PageInfo<WmsWarehouse> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                    .doSelectPageInfo(() -> wmsWarehouseServiceImpl.selectAll(wmsWarehouse));
+            List<WarehouseNamemap> mappedList = pageInfo.getList().stream()
+                    .map(a -> {
+                        WarehouseNamemap warehouseNamemapTmp = new WarehouseNamemap();
+                        warehouseNamemapTmp.setName(a.getName());
+                        warehouseNamemapTmp.setId(a.getId());
+                        return warehouseNamemapTmp;
+                    })
+                    .collect(Collectors.toList());
+
+            PageInfo<WarehouseNamemap> responsePageInfo = new PageInfo<>();
+            BeanUtils.copyProperties(pageInfo, responsePageInfo); // Copy pagination details
+            responsePageInfo.setList(mappedList); // Set the transformed list
+
+            return new ApiResponse<>(responsePageInfo);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "storagelocation/namemap", notes = "storagelocation/namemap")
+    @PostMapping("/wms/storagelocation/namemap")
+    public ApiResponse<PageInfo<WarehouseNamemap>> storagelocationNamemap(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        try {
+            PageInfo<WmsStorageLocation> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                    .doSelectPageInfo(() -> wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation));
+            List<WarehouseNamemap> mappedList = pageInfo.getList().stream()
+                    .map(a -> {
+                        WarehouseNamemap warehouseNamemapTmp = new WarehouseNamemap();
+                        warehouseNamemapTmp.setName(a.getName());
+                        warehouseNamemapTmp.setId(a.getId());
+                        return warehouseNamemapTmp;
+                    })
+                    .collect(Collectors.toList());
+
+            PageInfo<WarehouseNamemap> responsePageInfo = new PageInfo<>();
+            BeanUtils.copyProperties(pageInfo, responsePageInfo); // Copy pagination details
+            responsePageInfo.setList(mappedList); // Set the transformed list
+
+            return new ApiResponse<>(responsePageInfo);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "warehousestoragelocation/idmap", notes = "warehousestoragelocation/idmap")
+    @PostMapping("/wms/warehousestoragelocation/idmap")
+    public ApiResponse<PageInfo<WarehousestoragelocationIdmap>> warehousestoragelocationIdmap(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation, @RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        try {
+            PageInfo<WmsStorageLocation> pageInfo = PageHelper.startPage(pageNum, pageSize)
+                    .doSelectPageInfo(() -> wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation));
+            List<WarehousestoragelocationIdmap> mappedList = pageInfo.getList().stream()
+                    .collect(Collectors.groupingBy(WmsStorageLocation::getWarehouse_id)) // Assuming getWarehouseId is the correct method name.
+                    .entrySet().stream()
+                    .map(entry -> {
+                        WarehousestoragelocationIdmap idmap = new WarehousestoragelocationIdmap();
+                        idmap.setId(entry.getKey());
+                        WmsWarehouse wmsWarehouse = new WmsWarehouse();
+                        wmsWarehouse.setId(entry.getKey());
+                        idmap.setName(wmsWarehouseServiceImpl.selectAll(wmsWarehouse).get(0).getName());
+
+                        List<WarehouseNamemap> namemaps = entry.getValue().stream().map(storageLocation -> {
+                            WarehouseNamemap namemap = new WarehouseNamemap();
+                            namemap.setId(storageLocation.getId());
+                            namemap.setName(storageLocation.getName());
+                            return namemap;
+                        }).collect(Collectors.toList());
+                        idmap.setWarehouseNamemap(namemaps); // Assuming setWarehouseNamemap accepts a list of WarehouseNamemap
+                        return idmap;
+                    })
+                    .collect(Collectors.toList());
+
+            PageInfo<WarehousestoragelocationIdmap> responsePageInfo = new PageInfo<>(mappedList);
+            BeanUtils.copyProperties(pageInfo, responsePageInfo, "list"); // Copy pagination details except the list
+            return new ApiResponse<>(responsePageInfo);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
     @ApiOperation(value = "warehouse/add",notes = "warehouse/add")
     @PostMapping("/wms/warehouse/add")
     public ApiResponse<Map<String, String>> warehouseInsert(@RequestBody(required = false) WmsWarehouse wmsWarehouse) {
