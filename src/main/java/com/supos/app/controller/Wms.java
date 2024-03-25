@@ -44,7 +44,7 @@ public class Wms {
     @Autowired
     WmsMaterialTransactionServiceImpl wmsMaterialTransactionServiceImpl;
 
-    @ApiOperation(value = "today/outbound/done",notes = "today/outbound/don")
+    @ApiOperation(value = "today/outbound/done",notes = "today/outbound/done")
     @PostMapping("today/outbound/done")
     public ApiResponse<Map<String, String>> todayOunboundDone() {
         Map<String, String> responseData = new HashMap<>();
@@ -70,7 +70,7 @@ public class Wms {
         }
     }
 
-    @ApiOperation(value = "today/inbound/done",notes = "today/inbound/don")
+    @ApiOperation(value = "today/inbound/done",notes = "today/inbound/done")
     @PostMapping("today/inbound/done")
     public ApiResponse<Map<String, String>> todayInboundDone() {
         Map<String, String> responseData = new HashMap<>();
