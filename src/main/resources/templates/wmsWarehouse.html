@@ -632,7 +632,7 @@
     }
 
     function showMaterials(locationId) {
-        const storeLocation = globalData.data.list.flatMap(item => item.store_locations).find(loc => loc.id === locationId);
+        const storeLocation = globalData.data.list.flatMap(item => item.store_locations).find(loc => loc.id == locationId);
         if (!storeLocation) {
             console.error('Store location not found');
             return;
