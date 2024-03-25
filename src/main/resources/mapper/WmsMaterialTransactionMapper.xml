@@ -162,6 +162,7 @@
             <if test="source != null">source = #{source},</if>
             <if test="status != null">inbound_status = #{status},</if>
             <if test="note != null">note = #{note},</if>
+            <if test="update_time != null">update_time = #{update_time},</if>
         </set>
         WHERE inbound_id = #{id} and del_flag IS NULL
     </update>

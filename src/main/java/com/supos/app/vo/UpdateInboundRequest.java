@@ -1,7 +1,10 @@
 package com.supos.app.vo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import io.swagger.annotations.ApiModelProperty;
+
+import java.util.Date;
 
 public class UpdateInboundRequest {
     @JsonProperty("id")
@@ -21,6 +24,17 @@ public class UpdateInboundRequest {
 
     @JsonProperty("status")
     private String status;
+
+    @JsonIgnore
+    private Date update_time;
+
+    public Date getUpdate_time() {
+        return update_time;
+    }
+
+    public void setUpdate_time(Date update_time) {
+        this.update_time = update_time;
+    }
 
     public Long getId() {
         return id;

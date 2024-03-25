@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -485,6 +486,7 @@ public class Wms {
                     wmsMaterialTransaction.setInbound_id(ID);
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
+                    wmsMaterialTransaction.setCreate_time(new Date());
 
                     IntStream.range(0, addInboundRequestDetail.getQuantity())
                             .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
@@ -504,6 +506,8 @@ public class Wms {
                     wmsMaterialTransaction.setInbound_id(ID);
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
+                    wmsMaterialTransaction.setCreate_time(new Date());
+
 
                     IntStream.range(0, addInboundRequestDetail.getQuantity())
                             .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
@@ -521,6 +525,7 @@ public class Wms {
     public ApiResponse<Map<String, String>> inboundUpdate(@RequestBody(required = false) UpdateInboundRequest updateInboundRequest) {
         Map<String, String> responseData = new HashMap<>();
         try {
+            updateInboundRequest.setUpdate_time(new Date());
             responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.updateByInboundId(updateInboundRequest)));
             return new ApiResponse<>(responseData);
         }catch (Exception e){
