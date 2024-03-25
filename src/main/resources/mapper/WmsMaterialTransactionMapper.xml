@@ -1113,7 +1113,7 @@
         COUNT(*) AS quantity
         FROM wms_material_transaction
         <where>
-            del_flag IS NULL AND inbound_id IS NOT NULL AND outbound_id IS NULL
+            del_flag IS NULL AND inbound_id IS NOT NULL
             <if test="id != null">
                 AND id = #{id}
             </if>
