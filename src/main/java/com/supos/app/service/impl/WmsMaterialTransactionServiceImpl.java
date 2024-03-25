@@ -119,6 +119,14 @@ public class WmsMaterialTransactionServiceImpl extends ServiceImpl<WmsMaterialTr
         return wmsMaterialTransactionMapper.selectAllGroupByStocktakingId(wmsMaterialTransaction,warehouseName);
     }
 
+    public int selectAllByCreateTimeGroupByInboundId(Date create_time,String inbound_status) {
+        return wmsMaterialTransactionMapper.selectAllByCreateTimeGroupByInboundId(create_time,inbound_status);
+    }
+
+    public int selectAllByCreateTimeGroupByOutboundId(Date create_time,String outbound_status) {
+        return wmsMaterialTransactionMapper.selectAllByCreateTimeGroupByOutboundId(create_time,outbound_status);
+    }
+
 }
 
 

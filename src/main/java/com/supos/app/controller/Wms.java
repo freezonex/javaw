@@ -16,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -41,6 +43,58 @@ public class Wms {
 
     @Autowired
     WmsMaterialTransactionServiceImpl wmsMaterialTransactionServiceImpl;
+
+    @ApiOperation(value = "today/outbound/done",notes = "today/outbound/don")
+    @PostMapping("today/outbound/done")
+    public ApiResponse<Map<String, String>> todayOunboundDone() {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("count", String.valueOf(wmsMaterialTransactionServiceImpl.selectAllByCreateTimeGroupByOutboundId(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),"done")));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "today/outbound",notes = "today/outbound")
+    @PostMapping("today/outbound")
+    public ApiResponse<Map<String, String>> todayOubound() {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("count", String.valueOf(wmsMaterialTransactionServiceImpl.selectAllByCreateTimeGroupByOutboundId(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),null)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "today/inbound/done",notes = "today/inbound/don")
+    @PostMapping("today/inbound/done")
+    public ApiResponse<Map<String, String>> todayInboundDone() {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("count", String.valueOf(wmsMaterialTransactionServiceImpl.selectAllByCreateTimeGroupByInboundId(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),"done")));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
+    @ApiOperation(value = "today/inbound",notes = "today/inbound")
+    @PostMapping("today/inbound")
+    public ApiResponse<Map<String, String>> todayInbound() {
+        Map<String, String> responseData = new HashMap<>();
+        try {
+            responseData.put("count", String.valueOf(wmsMaterialTransactionServiceImpl.selectAllByCreateTimeGroupByInboundId(Date.from(LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant()),null)));
+            return new ApiResponse<>(responseData);
+        }catch (Exception e){
+            log.info(e.getMessage());
+            return new ApiResponse<>( null,"Error occurred while processing the request: " + e.getMessage());
+        }
+    }
 
     @ApiOperation(value = "warehouse/namemap", notes = "warehouse/namemap")
     @PostMapping("/wms/warehouse/namemap")
@@ -507,7 +561,6 @@ public class Wms {
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
                     wmsMaterialTransaction.setCreate_time(new Date());
-
 
                     IntStream.range(0, addInboundRequestDetail.getQuantity())
                             .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
