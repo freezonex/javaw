@@ -5,8 +5,8 @@
     <!--    <meta name="viewport" content="width=device-width, initial-scale=1.0">-->
     <title>Openiot Configuration Board</title>
 <!--    <link href="apps/wenhao-javaw/output.css" rel="stylesheet">-->
-<!--    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">-->
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="../static/apps/wenhao-javaw/output.css" rel="stylesheet">
+<!--    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">-->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
@@ -373,7 +373,7 @@
             const jsonData = JSON.stringify(formProps);
 
             try {
-                const response = await fetch('http://localhost:8080/wms/warehouse/add', {
+                const response = await fetch('/wms/warehouse/add', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -396,7 +396,7 @@
         });
 
         async function fetchData() {
-            const url = 'http://localhost:8080/wms/warehouse/get';
+            const url = '/wms/warehouse/get';
             const options = {
                 method: 'POST', // 请求方法
                 headers: {
@@ -491,7 +491,7 @@
         }
 
         async function fetchPaginationData(pageNum) {
-            const url = 'http://localhost:8080/wms/warehouse/get?pageNum='+pageNum;
+            const url = '/wms/warehouse/get?pageNum='+pageNum;
             const options = {
                 method: 'POST', // 请求方法
                 headers: {
@@ -561,7 +561,7 @@
                     // 构造请求体
                     const requestData = { id: item.id };
 
-                    fetch('http://localhost:8080/wms/warehouse/delete', {
+                    fetch('wms/warehouse/delete', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
