@@ -463,6 +463,8 @@ public class Wms {
     @PostMapping("/wms/inbound/add")
     public ApiResponse<Map<String, String>> inboundInsert(@RequestBody(required = false) AddInboundRequestNew addInboundRequestNew) {
         try {
+            long ID = IdWorker.getId();
+
             Map<String, String> responseData = new HashMap<>();
             if ("PDA".equals(addInboundRequestNew.getSource())) {
 
@@ -480,7 +482,7 @@ public class Wms {
 
                     wmsMaterialTransaction.setWarehouse_id(addInboundRequestDetail.getWh_id());
                     wmsMaterialTransaction.setStock_location_id(addInboundRequestDetail.getStock_location_id());
-                    wmsMaterialTransaction.setInbound_id(IdWorker.getId());
+                    wmsMaterialTransaction.setInbound_id(ID);
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
 
@@ -499,7 +501,7 @@ public class Wms {
                     wmsMaterialTransaction.setMaterial_code(addInboundRequestDetail.getMaterial_code());
                     wmsMaterialTransaction.setWarehouse_id(addInboundRequestDetail.getWh_id());
                     wmsMaterialTransaction.setStock_location_id(addInboundRequestDetail.getStock_location_id());
-                    wmsMaterialTransaction.setInbound_id(IdWorker.getId());
+                    wmsMaterialTransaction.setInbound_id(ID);
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
 
@@ -605,6 +607,7 @@ public class Wms {
     @PostMapping("/wms/outbound/add")
     public ApiResponse<Map<String, String>> outboundInsert(@RequestBody(required = false) AddInboundRequestNew addInboundRequestNew) {
         try {
+            long ID = IdWorker.getId();
             Map<String, String> responseData = new HashMap<>();
 
             if ("PDA".equals(addInboundRequestNew.getSource())) {
@@ -622,7 +625,7 @@ public class Wms {
                             addInboundRequestNew.getSource(),
                             "pending",
                             addInboundRequestDetail.getRf_id(),
-                            IdWorker.getId(),
+                            ID,
                             addInboundRequestDetail.getStock_location_id(),
                             wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code(),
                             addInboundRequestDetail.getQuantity()
@@ -640,7 +643,7 @@ public class Wms {
                             addInboundRequestNew.getSource(),
                             "pending",
                             addInboundRequestDetail.getRf_id(),
-                            IdWorker.getId(),
+                            ID,
                             addInboundRequestDetail.getStock_location_id(),
                             addInboundRequestDetail.getMaterial_code(),
                             addInboundRequestDetail.getQuantity()
