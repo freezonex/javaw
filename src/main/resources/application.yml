@@ -72,6 +72,9 @@ spring:
     host: ${SUPOS_REDIS_HOST:100.64.87.206}
     port: 6379
     password:
+  web:
+    resources:
+      static-locations: file:///root/
 mybatis-plus:
   #mapper-locations: classpath*:mapping/*Mapper.xml
   mapper-locations: classpath*:/mapper/**/*.xml
