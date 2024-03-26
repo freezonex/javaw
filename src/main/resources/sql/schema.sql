@@ -46,8 +46,8 @@ CREATE TABLE `wms_material_transaction` (
                                             `inbound_delivery_date` timestamp NULL DEFAULT NULL,
                                             `outbound_delivery_date` timestamp NULL DEFAULT NULL,
                                             `del_flag` tinyint(1) DEFAULT NULL,
-                                            `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-                                            `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                                            `update_time` timestamp NULL DEFAULT NULL,
+                                            `create_time` timestamp NULL DEFAULT NULL,
                                             PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=0 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
