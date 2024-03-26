@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8085
 #  ssl:
 #    key-alias: alias-key    #证书别名
 #    key-store-password: ddpeqs3p   #填写jks-password.txt文件内的密码。
