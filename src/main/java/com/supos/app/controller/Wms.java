@@ -999,6 +999,8 @@ public class Wms {
                                         } else {
                                             IntStream.range(0, b.getQuantity() - tmp)
                                                     .mapToObj(j -> {
+                                                        log.info(String.valueOf("在这1"));
+                                                        log.info(String.valueOf(ID));
                                                         WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
                                                         wmsMaterialTransaction.setStocktaking_id(ID);
                                                         wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
@@ -1006,7 +1008,7 @@ public class Wms {
                                                         return wmsMaterialTransaction;
                                                     })
                                                     .map(wmsMaterialTransactionServiceImpl::insertSelective)
-                                                    .map(id -> responseData.put("id", String.valueOf(ID)))
+                                                    .map(id -> responseData.put("id", String.valueOf(b.getQuantity())))
                                                     .count();
                                         }
                                     }
