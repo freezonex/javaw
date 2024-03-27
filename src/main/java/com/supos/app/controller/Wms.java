@@ -990,7 +990,7 @@ public class Wms {
                                     if (b.getQuantity() > 0) {
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
                                         if (b.getQuantity() - tmp == 0) {
-                                            responseData.put("id", String.valueOf(tmp));
+                                            responseData.put("id", String.valueOf(ID));
                                         } else {
                                             IntStream.range(0, b.getQuantity() - tmp)
                                                     .mapToObj(j -> {
@@ -1001,7 +1001,7 @@ public class Wms {
                                                         return wmsMaterialTransaction;
                                                     })
                                                     .map(wmsMaterialTransactionServiceImpl::insertSelective)
-                                                    .map(id -> responseData.put("id", String.valueOf(b.getQuantity())))
+                                                    .map(id -> responseData.put("id", String.valueOf(ID)))
                                                     .count();
                                         }
                                     }
