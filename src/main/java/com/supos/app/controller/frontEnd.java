@@ -77,17 +77,14 @@ public class frontEnd {
     public String view30() {
         return "material.html";
     }
-
+    @GetMapping("/apps/wenhao-javaw/warehouse")
+    public String redirectToWarehouseHtml() {
+        return "forward:/apps/wenhao-javaw/warehouse.html";
+    }
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/operation/inbound")
     public String view31() {
         return "inbound.html";
-    }
-
-    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/apps/wenhao-javaw/warehouse")
-    public String view29() {
-        return "warehouse.html";
     }
 
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
