@@ -992,6 +992,8 @@ public class Wms {
                                         log.info(String.valueOf(ID));
                                         log.info(String.valueOf("在这"));
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
+                                        log.info("TMP[= "+String.valueOf(tmp));
+
                                         if (b.getQuantity() - tmp == 0) {
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
