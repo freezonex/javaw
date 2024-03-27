@@ -995,6 +995,9 @@ public class Wms {
                                         log.info("TMP[= "+String.valueOf(tmp));
 
                                         if (b.getQuantity() - tmp == 0) {
+                                            log.info(String.valueOf("b.getQuantity()"+b.getQuantity()));
+                                            log.info(String.valueOf("tmp"+tmp));
+
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
                                             IntStream.range(0, b.getQuantity() - tmp)
