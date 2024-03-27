@@ -983,33 +983,20 @@ public class Wms {
         try {
             Map<String, String> responseData = new HashMap<>();
             long ID = IdWorker.getId();
-            addInboundRequest.getShelfRecords().stream().forEach(
+            addInboundRequest.getShelfRecords().forEach(
                     i -> {
-                        i.getInventory().stream().forEach(
+                        i.getInventory().forEach(
                                 b -> {
-                                    log.info(String.valueOf(b.getQuantity()));
                                     if (b.getQuantity() > 0) {
-                                        log.info(String.valueOf(ID));
-                                        log.info(String.valueOf("在这"));
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
-                                        log.info("TMP[= "+String.valueOf(tmp));
-                                        int difference = b.getQuantity() - tmp; // 使用临时变量存储差值
-                                        log.info(String.valueOf("difference1"+difference));
-
-                                        if (difference == 0) {
-                                            log.info(String.valueOf("b.getQuantity()"+b.getQuantity()));
-                                            log.info(String.valueOf("difference"+difference));
-
+                                        if (b.getQuantity() - tmp == 0) {
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
-                                            for (int j = 0; j < difference; j++) {
-                                                log.info("在这1");
-                                                log.info(String.valueOf(ID));
+                                            for (int j = 0; j < b.getQuantity() - tmp; j++) {
                                                 WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
                                                 wmsMaterialTransaction.setStocktaking_id(ID);
                                                 wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
                                                 wmsMaterialTransaction.setStock_location_id(Long.valueOf(i.getStorageLocationId()));
-                                                log.info("wmsMaterialTransaction" + wmsMaterialTransaction);
                                                 wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction);
                                                 responseData.put("id", String.valueOf(b.getQuantity()));
                                             }
