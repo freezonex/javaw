@@ -1002,6 +1002,9 @@ public class Wms {
 
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
+                                            log.info("在这2");
+
+
                                             for (int j = 0; j < difference; j++) {
                                                 log.info("在这1");
                                                 log.info(String.valueOf(ID));
