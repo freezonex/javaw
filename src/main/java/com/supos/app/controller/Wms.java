@@ -1005,6 +1005,7 @@ public class Wms {
                                                         wmsMaterialTransaction.setStocktaking_id(ID);
                                                         wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
                                                         wmsMaterialTransaction.setStock_location_id(Long.valueOf(i.getStorageLocationId()));
+                                                        log.info(String.valueOf("wmsMaterialTransaction"+wmsMaterialTransaction));
                                                         return wmsMaterialTransaction;
                                                     })
                                                     .map(wmsMaterialTransactionServiceImpl::insertSelective)
