@@ -993,10 +993,11 @@ public class Wms {
                                         log.info(String.valueOf("在这"));
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
                                         log.info("TMP[= "+String.valueOf(tmp));
+                                        int difference = b.getQuantity() - tmp; // 使用临时变量存储差值
 
-                                        if (b.getQuantity() - tmp == 0) {
+                                        if (difference == 0) {
                                             log.info(String.valueOf("b.getQuantity()"+b.getQuantity()));
-                                            log.info(String.valueOf("tmp"+tmp));
+                                            log.info(String.valueOf("difference"+difference));
 
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
