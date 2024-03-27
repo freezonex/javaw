@@ -987,6 +987,7 @@ public class Wms {
                     i -> {
                         i.getInventory().stream().forEach(
                                 b -> {
+                                    log.info(String.valueOf(b.getQuantity()));
                                     if (b.getQuantity() > 0) {
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
                                         if (b.getQuantity() - tmp == 0) {
