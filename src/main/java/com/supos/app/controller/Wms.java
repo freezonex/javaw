@@ -1002,21 +1002,17 @@ public class Wms {
 
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
-                                            IntStream.range(0, difference)
-                                                    .mapToObj(j -> {
-                                                        log.info(String.valueOf("在这1"));
-                                                        log.info(String.valueOf(ID));
-                                                        WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
-                                                        wmsMaterialTransaction.setStocktaking_id(ID);
-                                                        wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
-                                                        wmsMaterialTransaction.setStock_location_id(Long.valueOf(i.getStorageLocationId()));
-                                                        log.info(String.valueOf("wmsMaterialTransaction"+wmsMaterialTransaction));
-                                                        return wmsMaterialTransaction;
-                                                    })
-                                                    .map(wmsMaterialTransactionServiceImpl::insertSelective)
-                                                    .map(id -> responseData.put("id", String.valueOf(b.getQuantity())))
-                                                    .count();
-                                        }
+                                            for (int j = 0; j < difference; j++) {
+                                                log.info("在这1");
+                                                log.info(String.valueOf(ID));
+                                                WmsMaterialTransaction wmsMaterialTransaction = new WmsMaterialTransaction();
+                                                wmsMaterialTransaction.setStocktaking_id(ID);
+                                                wmsMaterialTransaction.setMaterial_code(b.getMaterialCode());
+                                                wmsMaterialTransaction.setStock_location_id(Long.valueOf(i.getStorageLocationId()));
+                                                log.info("wmsMaterialTransaction" + wmsMaterialTransaction);
+                                                wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction);
+                                                responseData.put("id", String.valueOf(b.getQuantity()));
+                                            }
                                     }
                                 }
                         );
