@@ -994,6 +994,7 @@ public class Wms {
                                         int tmp = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsStocktaking(ID, b.getMaterialCode(), b.getQuantity(), i.getStorageLocationId());
                                         log.info("TMP[= "+String.valueOf(tmp));
                                         int difference = b.getQuantity() - tmp; // 使用临时变量存储差值
+                                        log.info(String.valueOf("difference1"+difference));
 
                                         if (difference == 0) {
                                             log.info(String.valueOf("b.getQuantity()"+b.getQuantity()));
@@ -1001,7 +1002,7 @@ public class Wms {
 
                                             responseData.put("id", String.valueOf(ID));
                                         } else {
-                                            IntStream.range(0, b.getQuantity() - tmp)
+                                            IntStream.range(0, difference)
                                                     .mapToObj(j -> {
                                                         log.info(String.valueOf("在这1"));
                                                         log.info(String.valueOf(ID));
