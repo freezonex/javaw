@@ -6,9 +6,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class WmsFrontend {
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/apps/wenhao-javaw/3d")
+    @GetMapping("/apps/wenhao-javaw/analysis/3d")
     public String view30() {
-        return "forward:/apps/wenhao-javaw/3d.html";
+        return "forward:/apps/wenhao-javaw/analysis/3d.html";
     }
 
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
