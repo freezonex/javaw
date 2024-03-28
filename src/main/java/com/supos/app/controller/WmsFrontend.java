@@ -1,6 +1,9 @@
 package com.supos.app.controller;
 
+import com.supos.app.entity.SuposApi;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponses;
+import io.swagger.annotations.ApiResponse;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 @Controller
@@ -15,6 +18,10 @@ public class WmsFrontend {
                     "- Right side 3d modelling  \n" +
                     "\n" +
                     "`Individual materials can be selected for display`")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "OK")
+            // Do not add other status codes if you do not want them documented
+    })
     @GetMapping("/apps/wenhao-javaw/analysis/3d")
     public String view30() {
         return "forward:/apps/wenhao-javaw/analysis/3d.html";
@@ -114,6 +121,9 @@ public class WmsFrontend {
     @ApiOperation(value = "404",
             notes = "Returns an HTML page for **404 not found**. " +
                     "\n\n Response details are not elaborated since the response is HTML content.")
+    @ApiResponses(value = {
+            @ApiResponse(code = 404, message = "404 not found",response = SuposApi.class)
+    })
     @GetMapping("/apps/wenhao-javaw/404")
     public String view42() {
         return "forward:/apps/wenhao-javaw/404.html";
