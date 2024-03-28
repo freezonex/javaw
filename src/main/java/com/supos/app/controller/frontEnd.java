@@ -27,7 +27,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.*;
 
-
 @Controller
 public class frontEnd {
 
@@ -70,23 +69,6 @@ public class frontEnd {
     @GetMapping("/wmsWarehouse")
     public String view28() {
         return "wmsWarehouse.html";
-    }
-
-    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/apps/wenhao-javaw/warehouse/material")
-    public String view30() {
-        return "forward:/apps/wenhao-javaw/warehouse/material.html";
-    }
-
-    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/apps/wenhao-javaw/warehouse")
-    public String view32() {
-        return "forward:/apps/wenhao-javaw/warehouse.html";
-    }
-    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/apps/wenhao-javaw/operation/inbound")
-    public String view31() {
-        return "inbound.html";
     }
 
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
