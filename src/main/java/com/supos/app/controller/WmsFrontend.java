@@ -92,4 +92,10 @@ public class WmsFrontend {
     public String view44() {
         return "forward:/apps/wenhao-javaw/operation/stocktaking/create.html";
     }
+
+    @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
+    @GetMapping("/apps/wenhao-javaw/index")
+    public String view45() {
+        return "forward:/apps/wenhao-javaw/index.html";
+    }
 }
