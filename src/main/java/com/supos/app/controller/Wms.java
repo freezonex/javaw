@@ -44,6 +44,9 @@ public class Wms {
     @Autowired
     WmsMaterialTransactionServiceImpl wmsMaterialTransactionServiceImpl;
 
+    @Autowired
+    WmsThreedWarehouseServiceImpl wmsThreedWarehouseServiceImpl;
+
     @ApiOperation(value = "today/outbound/done",notes = "today/outbound/done")
     @PostMapping("today/outbound/done")
     public ApiResponse<Map<String, String>> todayOunboundDone() {
@@ -536,6 +539,14 @@ public class Wms {
                     wmsMaterialTransaction.setMaterial_code(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
 
                     wmsMaterialTransaction.setWarehouse_id(addInboundRequestDetail.getWh_id());
+
+                    if (addInboundRequestDetail.getWh_id() == 11) {
+                        WmsThreedWarehouse wmsThreedWarehouse = new WmsThreedWarehouse();
+                        wmsThreedWarehouse.setLocation_id(addInboundRequestDetail.getStock_location_id());
+                        wmsThreedWarehouse.setMaterial_name(wmsRfidMaterialServiceImpl.selectall(wmsRfidMaterial).get(0).getMaterial_code());
+                        wmsThreedWarehouseServiceImpl.updateSelectiveByLocationId(wmsThreedWarehouse);
+                    }
+
                     wmsMaterialTransaction.setStock_location_id(addInboundRequestDetail.getStock_location_id());
                     wmsMaterialTransaction.setInbound_id(ID);
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
@@ -561,6 +572,13 @@ public class Wms {
                     wmsMaterialTransaction.setSource(addInboundRequestNew.getSource());
                     wmsMaterialTransaction.setInbound_status("pending");
                     wmsMaterialTransaction.setCreate_time(new Date());
+
+                    if (addInboundRequestDetail.getWh_id() == 11) {
+                        WmsThreedWarehouse wmsThreedWarehouse = new WmsThreedWarehouse();
+                        wmsThreedWarehouse.setLocation_id(addInboundRequestDetail.getStock_location_id());
+                        wmsThreedWarehouse.setMaterial_name(addInboundRequestDetail.getMaterial_code());
+                        wmsThreedWarehouseServiceImpl.updateSelectiveByLocationId(wmsThreedWarehouse);
+                    }
 
                     IntStream.range(0, addInboundRequestDetail.getQuantity())
                             .forEach(i -> responseData.put("id", String.valueOf(wmsMaterialTransactionServiceImpl.insertSelective(wmsMaterialTransaction))));
@@ -674,6 +692,12 @@ public class Wms {
                     WmsRfidMaterial wmsRfidMaterial = new WmsRfidMaterial();
                     wmsRfidMaterial.setRf_id(addInboundRequestDetail.getRf_id());
 
+                    if (addInboundRequestDetail.getWh_id() == 11) {
+                        WmsThreedWarehouse wmsThreedWarehouse = new WmsThreedWarehouse();
+                        wmsThreedWarehouse.setLocation_id(addInboundRequestDetail.getStock_location_id());
+                        wmsThreedWarehouseServiceImpl.updateSelectiveByLocationId(wmsThreedWarehouse);
+                    }
+
                     int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundPDA(
                             addInboundRequestNew.getDelivery_date(),
                             addInboundRequestNew.getCreator(),
@@ -692,6 +716,13 @@ public class Wms {
                 });
             } else if ("manual".equals(addInboundRequestNew.getSource())) {
                 addInboundRequestNew.getAddInboundRequestDetail().forEach(addInboundRequestDetail -> {
+
+                    if (addInboundRequestDetail.getWh_id() == 11) {
+                        WmsThreedWarehouse wmsThreedWarehouse = new WmsThreedWarehouse();
+                        wmsThreedWarehouse.setLocation_id(addInboundRequestDetail.getStock_location_id());
+                        wmsThreedWarehouseServiceImpl.updateSelectiveByLocationId(wmsThreedWarehouse);
+                    }
+
                     int updated = wmsMaterialTransactionServiceImpl.updateForTopNTransactionsOutboundManual(
                             addInboundRequestNew.getDelivery_date(),
                             addInboundRequestNew.getCreator(),
