@@ -23,7 +23,6 @@ public class WmsFrontend {
         return "forward:/apps/wenhao-javaw/operation/inbound/create.html";
     }
 
-
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/operation/outbound")
     public String view33() {
@@ -35,12 +34,12 @@ public class WmsFrontend {
         return "forward:/apps/wenhao-javaw/operation/outbound/create.html";
     }
 
-
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/warehouse/material")
     public String view35() {
         return "forward:/apps/wenhao-javaw/warehouse/material.html";
     }
+
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/warehouse/material/create")
     public String view36() {
@@ -76,13 +75,11 @@ public class WmsFrontend {
         return "forward:/apps/wenhao-javaw/analysis.html";
     }
 
-
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/404")
     public String view42() {
         return "forward:/apps/wenhao-javaw/404.html";
     }
-
 
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
     @GetMapping("/apps/wenhao-javaw/operation/stocktaking")
