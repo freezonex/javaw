@@ -46,6 +46,7 @@ CREATE TABLE `userlist` (
                             UNIQUE KEY `open_id_UNIQUE` (`open_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+
 -- `database`.wms_material definition
 
 CREATE TABLE `wms_material` (
@@ -65,7 +66,7 @@ CREATE TABLE `wms_material` (
                                 `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                 `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=183 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- `database`.wms_material_transaction definition
@@ -97,7 +98,7 @@ CREATE TABLE `wms_material_transaction` (
                                             `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                             `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3447 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3648 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 -- `database`.wms_rfid_material definition
