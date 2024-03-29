@@ -1,3 +1,51 @@
+-- `database`.lotto definition
+
+CREATE TABLE `lotto` (
+                         `id` int NOT NULL AUTO_INCREMENT,
+                         `period` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                         `number` json DEFAULT NULL,
+                         `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                         `time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                         `send_flag` int unsigned DEFAULT '0',
+                         `del_flag` int unsigned DEFAULT '0',
+                         `result` varchar(100) DEFAULT NULL,
+                         `name` varchar(100) DEFAULT NULL,
+                         PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=724 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- `database`.packinfo definition
+
+CREATE TABLE `packinfo` (
+                            `id` int NOT NULL AUTO_INCREMENT,
+                            `desciption` varchar(10000) NOT NULL,
+                            `submission_date` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+                            `del_flag` int unsigned DEFAULT '0',
+                            `familyName` varchar(500) NOT NULL,
+                            PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=451 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- `database`.packkeyword definition
+
+CREATE TABLE `packkeyword` (
+                               `id` int NOT NULL AUTO_INCREMENT,
+                               `keyword` varchar(500) NOT NULL,
+                               PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
+
+-- `database`.userlist definition
+
+CREATE TABLE `userlist` (
+                            `id` int unsigned NOT NULL AUTO_INCREMENT,
+                            `open_id` varchar(500) NOT NULL,
+                            `del_flag` int unsigned DEFAULT '0',
+                            `familyName` varchar(500) DEFAULT NULL,
+                            PRIMARY KEY (`id`),
+                            UNIQUE KEY `open_id_UNIQUE` (`open_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 -- `database`.wms_material definition
 
 CREATE TABLE `wms_material` (
