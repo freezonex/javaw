@@ -66,7 +66,7 @@ public class frontEnd {
         return "example.html";
     }
     @ApiOperation(value = "资产库存用例展示",notes = "资产库存用例展示")
-    @GetMapping("/wmsWarehouse")
+    @GetMapping("/wmswarehouse")
     public String view28() {
         return "wmsWarehouse.html";
     }
