@@ -2,16 +2,16 @@
 
 CREATE TABLE `lotto` (
                          `id` int NOT NULL AUTO_INCREMENT,
-                         `period` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                         `period` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
                          `number` json DEFAULT NULL,
-                         `email` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                         `email` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
                          `time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
                          `send_flag` int unsigned DEFAULT '0',
                          `del_flag` int unsigned DEFAULT '0',
                          `result` varchar(100) DEFAULT NULL,
                          `name` varchar(100) DEFAULT NULL,
                          PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=724 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=724 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.packinfo definition
@@ -23,7 +23,7 @@ CREATE TABLE `packinfo` (
                             `del_flag` int unsigned DEFAULT '0',
                             `familyName` varchar(500) NOT NULL,
                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=451 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=451 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.packkeyword definition
@@ -32,7 +32,7 @@ CREATE TABLE `packkeyword` (
                                `id` int NOT NULL AUTO_INCREMENT,
                                `keyword` varchar(500) NOT NULL,
                                PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.userlist definition
@@ -44,7 +44,7 @@ CREATE TABLE `userlist` (
                             `familyName` varchar(500) DEFAULT NULL,
                             PRIMARY KEY (`id`),
                             UNIQUE KEY `open_id_UNIQUE` (`open_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_material definition
@@ -66,24 +66,24 @@ CREATE TABLE `wms_material` (
                                 `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                 `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                 PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=190 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_material_transaction definition
 
 CREATE TABLE `wms_material_transaction` (
                                             `id` bigint unsigned NOT NULL AUTO_INCREMENT,
-                                            `material_code` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-                                            `type` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-                                            `source` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                                            `material_code` varchar(100) CHARACTER SET utf8mb4  NOT NULL,
+                                            `type` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
+                                            `source` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
                                             `inbound_id` bigint unsigned DEFAULT NULL,
                                             `stocktaking_id` bigint unsigned DEFAULT NULL,
                                             `outbound_id` bigint DEFAULT NULL,
                                             `warehouse_id` bigint DEFAULT NULL,
                                             `stock_location_id` bigint DEFAULT NULL,
-                                            `rf_id` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-                                            `operator` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-                                            `inbound_status` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                                            `rf_id` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
+                                            `operator` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
+                                            `inbound_status` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
                                             `outbound_status` varchar(100) DEFAULT NULL,
                                             `note` varchar(200) DEFAULT NULL,
                                             `inbound_creator` varchar(100) DEFAULT NULL,
@@ -98,7 +98,7 @@ CREATE TABLE `wms_material_transaction` (
                                             `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                             `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                             PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3648 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3648 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_rfid_material definition
@@ -111,7 +111,7 @@ CREATE TABLE `wms_rfid_material` (
                                      `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                      `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                      PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_storage_location definition
@@ -125,7 +125,7 @@ CREATE TABLE `wms_storage_location` (
                                         `update_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                         `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
                                         PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1481 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1481 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_threed_warehouse definition
@@ -133,13 +133,13 @@ CREATE TABLE `wms_storage_location` (
 CREATE TABLE `wms_threed_warehouse` (
                                         `id` bigint unsigned NOT NULL AUTO_INCREMENT,
                                         `location_id` bigint unsigned DEFAULT NULL,
-                                        `location_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-                                        `material_name` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
+                                        `location_name` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
+                                        `material_name` varchar(100) CHARACTER SET utf8mb4  DEFAULT NULL,
                                         `del_flag` tinyint(1) DEFAULT NULL,
                                         `update_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
                                         `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
                                         PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1382 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=1382 DEFAULT CHARSET=utf8mb4 ;
 
 
 -- `database`.wms_warehouse definition
@@ -160,4 +160,4 @@ CREATE TABLE `wms_warehouse` (
                                  PRIMARY KEY (`id`),
                                  UNIQUE KEY `name` (`name`),
                                  UNIQUE KEY `warehouse_id` (`warehouse_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 ;
