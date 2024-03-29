@@ -48,8 +48,8 @@ spring:
       connection-timeout: 30000
     sqlScriptEncoding: utf-8
     initializationMode: always
-    schema: classpath:sql/schema.sql
-    data: classpath:sql/data.sql
+#    schema: classpath:sql/schema.sql
+#    data: classpath:sql/data.sql
     continueOnError: true
   flyway:
     # 是否启用flyway

@@ -152,4 +152,12 @@ public class WmsFrontend {
     public String view45() {
         return "forward:/apps/wenhao-javaw/index.html";
     }
+
+    @ApiOperation(value = "Home",notes = "Returns an HTML page for home. " +
+            "\n\nHome pages. " +
+            "\n\nResponse details are not elaborated since the response is HTML content.")
+    @GetMapping("/apps/wenhao-javaw/home")
+    public String view46() {
+        return "forward:/apps/wenhao-javaw/home.html";
+    }
 }
