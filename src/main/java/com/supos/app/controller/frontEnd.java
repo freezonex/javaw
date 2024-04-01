@@ -161,6 +161,12 @@ public class frontEnd {
         return "llm.html";
     }
 
+    @ApiOperation(value = "大语言模型用例",notes = "大语言模型用例")
+    @GetMapping("/llm2")
+    public String view29() {
+        return "llm2.html";
+    }
+
     @ApiOperation(value = "资产面板用例展示",notes = "资产面板用例展示")
     @GetMapping("/dashboard")
     public String view13() {
