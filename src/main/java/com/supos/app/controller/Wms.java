@@ -11,11 +11,15 @@ import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
@@ -46,6 +50,24 @@ public class Wms {
 
     @Autowired
     WmsThreedWarehouseServiceImpl wmsThreedWarehouseServiceImpl;
+
+    @ApiOperation(value = "wmsllmask",notes = "wmsllmask")
+    @PostMapping("wmsllmask")
+    public ResponseEntity<String> wmsllmask(@RequestBody Map<String, Object> requestBody) {
+        // 在方法内创建RestTemplate实例
+        RestTemplate restTemplate = new RestTemplate();
+        // 目标URL
+        String targetUrl = "http://office.unibutton.com:6589/wmsllmask";
+        // 设置HTTP头信息
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+        // 创建请求实体对象
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
+        // 使用RestTemplate将请求转发到目标URL，并接收响应
+        ResponseEntity<String> response = restTemplate.exchange(targetUrl, HttpMethod.POST, entity, String.class);
+        // 返回响应给客户端
+        return response;
+    }
 
     @ApiOperation(value = "today/outbound/done",notes = "today/outbound/done")
     @PostMapping("today/outbound/done")

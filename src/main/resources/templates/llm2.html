@@ -82,10 +82,9 @@
         }
 
         function sendMessageToServer(message) {
-            const url = '/apps/wenhao-javaw/llm/api/generate2';
+            const url = '/wmsllmask';
             const requestData = {
-                model: 'llama2',
-                prompt: message
+                user_question: message
             };
 
             fetch(url, {
