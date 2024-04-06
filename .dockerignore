@@ -1,0 +1,4 @@
+.idea
+.mvn
+src/main/resources/static
+target
