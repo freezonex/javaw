@@ -172,6 +172,13 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-log4j2</artifactId>
         </dependency>
+        <dependency>
+            <groupId>com.supcon.supos</groupId>
+            <artifactId>eco-java-sdk</artifactId>
+            <version>3.2.3</version>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/eco-java-sdk-3.2.3.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -179,6 +186,9 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <includeSystemScope>true</includeSystemScope>
+                </configuration>
             </plugin>
         </plugins>
     </build>
