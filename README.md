@@ -33,17 +33,33 @@ app-jar-demo-tower
 ├─src/main/java
 │    ├─com.supos.app    
 │    │       ├─aksk                         通过AK/SK签名发送HTTP请求调用OpenAPI功能封装
-│    │       ├─config                       仅supOS-V2.7及之前版本支持的客户端模式（V3.0不用关注）
-|    |       ├─config                       配置文件读取 
-|    |       ├─controller                   控制层（主要暴露接口给APP前端调用）
-|    |       ├─dto                          dto
-|    |       ├─pojo                         pojo
-|    |       ├─supopenapi                   OpenAPI调用接口实现
-|    |       ├─util                         工具类
-|    |       ├─impl                         implement
-|    |       └─AppJarDemoTowerApplication   启动类
+│    │       ├─clientAuth                   仅supOS-V2.7及之前版本支持的客户端模式（V3.0不用关注）
+│    │       ├─config                       配置文件读取 
+│    │       ├─controller                   控制层（主要暴露接口给APP前端调用）
+│    │       ├─cron                         定时任务
+│    │       ├─dao                          数据访问对象
+│    │       ├─dto                          数据传输对象
+│    │       ├─entity                       实体类
+│    │       ├─filters                      过滤器
+│    │       ├─impl                         实现类
+│    │       ├─mapper                       MyBatis Mapper接口
+│    │       ├─pojo                         简单Java对象
+│    │       ├─service                      服务接口
+│    │       │  └─impl                      服务接口实现
+│    │       ├─supopenapi                   OpenAPI调用接口实现
+│    │       ├─utils                        工具类
+│    │       ├─vo                           值对象
+│    │       └─AppJarDemoTowerApplication   启动类
 │    │ 
 │─src/main/resources 
-│    ├─application.yml        配置文件
+│    ├─mapper                    MyBatis Mapper XML文件
+│    ├─META-INF                  其他元信息
+│    ├─sql                       SQL脚本
+│    ├─static                    静态资源，如CSS、JS文件
+│    │  ├─apps                   应用静态文件
+│    │  └─...                    其他静态资源
+│    ├─application.yml           应用配置文件
+│    └─...                       其他资源文件
 │ 
+
 ```
