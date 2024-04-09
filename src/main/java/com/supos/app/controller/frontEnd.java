@@ -203,6 +203,12 @@ public class frontEnd {
         return "qrcodeGenerate.html";
     }
 
+    @ApiOperation(value = "portfolio",notes = "portfolio")
+    @GetMapping("/portfolio")
+    public String view12(Model model) {
+        return "forward:/apps/wenhao-javaw/portfolio/index.html";
+    }
+
     @ApiOperation(value = "名片二维码生成后置页面",notes = "名片二维码生成后置页面")
     @GetMapping("/contactpage")
     public String view6(Model model, @RequestParam(value = "name", required = false) String name, @RequestParam(value = "email", required = false) String email) {
