@@ -31,4 +31,7 @@
         </set>
         where location_id = #{location_id,jdbcType=NUMERIC}
     </update>
+    <select id="selectAllStocked" resultMap="BaseResultMap">
+        SELECT * FROM wms_threed_warehouse where del_flag IS NULL and material_name IS NOT NULL
+    </select>
 </mapper>

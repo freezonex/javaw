@@ -1,9 +1,12 @@
 package com.supos.app.mapper;
+import com.supos.app.entity.Packinfo;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import com.supos.app.entity.WmsThreedWarehouse;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+
+import java.util.List;
 
 /**
 * @author Wenhao
@@ -15,8 +18,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface WmsThreedWarehouseMapper extends BaseMapper<WmsThreedWarehouse> {
 
     int updateSelectiveByLocationId(WmsThreedWarehouse wmsThreedWarehouse);
+
+    List<WmsThreedWarehouse> selectAllStocked();
 }
-
-
 
 
