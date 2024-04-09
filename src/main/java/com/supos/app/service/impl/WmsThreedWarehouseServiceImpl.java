@@ -128,7 +128,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
             // Keep the application running to listen for requests
             System.out.println("Subscribed to request topic. Awaiting requests...");
-            Thread.sleep(60000); // Adjust as necessary
+            Thread.sleep(0); // Adjust as necessary
 
             client.disconnect();
             System.out.println("Disconnected");
