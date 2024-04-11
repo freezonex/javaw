@@ -93,7 +93,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                 @Override
                 public void connectionLost(Throwable cause) {
                     // Handle connection lost
-                    log.error("Connected to lost: {}", mqttBroker);
+                    log.error("Connected lost: {}", mqttBroker);
                 }
 
                 /* MQTT json string to Unity
@@ -103,6 +103,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                 public void messageArrived(String topic, MqttMessage message) throws Exception {
                     // This method is called when a message arrives from the server.
                     System.out.println("Received request: " + new String(message.getPayload()));
+                    log.info("Received request from topic: {}, content: {}", topic, new String(message.getPayload()));
 
                     // Return all material name and storage location name mapping list as response
                     List<WmsThreedWarehouse> listAll = wmsThreedWarehouseMapper.selectAllStocked();
@@ -123,6 +124,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                     mqttClient.publish(mqttTopicFullResponse, responseMessage);
 
                     System.out.println("Response published to topic: " + mqttTopicFullResponse);
+                    log.info("Response published to topic: {}, content: {}", mqttTopicFullResponse, content);
                 }
 
                 @Override
@@ -132,19 +134,22 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
             });
 
             // Keep the application running to listen for requests
-            System.out.println("Subscribed to request topic. Awaiting requests...");
+            System.out.println("Subscribe to topic: " + mqttTopicFullRequest);
+            log.info("Subscribe to topic: {}", mqttTopicFullRequest);
             //Thread.sleep(0); // 这个影响开发时候启动，所以我先改成0后续有需求的话再改
 
         //} catch(MqttException | InterruptedException me) {
         } catch(MqttException me) {
             System.err.println("Error: " + me.getMessage());
             me.printStackTrace();
+            log.error("Error: " + me.getMessage());
         }
     }
 
     public void sendMqttToUnity(String content, int qos) {
         try {
             System.out.println("Publishing message: " + content);
+            log.info("Publishing message: " + content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             mqttClient.publish(mqttTopicIncrement, message);
@@ -160,7 +165,3 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
     }
 
 }
-
-
-
-
