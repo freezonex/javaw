@@ -108,7 +108,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
             log.info("Connected to broker: {}", mqttBroker);
 
             // Subscribe to the request topic
-            //mqttClient.subscribe(mqttTopicFullRequest, 2); // Using QoS 2 for example
+            mqttClient.subscribe(mqttTopicFullRequest, 2); // Using QoS 2 for example
 
             // Set callback to handle messages
             mqttClient.setCallback(new MqttCallback() {
