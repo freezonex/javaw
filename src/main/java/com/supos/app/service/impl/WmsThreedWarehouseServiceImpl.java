@@ -42,14 +42,19 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
     @Value("${mqtt.clientId}")
     private String mqttClientId;
-    @Value("${mqtt.topic_full}")
-    private String mqttTopicFull;
+    @Value("${mqtt.topic_full_request}")
+    private String mqttTopicFullRequest;
+
+    @Value("${mqtt.topic_full_response}")
+    private String mqttTopicFullResponse;
 
     @Value("${mqtt.topic_increment}")
     private String mqttTopicIncrement;
 
     @Autowired
     WmsThreedWarehouseMapper wmsThreedWarehouseMapper;
+
+    MqttClient mqttClient;
 
     /* MQTT json string to Unity
     {
@@ -72,19 +77,19 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
     public void initSubscribeMqtt() {
 
         try {
-            MqttClient client = new MqttClient(mqttBroker, mqttClientId);
+            mqttClient = new MqttClient(mqttBroker, mqttClientId);
             MqttConnectOptions connOpts = new MqttConnectOptions();
             connOpts.setCleanSession(true);
-            client.connect(connOpts);
+            mqttClient.connect(connOpts);
 
             System.out.println("Connected to broker: " + mqttBroker);
             log.info("Connected to broker: {}", mqttBroker);
 
             // Subscribe to the request topic
-            client.subscribe(mqttTopicFull, 2); // Using QoS 2 for example
+            mqttClient.subscribe(mqttTopicFullRequest, 2); // Using QoS 2 for example
 
             // Set callback to handle messages
-            client.setCallback(new MqttCallback() {
+            mqttClient.setCallback(new MqttCallback() {
                 @Override
                 public void connectionLost(Throwable cause) {
                     // Handle connection lost
@@ -115,9 +120,9 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                     // Publish the response to the response topic
                     MqttMessage responseMessage = new MqttMessage(content.getBytes());
                     responseMessage.setQos(2); // Matching QoS for example
-                    client.publish(mqttTopicFull, responseMessage);
+                    mqttClient.publish(mqttTopicFullResponse, responseMessage);
 
-                    System.out.println("Response published to topic: " + mqttTopicFull);
+                    System.out.println("Response published to topic: " + mqttTopicFullResponse);
                 }
 
                 @Override
@@ -128,13 +133,10 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
             // Keep the application running to listen for requests
             System.out.println("Subscribed to request topic. Awaiting requests...");
-//            Thread.sleep(60000); // Adjust as necessary
-            Thread.sleep(0); // 这个影响开发时候启动，所以我先改成0后续有需求的话再改
+            //Thread.sleep(0); // 这个影响开发时候启动，所以我先改成0后续有需求的话再改
 
-            client.disconnect();
-            System.out.println("Disconnected");
-
-        } catch(MqttException | InterruptedException me) {
+        //} catch(MqttException | InterruptedException me) {
+        } catch(MqttException me) {
             System.err.println("Error: " + me.getMessage());
             me.printStackTrace();
         }
@@ -142,20 +144,11 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
     public void sendMqttToUnity(String content, int qos) {
         try {
-            MqttClient sampleClient = new MqttClient(mqttBroker, mqttClientId);
-            MqttConnectOptions connOpts = new MqttConnectOptions();
-            connOpts.setCleanSession(true);
-            System.out.println("Connecting to broker: " + mqttBroker);
-            sampleClient.connect(connOpts);
-            System.out.println("Connected");
             System.out.println("Publishing message: " + content);
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
-            sampleClient.publish(mqttTopicIncrement, message);
+            mqttClient.publish(mqttTopicIncrement, message);
             System.out.println("Message published");
-            sampleClient.disconnect();
-            System.out.println("Disconnected");
-            System.exit(0);
         } catch(MqttException me) {
             System.out.println("reason " + me.getReasonCode());
             System.out.println("msg " + me.getMessage());
