@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
 * @author Wenhao
@@ -56,6 +59,8 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
     MqttClient mqttClient;
 
+    private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+
     /* MQTT json string to Unity
     {
         "material": "SR20VET",
@@ -73,6 +78,23 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
         return wmsThreedWarehouseMapper.updateSelectiveByLocationId(wmsThreedWarehouse);
     }
 
+    private void scheduleReconnect() {
+        scheduler.schedule(() -> {
+            if (!mqttClient.isConnected()) {
+                try {
+                    log.info("Attempting to reconnect to the MQTT broker...");
+                    mqttClient.connect(new MqttConnectOptions());
+                    log.info("Reconnected to the MQTT broker.");
+                    // Re-subscribe to the topics as needed here
+                } catch (MqttException me) {
+                    log.error("Reconnection attempt failed", me);
+                    // Schedule another reconnect if the first reconnect fails
+                    scheduleReconnect();
+                }
+            }
+        }, 5, TimeUnit.SECONDS);
+    }
+
     @PostConstruct
     public void initSubscribeMqtt() {
 
@@ -86,7 +108,7 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
             log.info("Connected to broker: {}", mqttBroker);
 
             // Subscribe to the request topic
-            mqttClient.subscribe(mqttTopicFullRequest, 2); // Using QoS 2 for example
+            //mqttClient.subscribe(mqttTopicFullRequest, 2); // Using QoS 2 for example
 
             // Set callback to handle messages
             mqttClient.setCallback(new MqttCallback() {
@@ -94,6 +116,8 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                 public void connectionLost(Throwable cause) {
                     // Handle connection lost
                     log.error("Connected lost: {}", mqttBroker);
+                    // Schedule a reconnection attempt
+                    scheduleReconnect();
                 }
 
                 /* MQTT json string to Unity
