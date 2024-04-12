@@ -61,17 +61,22 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
     private ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
-    /* MQTT json string to Unity
-    {
-        "material": "SR20VET",
-        "location": "A-01-A2"
-    }
-    */
+    @Autowired
+    WmsStorageLocationServiceImpl wmsStorageLocationServiceImpl;
+
+    // MQTT json string to Unity, inbound: {"material": "SR20VET", "location": "A-01-A2"}, outbound: {"location": "A-01-A2"}
     public int updateSelectiveByLocationId(WmsThreedWarehouse wmsThreedWarehouse) {
+        String locationName = "";
+        WmsStorageLocation wmsStorageLocation = new WmsStorageLocation();
+        wmsStorageLocation.setId(wmsThreedWarehouse.getLocation_id());
+        List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+        if (!storageLocations.isEmpty()) {
+            locationName = storageLocations.get(0).getName();
+        }
         Gson gson = new Gson();
         Map<String, Object> jsonData = new HashMap<>();
         jsonData.put("material", wmsThreedWarehouse.getMaterial_name());
-        jsonData.put("location", wmsThreedWarehouse.getLocation_name());
+        jsonData.put("location", locationName);
         String content = gson.toJson(jsonData);
         int qos = 2;
         sendMqttToUnity(content, qos);
@@ -85,7 +90,9 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                     log.info("Attempting to reconnect to the MQTT broker...");
                     mqttClient.connect(new MqttConnectOptions());
                     log.info("Reconnected to the MQTT broker.");
-                    // Re-subscribe to the topics as needed here
+                    // Resubscribe to necessary topics after reconnection
+                    mqttClient.subscribe(mqttTopicFullRequest, 2);
+                    log.info("Resubscribed to topic: {}", mqttTopicFullRequest);
                 } catch (MqttException me) {
                     log.error("Reconnection attempt failed", me);
                     // Schedule another reconnect if the first reconnect fails
