@@ -140,16 +140,16 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                     List<WmsThreedWarehouse> listAll = wmsThreedWarehouseMapper.selectAllStocked();
                     List<Map<String, Object>> listOfMaps = new ArrayList<>();
 
-                    int count = 0; // Counter to track the number of added elements
+                    //int count = 0; // Counter to track the number of added elements
                     for (WmsThreedWarehouse wmsThreedWarehouse : listAll) {
-                        if (count >= 2) break; // Stop after adding two elements
+                        //if (count >= 2) break; // Stop after adding two elements
 
                         Map<String, Object> jsonData = new HashMap<>();
                         jsonData.put("material", wmsThreedWarehouse.getMaterial_name());
                         jsonData.put("location", wmsThreedWarehouse.getLocation_name());
                         listOfMaps.add(jsonData);
 
-                        count++; // Increment the counter
+                        //count++; // Increment the counter
                     }
 
                     Gson gson = new Gson();
