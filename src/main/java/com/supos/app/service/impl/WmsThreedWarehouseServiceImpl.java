@@ -22,10 +22,7 @@ import org.eclipse.paho.client.mqttv3.MqttMessage;
 import javax.annotation.PostConstruct;
 import com.google.gson.Gson;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -77,7 +74,8 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
         Map<String, Object> jsonData = new HashMap<>();
         jsonData.put("material", wmsThreedWarehouse.getMaterial_name());
         jsonData.put("location", locationName);
-        String content = gson.toJson(jsonData);
+        // Wrap your map inside a list to form a single-element array
+        String content = gson.toJson(Collections.singletonList(jsonData));
         int qos = 2;
         sendMqttToUnity(content, qos);
         return wmsThreedWarehouseMapper.updateSelectiveByLocationId(wmsThreedWarehouse);
