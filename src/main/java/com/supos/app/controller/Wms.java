@@ -262,38 +262,38 @@ public class Wms {
             List<WmsWarehouse> wmsWarehouseList = pageInfo.getList();
                 List<WarehouseSelectAllResponse> warehouseSelectAllResponses = wmsWarehouseList.stream()
                     .map(warehouse -> {
-                        WmsStorageLocation query = new WmsStorageLocation();
-                        query.setWarehouse_id(warehouse.getId());
-                        List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(query);
-
-                        List<WarehouseSelectAllLocations> warehouseSelectAllLocationsList = storageLocations.stream().map(storageLocation -> {
-                                    WmsMaterialTransaction materialTransactionquery = new WmsMaterialTransaction();
-                                    materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
-                                    materialTransactionquery.setStock_location_id(storageLocation.getId());
-
-                                    List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCode(materialTransactionquery);
-
-                                    List<WarehouseSelectAllMaterial> warehouseMaterials = MaterialTransactions.stream()
-                                            .map(transaction -> {
-                                                WarehouseSelectAllMaterial warehouseMaterial = new WarehouseSelectAllMaterial(transaction);
-                                                WmsMaterial wmsMaterial = new WmsMaterial();
-                                                wmsMaterial.setProduct_code(transaction.getMaterial_code());
-                                                List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
-                                                if (!materials.isEmpty()) {
-                                                    warehouseMaterial.setMaterial_name(materials.get(0).getName());
-                                                }
-                                                return warehouseMaterial;
-                                            })
-                                            .collect(Collectors.toList());
-
-                                    WarehouseSelectAllLocations warehouseSelectAllLocation = new WarehouseSelectAllLocations(storageLocation);
-                                    warehouseSelectAllLocation.setMaterials(warehouseMaterials);
-                                    return warehouseSelectAllLocation;
-                                }
-                        ).collect(Collectors.toList());
-
+//                        WmsStorageLocation query = new WmsStorageLocation();
+//                        query.setWarehouse_id(warehouse.getId());
+//                        List<WmsStorageLocation> storageLocations = wmsStorageLocationServiceImpl.selectAll(query);
+//
+////                        List<WarehouseSelectAllLocations> warehouseSelectAllLocationsList = storageLocations.stream().map(storageLocation -> {
+////                                    WmsMaterialTransaction materialTransactionquery = new WmsMaterialTransaction();
+////                                    materialTransactionquery.setWarehouse_id(storageLocation.getWarehouse_id());
+////                                    materialTransactionquery.setStock_location_id(storageLocation.getId());
+////
+////                                    List<WmsMaterialTransaction> MaterialTransactions = wmsMaterialTransactionServiceImpl.selectAllGroupByMaterialCode(materialTransactionquery);
+////
+////                                    List<WarehouseSelectAllMaterial> warehouseMaterials = MaterialTransactions.stream()
+////                                            .map(transaction -> {
+////                                                WarehouseSelectAllMaterial warehouseMaterial = new WarehouseSelectAllMaterial(transaction);
+////                                                WmsMaterial wmsMaterial = new WmsMaterial();
+////                                                wmsMaterial.setProduct_code(transaction.getMaterial_code());
+////                                                List<WmsMaterial> materials = wmsMaterialServiceImpl.selectAll(wmsMaterial);
+////                                                if (!materials.isEmpty()) {
+////                                                    warehouseMaterial.setMaterial_name(materials.get(0).getName());
+////                                                }
+////                                                return warehouseMaterial;
+////                                            })
+////                                            .collect(Collectors.toList());
+////
+////                                    WarehouseSelectAllLocations warehouseSelectAllLocation = new WarehouseSelectAllLocations(storageLocation);
+////                                    warehouseSelectAllLocation.setMaterials(warehouseMaterials);
+////                                    return warehouseSelectAllLocation;
+////                                }
+////                        ).collect(Collectors.toList());
+//
                         WarehouseSelectAllResponse response = new WarehouseSelectAllResponse(warehouse);
-                        response.setStore_locations(warehouseSelectAllLocationsList);
+//                        response.setStore_locations(warehouseSelectAllLocationsList);
                         return response;
                     })
                     .collect(Collectors.toList());
