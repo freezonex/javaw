@@ -111,13 +111,13 @@ app:
   sk: ${sk:10999785ab1c5f475c6d9c8b728e28a3}
 minio:
   #endpoint: http://minio.default.svc.cluster.local:9000 #Minio服务所在地址
-  endpoint: http://office.unibutton.com:59000 #Minio服务所在地址
+  endpoint: http://wenhaoworld.online:9000 #Minio服务所在地址
   #endpoint: http://localhost:9000 #Minio服务所在地址
   bucketName: wenhao #存储桶名称
   #accessKey: g6BkaFIwvWWZRN6UP0fd #访问的key
   #secretKey: 46qwsFcO72W7vt9r6bGUi8Qkj11l0VxzspPowjCs #访问的秘钥
-  accessKey: IM5kMVqX8VJQQmMkQ0cL #访问的key
-  secretKey: MjLonwS3EMQmPU4pgBYG4WV1rjetjx9Kad9cjxd4 #访问的秘钥
+  accessKey: 6aSlpGpbokROmLysGASg #访问的key
+  secretKey: HbzwkmJbJOzANUeeWLhwASw4rWDxfaCRHHuzH1uR #访问的秘钥
 mqtt:
   broker: ${MQTT_BROKER:tcp://47.236.10.165:30884}
   clientId: ${MQTT_CLIENTID:wms_server}

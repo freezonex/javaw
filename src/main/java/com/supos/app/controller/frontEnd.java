@@ -28,6 +28,7 @@ import java.util.List;
 import java.util.concurrent.*;
 
 @Controller
+@RequestMapping(value = "apps/wenhao-javaw")
 public class frontEnd {
 
     @Value("${app.path}")
@@ -267,7 +268,7 @@ public class frontEnd {
     }
 
     @ApiOperation(value = "败家统计图页面",notes = "败家统计图页面")
-    @GetMapping("apps/wenhao-javaw/packageCharts")
+    @GetMapping("/packageCharts")
     public String view5() {
         return "noteUsage.html";
     }
