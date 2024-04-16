@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "/lotto")
+@RequestMapping(value = "apps/wenhao-javaw/lotto")
 public class LottoController {
 
     @Autowired

@@ -267,7 +267,7 @@ public class frontEnd {
     }
 
     @ApiOperation(value = "败家统计图页面",notes = "败家统计图页面")
-    @GetMapping("/packageCharts")
+    @GetMapping("apps/wenhao-javaw/packageCharts")
     public String view5() {
         return "noteUsage.html";
     }

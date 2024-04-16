@@ -17,7 +17,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @CrossOrigin
-@RequestMapping("/package")
+@RequestMapping("apps/wenhao-javaw/package")
 public class Package {
 
     @Autowired

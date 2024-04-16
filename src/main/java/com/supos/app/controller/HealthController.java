@@ -21,6 +21,7 @@ import static com.supos.app.impl.SampleMail.sendMail;
 
 @Slf4j
 @RestController
+@RequestMapping(value = "apps/wenhao-javaw")
 public class HealthController {
 
     @ApiOperation(value = "健康探针",notes = "健康探针")

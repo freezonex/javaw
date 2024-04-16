@@ -29,7 +29,7 @@ import java.util.List;
 @Api(tags = "文件相关接口")
 @Slf4j
 @RestController
-@RequestMapping(value = "product/file")
+@RequestMapping(value = "apps/wenhao-javaw/product/file")
 public class FileController {
 
     @Value("${minio.endpoint}")

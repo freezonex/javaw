@@ -1,5 +1,5 @@
 server:
-  port: 8085
+  port: 8080
 #  ssl:
 #    key-alias: alias-key    #证书别名
 #    key-store-password: ddpeqs3p   #填写jks-password.txt文件内的密码。
@@ -28,11 +28,11 @@ spring:
     # 数据库用户名
     username: ${SUPOS_HOSTED_USERNAME:root}
     # 数据库密码
-    #password: ${SUPOS_HOSTED_PASSWORD:1234567}
-    password: ${SUPOS_HOSTED_PASSWORD:root1234}
+    password: ${SUPOS_HOSTED_PASSWORD:1234567}
+#    password: ${SUPOS_HOSTED_PASSWORD:root1234}
     # 数据库URL
-    #url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.220}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    url: jdbc:mysql://${SUPOS_HOSTED_HOST:office.unibutton.com}:${SUPOS_HOSTED_PORT:31874}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:172.29.218.60}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+#    url: jdbc:mysql://${SUPOS_HOSTED_HOST:office.unibutton.com}:${SUPOS_HOSTED_PORT:31874}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
 
     # 数据库驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
