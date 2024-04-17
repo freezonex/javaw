@@ -87,6 +87,9 @@ public class WmsMaterial implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    private Long[] locations;
+
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -260,6 +263,14 @@ public class WmsMaterial implements Serializable {
         this.expact_stock_location_id = expact_stock_location_id;
     }
 
+    public Long[] getLocations() {
+        return locations;
+    }
+
+    public void setLocations(Long[] locations) {
+        this.locations = locations;
+    }
+
     public Boolean getDel_flag() {
         return del_flag;
     }
@@ -283,4 +294,5 @@ public class WmsMaterial implements Serializable {
     public void setUpdate_time(Date update_time) {
         this.update_time = update_time;
     }
+
 }

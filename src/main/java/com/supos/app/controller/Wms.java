@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.supos.app.config.ApiResponse;
+import com.supos.app.vo.ShelfColModel;
+import com.supos.app.vo.ShelfModel;
 import com.supos.app.entity.*;
 import com.supos.app.service.impl.*;
 import com.supos.app.vo.*;
@@ -20,12 +22,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -392,12 +392,108 @@ public class Wms {
         }
     }
 
+    @ApiOperation(value = "storagelocation/getPlaneLocations", notes = "storagelocation/getPlaneLocations")
+    @PostMapping("/wms/storagelocation/getPlaneLocations")
+    public ApiResponse<PageInfo<ShelfModel>> getPlaneLocations(@RequestBody(required = false) WmsStorageLocation wmsStorageLocation,@RequestParam(defaultValue = "1") int pageNum, @RequestParam(defaultValue = "10") int pageSize) {
+        try {
+            List<WmsStorageLocation> locations=wmsStorageLocationServiceImpl.selectAll(wmsStorageLocation);
+
+            List<ShelfModel> shelfModels = new ArrayList<ShelfModel>();
+            String shelfName=null;
+            String shelfColName=null;
+            ShelfModel lastshelfModel = null;
+            for (int i = 0; i <locations.size() ; i++) {
+                WmsStorageLocation location = locations.get(i);
+                String[]  sections=location.getName().split("-");
+
+                ShelfModel shelfModel = new ShelfModel();
+                if(sections.length>2)
+                {
+                    if(shelfName==null || (shelfName!=null&&!shelfName.equals(sections[0])))
+                    {
+                        shelfModel.setSn(i+1);
+                        shelfModel.setShelfId(i+1);
+                        shelfModel.setShelfName(sections[0]);
+                        shelfName=shelfModel.getShelfName();
+
+                        shelfColName=sections[1];
+                        String locationName=location.getName();
+
+                        List<ShelfColModel> shelfColModels=new ArrayList<ShelfColModel>();
+                        ShelfColModel shelfColModel =null;
+                        List<Long> items=new ArrayList<Long>();
+
+                        for (int j = i; j < locations.size(); j++) {
+                            String[]  sectionLoop=locations.get(j).getName().split("-");
+                            if(!sectionLoop[0].equals(shelfName))
+                            {
+                                shelfColModel.setItems(items);
+                                shelfColModels.add(shelfColModel);
+                                shelfModel.setShelfCols(shelfColModels);
+                                shelfModels.add(shelfModel);
+                                items=new ArrayList<>();
+                                break;
+                            }
+                            if(sectionLoop[0].equals(shelfName)&&!(sectionLoop[1].equals(shelfColName)))
+                            {
+                                if(!Objects.isNull(shelfColModel)){
+                                    shelfColModel.setItems(items);
+                                    shelfColModels.add(shelfColModel);
+                                    shelfModel.setShelfCols(shelfColModels);
+                                }
+                                shelfColName=sectionLoop[1];
+                                locationName=locations.get(j).getName();
+                                items=new ArrayList<>();
+                            }
+                            if(sectionLoop[0].equals(shelfName)){
+                                if(locations.get(j).getName().equals(locationName)){
+                                    shelfColModel= new ShelfColModel();
+                                    shelfColModel.setShelfId(shelfModel.getShelfId());
+                                    shelfColModel.setColId(j+1);
+                                    shelfColModel.setColName(shelfColName);
+                                }
+                                if(sectionLoop[1].equals(shelfColName))
+                                {
+                                    items.add(locations.get(j).getId());
+                                }
+                                if(j==locations.size()-1){
+                                    lastshelfModel=new ShelfModel();
+                                    shelfColModel.setItems(items);
+                                    shelfColModels.add(shelfColModel);
+                                    shelfModel.setShelfCols(shelfColModels);
+                                    lastshelfModel=shelfModel;
+                                }
+                            }
+                        }
+                    }
+
+                    if(i==locations.size()-1&&!Objects.isNull(lastshelfModel))
+                    {
+                        shelfModels.add(lastshelfModel);
+                    }
+                }
+            }
+            PageInfo<ShelfModel> responsePageInfo = new PageInfo<ShelfModel>(shelfModels);
+            return new ApiResponse<>(responsePageInfo);
+
+        } catch (Exception e) {
+            log.info(e.getMessage());
+            return new ApiResponse<>(null, "Error occurred while processing the request: " + e.getMessage());
+        }
+    }
+
     @ApiOperation(value = "material/add",notes = "material/add")
     @PostMapping("/wms/material/add")
     public ApiResponse<Map<String, String>> materialInsert(@RequestBody(required = false) WmsMaterial wmsMaterial) {
         Map<String, String> responseData = new HashMap<>();
         try {
-            responseData.put("id", String.valueOf(wmsMaterialServiceImpl.insertSelective(wmsMaterial)));
+            Long[] locations=wmsMaterial.getLocations();
+            if(locations!=null && locations.length>0){
+                for(Long locationId:locations){
+                    wmsMaterial.setExpact_stock_location_id(locationId);
+                    responseData.put("id", String.valueOf(wmsMaterialServiceImpl.insertSelective(wmsMaterial)));
+                }
+                }
             return new ApiResponse<>(responseData);
         }catch (Exception e){
             log.info(e.getMessage());
