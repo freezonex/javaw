@@ -13,7 +13,7 @@ import java.util.Map;
 @Api(tags = "目录相关")
 @Slf4j
 @RestController
-@RequestMapping(value = "apps/wenhao-javaw/directory")
+@RequestMapping(value = "backend/apps/wenhao-javaw/directory")
 public class directory {
 
     String jsonString = "[{\"name\":\"Directory 1\",\"subdirectories\":[{\"name\":\"Subdirectory 1.1\",\"subdirectories\":[{\"name\":\"Subdirectory 1.1.1\",\"subdirectories\":[]},{\"name\":\"Subdirectory 1.1.1\",\"subdirectories\":[]}]},{\"name\":\"Subdirectory 1.2\",\"files\":[]}]},{\"name\":\"Directory 2\",\"subdirectories\":[{\"name\":\"Subdirectory 2.1\",\"files\":[]},{\"name\":\"Subdirectory 2.2\",\"files\":[]}]},{\"name\":\"Directory 3\",\"subdirectories\":[{\"name\":\"Subdirectory 3.1\",\"files\":[]},{\"name\":\"Subdirectory 3.2\",\"files\":[]}]}]";

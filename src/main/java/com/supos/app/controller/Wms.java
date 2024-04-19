@@ -15,10 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -31,6 +28,7 @@ import java.util.stream.IntStream;
 
 @Slf4j
 @RestController
+@RequestMapping("backend")
 public class Wms {
 
     @Autowired

@@ -560,7 +560,7 @@
 
 
     function fetchDirectoryData() {
-        fetch('/apps/wenhao-javaw/directory/current')
+        fetch('/backend/apps/wenhao-javaw/directory/current')
             .then(response => {
                 if (!response.ok) {
                     throw new Error('Network response was not ok');
@@ -637,7 +637,7 @@
                     };
 
                     // Send the payload to the backend
-                    fetch('/apps/wenhao-javaw/directory/insert', {
+                    fetch('/backend/apps/wenhao-javaw/directory/insert', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',

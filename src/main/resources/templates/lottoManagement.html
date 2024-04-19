@@ -242,7 +242,7 @@
             // 获取输入框中的值
             var name = this.value.trim();
             // 构造URL
-            var url = '/apps/wenhao-javaw/lotto/history?name=' + encodeURIComponent(name) + '&pageNum=1&pageSize=10';
+            var url = '/backend/apps/wenhao-javaw/lotto/history?name=' + encodeURIComponent(name) + '&pageNum=1&pageSize=10';
             // 发送请求
             fetch(url) .then(response => response.json())
                 .then(data => {
@@ -260,7 +260,7 @@
 
         // Function to fetch pagination data
         function fetchPaginationData(pageNum,name) {
-            fetch(`/apps/wenhao-javaw/lotto/history?pageNum=${pageNum}&pageSize=10&name=${name}`)
+            fetch(`/backend/apps/wenhao-javaw/lotto/history?pageNum=${pageNum}&pageSize=10&name=${name}`)
                 .then(response => response.json())
                 .then(data => {
                     updatePaginationControls(data)
@@ -541,7 +541,7 @@
                 };
 
                 // Proceed with sending data to the backend API if numbers is valid JSON
-                fetch('/apps/wenhao-javaw/lotto/insert', {
+                fetch('/backend/apps/wenhao-javaw/lotto/insert', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
@@ -634,7 +634,7 @@
         ];
 
         // // 调用 /lotto/history 接口获取数据
-        // fetch('/apps/wenhao-javaw/lotto/history?pageNum=1&pageSize=10')
+        // fetch('/backend/apps/wenhao-javaw/lotto/history?pageNum=1&pageSize=10')
         //     .then(response => response.json())
         //     .then(data => {data=data.list
         //         // 将获取到的数据追加到 tableData 数组中

@@ -254,7 +254,7 @@
 
     function fetchDataAndDisplay() {
         // 使用 Fetch API 获取数据
-        fetch('/apps/wenhao-javaw/package/history')
+        fetch('/backend/apps/wenhao-javaw/package/history')
             .then(response => response.json())
             .then(data => {
                 // 获取表格主体元素
@@ -477,14 +477,14 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
-        fetch('/apps/wenhao-javaw/package/chart', {
+        fetch('/backend/apps/wenhao-javaw/package/chart', {
             method: "GET",
         }) .then(response => response.text())
             .then(responseBodyText => {
                 const jsonData = JSON.parse(responseBodyText);
                 run(jsonData);
             })
-        fetch('/apps/wenhao-javaw/package/pieChart', {
+        fetch('/backend/apps/wenhao-javaw/package/pieChart', {
             method: "GET",
         }) .then(response => response.text())
             .then(responseBodyText => {

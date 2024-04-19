@@ -72,7 +72,7 @@
 
 <script>
     // Define API endpoint
-    const API_ENDPOINT = '/apps/wenhao-javaw/product/file';
+    const API_ENDPOINT = '/backend/apps/wenhao-javaw/product/file';
 
     document.addEventListener('DOMContentLoaded', function () {
 
@@ -178,13 +178,13 @@
             })
             .then(url => {
                 if (isImage) {
-                    // const newUrl = url.replace('http://10.104.96.59:9000', '/apps/wenhao-javaw/product/file/backend');
+                    // const newUrl = url.replace('http://10.104.96.59:9000', '/backend/apps/wenhao-javaw/product/file/backend');
                     // 如果是图片，显示图片预览
                     const previewContent = document.getElementById('previewContent');
                     previewContent.innerHTML = `<img src="${url}" alt="File Preview" class="mx-auto" />`; // 显示图片在模态框中
                     document.getElementById('previewModal').classList.remove('hidden');
                 } else {
-                    // const newUrl = url.replace('http://10.104.96.59:9000', '/apps/wenhao-javaw/product/file/backend');
+                    // const newUrl = url.replace('http://10.104.96.59:9000', '/backend/apps/wenhao-javaw/product/file/backend');
                     // 如果不是图片，触发下载
                     window.location.href = url; // 这会导致浏览器导航到该URL，触发下载
                 }

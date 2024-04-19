@@ -21,7 +21,6 @@ import static com.supos.app.impl.SampleMail.sendMail;
 
 @Slf4j
 @RestController
-@RequestMapping(value = "apps/wenhao-javaw")
 public class HealthController {
 
     @ApiOperation(value = "健康探针",notes = "健康探针")
@@ -69,7 +68,7 @@ public class HealthController {
             @ApiResponse(code = 401, message = "未授权访问",response = SuposApi.class)
     })
     @ApiImplicitParams({@ApiImplicitParam(name = "suposApi", dataType = "SuposApi", required = true, paramType = "body")})
-    @PostMapping("/crypto")
+    @PostMapping("backend/apps/wenhao-javaw/crypto")
     public ResponseEntity<String> crypto(@ApiParam(hidden = true) @RequestBody String requestBody) throws JsonProcessingException {
         SuposApi suposApi = new ObjectMapper().readValue(requestBody, SuposApi.class);
         System.out.println(suposApi);
