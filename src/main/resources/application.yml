@@ -111,7 +111,7 @@ app:
   sk: ${sk:10999785ab1c5f475c6d9c8b728e28a3}
 minio:
   #endpoint: http://minio.default.svc.cluster.local:9000 #Minio服务所在地址
-  endpoint: http://wenhaoworld.online:9000 #Minio服务所在地址
+  endpoint: http://172.29.218.61:9000 #Minio服务所在地址
   #endpoint: http://localhost:9000 #Minio服务所在地址
   bucketName: wenhao #存储桶名称
   #accessKey: g6BkaFIwvWWZRN6UP0fd #访问的key

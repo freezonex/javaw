@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.Resource;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import java.net.URL;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -171,7 +172,9 @@ public class MinioUtil {
         GetPresignedObjectUrlArgs build = new GetPresignedObjectUrlArgs().builder().bucket(prop.getBucketName()).object(fileName).method(Method.GET).build();
         try {
             String url = minioClient.getPresignedObjectUrl(build);
-            return url;
+            // 重构URL以匹配Nginx的代理设置
+            URL oldUrl = new URL(url);
+            return "https://wenhaoworld.online/files" + oldUrl.getPath() + "?" + oldUrl.getQuery();
         } catch (Exception e) {
             e.printStackTrace();
         }

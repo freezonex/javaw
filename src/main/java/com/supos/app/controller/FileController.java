@@ -78,7 +78,8 @@ public class FileController {
     public ResponseEntity<?> upload(@RequestParam("file") MultipartFile file) {
         String objectName = minioUtil.upload(file);
         if (null != objectName) {
-            return ResponseEntity.ok().body((prop.getEndpoint() + "/" + prop.getBucketName() + "/" + objectName));
+//            return ResponseEntity.ok().body((prop.getEndpoint() + "/" + prop.getBucketName() + "/" + objectName));
+            return ResponseEntity.ok().body(("https:wenhaoworld.online/files/" + prop.getBucketName() + "/" + objectName));
         }
         return (ResponseEntity<?>) ResponseEntity.badRequest();
     }
