@@ -159,6 +159,12 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
                     System.out.println("Response published to topic: " + mqttTopicFullResponse);
                     log.info("Response published to topic: {}, content: {}", mqttTopicFullResponse, content);
+                    if (content.length() > 30) {
+                        System.out.println("Publishing message of length: " + content.length() + " characters");
+                        log.info("Response published to topic: {}, content json array size: {}", mqttTopicFullResponse, listOfMaps.size());
+                    } else {
+                        log.info("Response published to topic: {}, content: {}", mqttTopicFullResponse, content);
+                    }
                 }
 
                 @Override
@@ -182,8 +188,14 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
 
     public void sendMqttToUnity(String content, int qos) {
         try {
-            System.out.println("Publishing message: " + content);
-            log.info("Publishing message: " + content);
+            if (content.length() > 30) {
+                System.out.println("Publishing message of length: " + content.length() + " characters");
+                log.info("Publishing message of length: " + content.length() + " characters");
+            } else {
+                System.out.println("Publishing message: " + content);
+                log.info("Publishing message: " + content);
+            }
+
             MqttMessage message = new MqttMessage(content.getBytes());
             message.setQos(qos);
             mqttClient.publish(mqttTopicIncrement, message);
