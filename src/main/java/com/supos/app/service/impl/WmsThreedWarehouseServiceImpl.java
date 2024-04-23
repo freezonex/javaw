@@ -158,7 +158,6 @@ public class WmsThreedWarehouseServiceImpl extends ServiceImpl<WmsThreedWarehous
                     mqttClient.publish(mqttTopicFullResponse, responseMessage);
 
                     System.out.println("Response published to topic: " + mqttTopicFullResponse);
-                    log.info("Response published to topic: {}, content: {}", mqttTopicFullResponse, content);
                     if (content.length() > 30) {
                         System.out.println("Publishing message of length: " + content.length() + " characters");
                         log.info("Response published to topic: {}, content json array size: {}", mqttTopicFullResponse, listOfMaps.size());
