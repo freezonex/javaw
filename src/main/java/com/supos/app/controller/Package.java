@@ -3,6 +3,7 @@ package com.supos.app.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.supos.app.entity.Packinfo;
+import com.supos.app.impl.emailSender;
 import com.supos.app.service.impl.PackinfoServiceImpl;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
@@ -65,7 +66,7 @@ public class Package {
         Packinfo packinfo = new ObjectMapper().readValue(requestBody,Packinfo.class);
         System.out.println(packinfo);
         packinfoServiceImpl.insert(packinfo);
-//        emailSender.SendEmail(sender, passwordSender, host, port);
+        emailSender.SendEmail(sender, passwordSender, host, port);
         return "good";
     }
 
