@@ -32,7 +32,7 @@ spring:
     password: ${SUPOS_HOSTED_PASSWORD:root1234}
     # 数据库URL
     #url: jdbc:mysql://${SUPOS_HOSTED_HOST:192.168.31.220}:${SUPOS_HOSTED_PORT:3306}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
-    url: jdbc:mysql://${SUPOS_HOSTED_HOST:office.unibutton.com}:${SUPOS_HOSTED_PORT:31874}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC
+    url: jdbc:mysql://${SUPOS_HOSTED_HOST:office.unibutton.com}:${SUPOS_HOSTED_PORT:31874}/${SUPOS_HOSTED_DBNAME:database}?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true
 
     # 数据库驱动
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -72,6 +72,9 @@ spring:
     host: ${SUPOS_REDIS_HOST:100.64.87.206}
     port: 6379
     password:
+  web:
+    resources:
+      static-locations: classpath:/static/, file:/root/
 mybatis-plus:
   #mapper-locations: classpath*:mapping/*Mapper.xml
   mapper-locations: classpath*:/mapper/**/*.xml
@@ -95,6 +98,7 @@ mybatis-plus:
     call-setters-on-nulls: true
     jdbc-type-for-null: 'null'
 app:
+  htmlStoragePath: /root
   id: ${APP_ID:415ed3fc72b533713244dcd553159642}
   prefix: ${APP_PREFIX:}
   supos-host: ${SDK_ADDRESS:http://47.236.10.165:8080}
